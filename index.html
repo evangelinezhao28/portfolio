@@ -1,30 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evangeline Zhao | UX Designer & UX Researcher</title>
+    <title>Evangeline Zhao | Service & UX Design</title>
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Tailwind Config for Custom Colors -->
+    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        background: '#FAFAFA',
+                        background: '#FAFAFA', // Warm gray/white
                         surface: '#FFFFFF',
-                        primary: '#171717',
-                        secondary: '#525252',
-                        accent: '#0D9488', // Sophisticated Teal
-                        accentHover: '#0F766E',
+                        primary: '#111111',    // Almost black
+                        secondary: '#555555',  // Medium gray
+                        accent: '#0F766E',     // Deep Teal
+                        accentLight: '#14B8A6',
                         border: '#E5E5E5'
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         serif: ['Merriweather', 'serif'],
+                    },
+                    backgroundImage: {
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'reveal': 'reveal 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        reveal: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
                     }
                 }
             }
@@ -34,18 +58,27 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Custom Styles for Animations -->
     <style>
+        /* --- Base & Utilities --- */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 120px; 
+        }
+
         body {
             background-color: #FAFAFA;
-            color: #171717;
-            scroll-behavior: smooth;
+            color: #111111;
+            /* Add texture to background */
+            background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.03%22/%3E%3C/svg%3E');
         }
         
+        /* --- Animations --- */
+        /* Basic Fade In */
         .fade-in-section {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
         }
         
         .fade-in-section.is-visible {
@@ -53,69 +86,140 @@
             transform: translateY(0);
         }
 
-        /* Hide pages by default */
+        /* Staggered Child Animations (for grids) */
+        .stagger-parent .stagger-child {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .stagger-parent.is-visible .stagger-child {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Delays for children */
+        .stagger-child:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-child:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-child:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-child:nth-child(4) { transition-delay: 0.4s; }
+        .stagger-child:nth-child(5) { transition-delay: 0.5s; }
+        .stagger-child:nth-child(6) { transition-delay: 0.6s; }
+
+        /* SPA Page Transitions */
         .page-section {
             display: none;
             min-height: 100vh;
-            padding-top: 80px; /* Space for fixed navbar */
+            padding-top: 100px; 
+            animation: fadeInPage 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Active page class */
         .page-section.active {
             display: block;
-            animation: fadeInPage 0.5s ease-out;
         }
 
         @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .nav-link.active {
-            background-color: #E5E5E5;
-            color: #171717;
+        /* --- Navigation Styles --- */
+        .nav-link {
+            position: relative;
         }
         
-        /* Ensure images are crisp */
+        /* Underline effect on active */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 4px;
+            left: 50%;
+            background-color: #111;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link.active::after {
+            width: 60%;
+        }
+        
+        .nav-link.active {
+            color: #111;
+            font-weight: 500;
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+        }
+        #mobile-menu.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        /* TOC Active State */
+        .toc-link.active {
+            color: #0F766E; 
+            border-left: 2px solid #0F766E;
+            padding-left: 16px;
+            font-weight: 500;
+        }
+        .toc-link {
+            border-left: 2px solid #E5E5E5;
+            transition: all 0.2s ease;
+        }
+        
+        /* Images */
         img {
             image-rendering: auto; 
         }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-primary selection:text-white">
+<body class="font-sans antialiased selection:bg-accent/20 selection:text-primary">
 
     <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6 bg-[#FAFAFA]/95 backdrop-blur-sm border-b border-border">
-        <div class="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-            <button onclick="router('home')" class="text-xl font-bold tracking-tight text-primary hover:text-accent transition-colors">
-                Evangeline Zhao
+    <!-- Updated: Floating Pill Style for Desktop -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:py-6 pointer-events-none">
+        <!-- Inner container creates the floating effect -->
+        <div class="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border border-white/40 shadow-sm rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto transition-all duration-300">
+            
+            <button onclick="router('home')" class="text-lg font-bold tracking-tight text-primary hover:text-accent transition-colors font-serif italic">
+                EZ.
             </button>
 
             <!-- Desktop Nav -->
-            <div class="hidden md:flex items-center space-x-2">
-                <button onclick="router('home')" id="nav-home" class="nav-link px-4 py-2 text-sm font-medium rounded text-secondary hover:text-primary hover:bg-[#F5F5F5] transition-all">Home</button>
-                <button onclick="router('work')" id="nav-work" class="nav-link px-4 py-2 text-sm font-medium rounded text-secondary hover:text-primary hover:bg-[#F5F5F5] transition-all">Work</button>
-                <button onclick="router('about')" id="nav-about" class="nav-link px-4 py-2 text-sm font-medium rounded text-secondary hover:text-primary hover:bg-[#F5F5F5] transition-all">About</button>
-                <button onclick="scrollToContact()" class="ml-4 px-5 py-2 text-xs font-medium text-white bg-accent hover:bg-accentHover shadow-sm hover:shadow-md rounded-lg transition-all transform hover:-translate-y-0.5">
+            <div class="hidden md:flex items-center space-x-1">
+                <button onclick="router('home')" id="nav-home" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Home</button>
+                <button onclick="router('work')" id="nav-work" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Case Studies</button>
+                <button onclick="router('visuals')" id="nav-visuals" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Visual Design</button>
+                <button onclick="router('about')" id="nav-about" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">About</button>
+                
+                <span class="w-px h-4 bg-gray-300 mx-2"></span>
+                
+                <button onclick="scrollToContact()" class="px-5 py-2 text-xs font-bold text-white bg-primary hover:bg-accent rounded-full transition-all transform hover:scale-105">
                     Contact
                 </button>
             </div>
 
             <!-- Mobile Toggle -->
-            <button class="md:hidden text-primary" onclick="toggleMobileMenu()">
-                <i data-lucide="menu"></i>
+            <button class="md:hidden text-primary p-1" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+                <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden fixed inset-0 bg-background z-40 flex flex-col items-center justify-center space-y-8">
-            <button class="absolute top-8 right-6 text-primary" onclick="toggleMobileMenu()">
-                <i data-lucide="x"></i>
-            </button>
-            <button onclick="router('home'); toggleMobileMenu()" class="text-3xl font-medium text-primary">Home</button>
-            <button onclick="router('work'); toggleMobileMenu()" class="text-3xl font-medium text-primary">Work</button>
-            <button onclick="router('about'); toggleMobileMenu()" class="text-3xl font-medium text-primary">About</button>
-            <button onclick="scrollToContact(); toggleMobileMenu()" class="text-3xl font-medium text-accent">Contact</button>
+        <div id="mobile-menu" class="absolute top-24 left-4 right-4 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-xl rounded-2xl flex flex-col items-center py-8 space-y-6 md:hidden pointer-events-auto">
+            <button onclick="router('home'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Home</button>
+            <button onclick="router('work'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Case Studies</button>
+            <button onclick="router('visuals'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Visual Design</button>
+            <button onclick="router('about'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">About</button>
+            <button onclick="scrollToContact(); toggleMobileMenu()" class="text-xl font-medium text-accent">Contact</button>
         </div>
     </nav>
 
@@ -123,68 +227,80 @@
     <main>
 
         <!-- ================= HOME PAGE ================= -->
-        <div id="home" class="page-section active">
-            <section class="min-h-[85vh] flex items-center px-6 md:px-12 relative bg-gradient-to-b from-background to-surface">
-                <div class="max-w-5xl w-full mx-auto">
-                    <div class="fade-in-section inline-flex items-center gap-2 px-4 py-2 mb-8 text-xs font-bold tracking-widest uppercase border border-border rounded-full text-secondary bg-surface shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-                        Open to Internships / Co-op
+        <div id="home" class="page-section active pt-0"> <!-- Removed padding-top here as flex centers it -->
+            <section class="min-h-screen flex items-center px-6 md:px-12 relative overflow-hidden">
+                
+                <!-- Background Animated Blob -->
+                <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
+                <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
+
+                <div class="max-w-5xl w-full mx-auto relative z-10">
+                    
+                    <div class="fade-in-section mb-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase border border-gray-200 rounded-full text-secondary bg-white/50 backdrop-blur-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+                            Open to Internships / Co-op
+                        </div>
                     </div>
                     
-                    <h1 class="fade-in-section text-6xl md:text-8xl font-semibold text-primary mb-10 leading-[0.95] tracking-tight">
-                        Designing services that work for people.
-                    </h1>
+                    <div class="fade-in-section">
+                        <p class="text-xl md:text-2xl text-accent font-medium mb-4">Hello, I'm Evangeline.</p>
+                        
+                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-primary mb-8 leading-[1.05] tracking-tight">
+                            Designing services <br class="hidden md:block"/> that work for <span class="font-serif italic font-light text-accent">people.</span>
+                        </h1>
+                    </div>
                     
-                    <p class="fade-in-section text-2xl md:text-3xl text-secondary mb-12 max-w-3xl leading-snug font-light">
+                    <p class="fade-in-section text-lg md:text-2xl text-secondary mb-12 max-w-2xl leading-relaxed font-light">
                         I support teams in turning complex processes into clear experiences—across people, policies, and platforms.
                     </p>
                     
                     <div class="fade-in-section flex flex-col sm:flex-row gap-4">
-                        <button onclick="router('lumi')" class="px-8 py-3 text-sm font-medium text-white bg-accent hover:bg-accentHover rounded-lg shadow-sm hover:shadow-md transition-all transform hover:-translate-y-0.5">
-                            View Case Study
+                        <button onclick="router('work')" class="px-8 py-4 text-sm font-bold text-white bg-primary hover:bg-accent rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                            View Case Studies <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="router('about')" class="px-8 py-3 text-sm font-medium text-primary bg-surface border border-border hover:bg-background rounded-lg transition-all">
-                            About & Contact
+                        <button onclick="router('about')" class="px-8 py-4 text-sm font-bold text-primary bg-white border border-border hover:border-gray-400 rounded-full transition-all">
+                            More About Me
                         </button>
                     </div>
                 </div>
             </section>
 
             <!-- Featured Work Preview -->
-            <section class="py-24 px-6 md:px-12 bg-surface">
+            <section class="py-24 px-6 md:px-12 border-t border-border">
                 <div class="max-w-7xl mx-auto">
-                    <div class="fade-in-section mb-16">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">01</span>
-                            <span class="h-px w-12 bg-border"></span>
+                    <div class="fade-in-section mb-16 flex items-end justify-between">
+                        <div>
+                            <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">01 — Selected Work</span>
+                            <h2 class="text-4xl font-serif font-light text-primary">Featured Projects</h2>
                         </div>
-                        <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Selected Work</h2>
+                        <button onclick="router('work')" class="hidden md:flex items-center text-sm font-bold text-primary hover:text-accent transition-colors">See all <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i></button>
                     </div>
                     
-                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-background rounded-2xl overflow-hidden border border-border hover:border-[#D4D4D4] transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
-                        <div class="grid md:grid-cols-2 min-h-[500px]">
-                            <div class="p-8 md:p-16 flex flex-col justify-between order-2 md:order-1 relative">
+                    <!-- Lumi Card -->
+                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-gray-100 hover:shadow-2xl hover:shadow-gray-200 transition-all duration-500 hover:-translate-y-1 mb-12">
+                        <div class="grid md:grid-cols-2 min-h-[550px]">
+                            <div class="p-10 md:p-16 flex flex-col justify-center order-2 md:order-1 relative z-10">
                                 <div>
-                                    <div class="flex flex-wrap gap-2 mb-8">
-                                        <span class="px-3 py-1 text-xs font-medium uppercase tracking-wider border border-border bg-surface rounded text-secondary">UX Design</span>
-                                        <span class="px-3 py-1 text-xs font-medium uppercase tracking-wider border border-border bg-surface rounded text-secondary">UX Research</span>
-                                        <span class="px-3 py-1 text-xs font-medium uppercase tracking-wider border border-border bg-surface rounded text-secondary">Prototyping</span>
+                                    <div class="flex flex-wrap gap-2 mb-6">
+                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded text-secondary">UX Design</span>
+                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded text-secondary">UX Research</span>
                                     </div>
-                                    <h3 class="text-4xl md:text-5xl font-medium text-primary mb-6 group-hover:text-accent transition-colors">Lumi</h3>
-                                    <p class="text-xl text-secondary mb-8 leading-relaxed max-w-md">
+                                    <h3 class="text-4xl md:text-5xl font-serif text-primary mb-6 group-hover:text-accent transition-colors">Lumi</h3>
+                                    <p class="text-lg text-secondary mb-8 leading-relaxed max-w-md">
                                         Enabling structured reporting, safer navigation, and real-time reassurance for late night shift workers.
                                     </p>
                                 </div>
-                                <div class="flex items-center text-primary font-medium text-lg group-hover:text-accent transition-colors">
-                                    Read Case Study <i data-lucide="arrow-right" class="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform"></i>
+                                <div class="flex items-center text-primary font-bold text-sm uppercase tracking-wider group-hover:text-accent transition-colors mt-auto">
+                                    Read Case Study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
                                 </div>
                             </div>
                             <!-- Visual Side -->
-                            <div class="bg-[#F5F5F5] relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
-                                <div class="w-full max-w-sm aspect-[3/4] bg-surface rounded-xl shadow-2xl relative transform group-hover:scale-105 transition-transform duration-700 p-6 flex flex-col gap-4 border border-border">
-                                    <!-- GITHUB NOTE: Replace src with "photos/lumi-preview.png" -->
+                            <div class="bg-gray-50 relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-gray-100 to-white opacity-50"></div>
+                                <div class="w-full max-w-sm aspect-[3/4] bg-white rounded-xl shadow-2xl relative transform group-hover:scale-105 transition-transform duration-700 p-3 border border-gray-100">
+                                    <!-- Original User Image -->
                                     <img src="images/TeamPhoto.png" alt="Lumi Preview" class="w-full h-full object-contain rounded-lg">
-                                    <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-teal-100 rounded-full blur-3xl opacity-60 -z-10"></div>
                                 </div>
                             </div>
                         </div>
@@ -193,38 +309,38 @@
             </section>
 
             <!-- Expertise -->
-            <section class="py-24 px-6 md:px-12 bg-background">
-                <div class="max-w-7xl mx-auto">
-                    <div class="fade-in-section mb-16">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">02</span>
-                            <span class="h-px w-12 bg-border"></span>
-                        </div>
-                        <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Expertise</h2>
-                        <p class="text-xl text-secondary max-w-2xl leading-relaxed font-light">My toolkit for making sense of complex systems.</p>
+            <section class="py-24 px-6 md:px-12 bg-white border-t border-border">
+                <div class="max-w-7xl mx-auto stagger-parent fade-in-section">
+                    <div class="mb-16">
+                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">02 — Skills</span>
+                        <h2 class="text-4xl font-serif font-light text-primary mb-6">Expertise</h2>
+                        <p class="text-lg text-secondary max-w-2xl leading-relaxed font-light">My toolkit for making sense of complex systems.</p>
                     </div>
                     
                     <div class="grid md:grid-cols-3 gap-8">
-                        <div class="fade-in-section p-8 bg-surface rounded-xl border border-border h-full hover:border-[#D4D4D4] hover:shadow-lg transition-all duration-300">
-                            <div class="w-12 h-12 bg-background rounded-lg flex items-center justify-center text-primary mb-6 border border-border">
-                                <i data-lucide="search" class="w-6 h-6"></i>
+                        <!-- Card 1 -->
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
+                                <i data-lucide="search" class="w-5 h-5"></i>
                             </div>
-                            <h3 class="text-xl font-medium text-primary mb-4">Research & Synthesis</h3>
-                            <p class="text-secondary leading-relaxed text-sm">I don't just ask questions; I find the right questions to ask. From interviews to affinity mapping, I turn noise into signal.</p>
+                            <h3 class="text-xl font-bold text-primary mb-3">Research & Synthesis</h3>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80">I don't just ask questions; I find the right questions to ask. From interviews to affinity mapping, I turn noise into signal.</p>
                         </div>
-                        <div class="fade-in-section p-8 bg-surface rounded-xl border border-border h-full hover:border-[#D4D4D4] hover:shadow-lg transition-all duration-300">
-                            <div class="w-12 h-12 bg-background rounded-lg flex items-center justify-center text-primary mb-6 border border-border">
-                                <i data-lucide="map" class="w-6 h-6"></i>
+                        <!-- Card 2 -->
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
+                                <i data-lucide="map" class="w-5 h-5"></i>
                             </div>
-                            <h3 class="text-xl font-medium text-primary mb-4">Service Mapping</h3>
-                            <p class="text-secondary leading-relaxed text-sm">I visualize the invisible. Journey maps and blueprints help stakeholders see the ecosystem, not just the interface.</p>
+                            <h3 class="text-xl font-bold text-primary mb-3">Service Mapping</h3>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80">I visualize the invisible. Journey maps and blueprints help stakeholders see the ecosystem, not just the interface.</p>
                         </div>
-                        <div class="fade-in-section p-8 bg-surface rounded-xl border border-border h-full hover:border-[#D4D4D4] hover:shadow-lg transition-all duration-300">
-                            <div class="w-12 h-12 bg-background rounded-lg flex items-center justify-center text-primary mb-6 border border-border">
-                                <i data-lucide="layout" class="w-6 h-6"></i>
+                        <!-- Card 3 -->
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
+                                <i data-lucide="layout" class="w-5 h-5"></i>
                             </div>
-                            <h3 class="text-xl font-medium text-primary mb-4">Prototyping</h3>
-                            <p class="text-secondary leading-relaxed text-sm">I build to think. Whether it's paper sketches or clickable Figma flows, I use prototypes to test assumptions early.</p>
+                            <h3 class="text-xl font-bold text-primary mb-3">Prototyping</h3>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80">I build to think. Whether it's paper sketches or clickable Figma flows, I use prototypes to test assumptions early.</p>
                         </div>
                     </div>
                 </div>
@@ -232,58 +348,186 @@
         </div>
 
 
-        <!-- ================= WORK PAGE ================= -->
+        <!-- ================= CASE STUDIES PAGE ================= -->
         <div id="work" class="page-section">
-            <div class="min-h-screen px-6 md:px-12 bg-background">
+            <div class="min-h-screen px-6 md:px-12 bg-background pb-24">
                 <div class="max-w-7xl mx-auto">
-                    <div class="fade-in-section mb-16">
-                        <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Selected Projects</h2>
+                    <div class="fade-in-section mb-16 pt-10">
+                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">Projects</span>
+                        <h2 class="text-5xl md:text-6xl font-serif text-primary tracking-tight">Case Studies</h2>
                     </div>
 
-                    <!-- Featured Lumi Card -->
-                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-surface rounded-2xl overflow-hidden border border-border hover:border-[#D4D4D4] hover:shadow-xl transition-all duration-500 mb-16">
-                        <div class="grid md:grid-cols-2 min-h-[400px]">
-                            <div class="p-10 flex flex-col justify-center">
-                                <span class="text-secondary font-medium mb-2 text-sm uppercase tracking-wider">Featured Case Study</span>
-                                <h2 class="text-3xl md:text-4xl font-medium text-primary mb-4 group-hover:text-accent transition-colors">Lumi</h2>
-                                <p class="text-secondary mb-8 text-lg">Enabling structured reporting, safer navigation, and real-time reassurance for shift workers.</p>
+                    <!-- Lumi Card -->
+                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-2xl">
+                        <div class="grid md:grid-cols-2 min-h-[450px]">
+                            <div class="p-10 md:p-14 flex flex-col justify-center order-2 md:order-1">
+                                <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">Featured Project</span>
+                                <h2 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Lumi</h2>
+                                <p class="text-secondary mb-8 text-lg leading-relaxed">Enabling structured reporting, safer navigation, and real-time reassurance for shift workers.</p>
                                 <div class="flex gap-2 flex-wrap mb-8">
-                                    <span class="px-3 py-1 bg-background text-xs font-medium text-secondary rounded border border-border">Service Design</span>
-                                    <span class="px-3 py-1 bg-background text-xs font-medium text-secondary rounded border border-border">UX Research</span>
+                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Service Design</span>
+                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">UX Research</span>
                                 </div>
-                                <span class="text-primary font-medium flex items-center group-hover:text-accent transition-colors">
+                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors">
                                     View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </span>
                             </div>
-                            <div class="bg-primary relative overflow-hidden group">
+                            <div class="bg-gray-900 relative overflow-hidden group">
                                 <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent"></div>
                                 <div class="absolute inset-0 flex items-center justify-center text-white/10 text-9xl font-bold tracking-tighter group-hover:scale-110 transition-transform duration-700">Lumi</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-3 gap-6 pb-24">
-                        <div class="fade-in-section bg-surface p-8 rounded-2xl border border-border flex flex-col h-64 justify-between opacity-60 hover:opacity-100 hover:shadow-lg transition-all duration-300">
-                            <div class="w-10 h-10 bg-background rounded-full mb-4 border border-border"></div>
-                            <div>
-                                <h3 class="text-lg font-medium text-primary mb-1">Service Blueprinting Mini Project</h3>
-                                <span class="text-xs font-bold uppercase tracking-widest text-[#A3A3A3]">Coming Soon</span>
+                    <!-- Staging Mastery Card -->
+                    <div onclick="router('staging')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-2xl">
+                        <div class="grid md:grid-cols-2 min-h-[450px]">
+                             <div class="bg-teal-50 relative overflow-hidden group flex items-center justify-center p-12">
+                                <div class="w-full max-w-md aspect-video bg-white rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-500 overflow-hidden border border-gray-100">
+                                     <!-- Placeholder: Staging Mastery Landing Page -->
+                                     <img src="https://placehold.co/1200x800/FAFAFA/333?text=Staging+Mastery" alt="Staging Mastery Interface" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="p-10 md:p-14 flex flex-col justify-center relative">
+                                <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">Field Placement</span>
+                                <h2 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Staging Mastery</h2>
+                                <p class="text-secondary mb-8 text-lg leading-relaxed">Designing an End-to-End Course Experience & Pre-Launch Funnel (Wix → Kajabi).</p>
+                                <div class="flex gap-2 flex-wrap mb-8">
+                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Service Design</span>
+                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">LXD</span>
+                                </div>
+                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors">
+                                    View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </span>
                             </div>
                         </div>
-                        <div class="fade-in-section bg-surface p-8 rounded-2xl border border-border flex flex-col h-64 justify-between opacity-60 hover:opacity-100 hover:shadow-lg transition-all duration-300">
-                            <div class="w-10 h-10 bg-background rounded-full mb-4 border border-border"></div>
-                            <div>
-                                <h3 class="text-lg font-medium text-primary mb-1">UX Research Study</h3>
-                                <span class="text-xs font-bold uppercase tracking-widest text-[#A3A3A3]">Coming Soon</span>
+                    </div>
+
+                    <!-- Echoes from China Card -->
+                    <div onclick="router('echoes')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-16 shadow-sm hover:shadow-2xl">
+                        <div class="grid md:grid-cols-2 min-h-[450px]">
+                            <div class="p-10 md:p-14 flex flex-col justify-center order-2 md:order-1 relative">
+                                <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">0→1 Build</span>
+                                <h3 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Echoes from China</h3>
+                                <p class="text-secondary mb-8 text-lg leading-relaxed">
+                                    Designing a 0→1 community website for traditional Chinese culture with events, membership, and donation features.
+                                </p>
+                                <div class="flex gap-2 flex-wrap mb-8">
+                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Web Design</span>
+                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Content Strategy</span>
+                                </div>
+                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors">
+                                    View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </span>
+                            </div>
+                            <!-- Visual Side -->
+                            <div class="bg-red-50 relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
+                                <div class="w-full max-w-xs bg-white rounded-2xl shadow-xl transform rotate-[-5deg] group-hover:rotate-0 transition-transform duration-500 border border-gray-100 p-2">
+                                    <img src="https://placehold.co/800x1200/F9F9F9/333?text=Echoes+Mobile" alt="Echoes Mobile Preview" class="w-full h-full object-cover rounded-xl">
+                                </div>
                             </div>
                         </div>
-                        <div class="fade-in-section bg-surface p-8 rounded-2xl border border-border flex flex-col h-64 justify-between opacity-60 hover:opacity-100 hover:shadow-lg transition-all duration-300">
-                            <div class="w-10 h-10 bg-background rounded-full mb-4 border border-border"></div>
-                            <div>
-                                <h3 class="text-lg font-medium text-primary mb-1">IA Redesign</h3>
-                                <span class="text-xs font-bold uppercase tracking-widest text-[#A3A3A3]">Coming Soon</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6 stagger-parent fade-in-section">
+                        <!-- Placeholder Card 1 -->
+                        <div class="stagger-child bg-white p-8 rounded-2xl border border-gray-200 border-dashed flex flex-col h-64 justify-center items-center text-center opacity-70 hover:opacity-100 transition-all duration-300">
+                            <div class="w-12 h-12 bg-gray-50 rounded-full mb-4 flex items-center justify-center text-secondary">
+                                <i data-lucide="git-branch" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-primary mb-2">Service Blueprinting</h3>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                        <!-- Placeholder Card 2 -->
+                        <div class="stagger-child bg-white p-8 rounded-2xl border border-gray-200 border-dashed flex flex-col h-64 justify-center items-center text-center opacity-70 hover:opacity-100 transition-all duration-300">
+                            <div class="w-12 h-12 bg-gray-50 rounded-full mb-4 flex items-center justify-center text-secondary">
+                                <i data-lucide="flask-conical" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-primary mb-2">UX Research Study</h3>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                        <!-- Placeholder Card 3 -->
+                        <div class="stagger-child bg-white p-8 rounded-2xl border border-gray-200 border-dashed flex flex-col h-64 justify-center items-center text-center opacity-70 hover:opacity-100 transition-all duration-300">
+                            <div class="w-12 h-12 bg-gray-50 rounded-full mb-4 flex items-center justify-center text-secondary">
+                                <i data-lucide="layers" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-primary mb-2">IA Redesign</h3>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded">Coming Soon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VISUAL DESIGN PAGE ================= -->
+        <div id="visuals" class="page-section">
+            <div class="min-h-screen px-6 md:px-12 bg-background pb-24">
+                <div class="max-w-7xl mx-auto">
+                    <div class="fade-in-section mb-16 pt-10">
+                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">Gallery</span>
+                        <h2 class="text-5xl md:text-6xl font-serif text-primary mb-6 tracking-tight">Visual Design & Marketing</h2>
+                        <p class="text-lg text-secondary max-w-2xl leading-relaxed font-light">
+                            A curated collection of flyers, social media assets, and posters designed for various events and organizations.
+                        </p>
+                    </div>
+
+                    <!-- Masonry Grid for Visuals -->
+                    <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 stagger-parent fade-in-section">
+                        
+                        <!-- Poster Item 1 -->
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
+                            <img src="https://placehold.co/600x1000/F3F4F6/333?text=Tall+Poster+Design" alt="Event Flyer" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Print Design</span>
+                                <h4 class="text-white font-medium text-lg">Community Event Flyer</h4>
                             </div>
                         </div>
+
+                        <!-- Item 2 -->
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
+                            <img src="https://placehold.co/800x800/E5E5E5/333?text=Square+Social+Post" alt="Social Post" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Social Media</span>
+                                <h4 class="text-white font-medium text-lg">Instagram Carousel</h4>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
+                            <img src="https://placehold.co/600x750/F0FDFA/0D9488?text=Promo+Graphic" alt="Marketing Poster" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Marketing</span>
+                                <h4 class="text-white font-medium text-lg">Workshop Promo</h4>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
+                            <img src="https://placehold.co/900x500/FFF5F5/9B2C2C?text=Wide+Web+Banner" alt="Web Banner" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Digital Asset</span>
+                                <h4 class="text-white font-medium text-lg">Website Hero Banner</h4>
+                            </div>
+                        </div>
+
+                        <!-- Item 5 -->
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
+                            <img src="https://placehold.co/500x1100/FAFAFA/333?text=Long+IG+Story" alt="IG Story" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Social Media</span>
+                                <h4 class="text-white font-medium text-lg">Story Template</h4>
+                            </div>
+                        </div>
+
+                         <!-- Item 6 -->
+                         <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
+                            <img src="https://placehold.co/600x400/F3F4F6/333?text=Small+Asset" alt="Brand Asset" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Branding</span>
+                                <h4 class="text-white font-medium text-lg">Sticker Pack</h4>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -291,44 +535,49 @@
 
         <!-- ================= ABOUT PAGE ================= -->
         <div id="about" class="page-section">
-            <div class="min-h-screen px-6 md:px-12 bg-background">
-                <div class="max-w-6xl mx-auto">
+            <div class="min-h-screen px-6 md:px-12 bg-background pb-24">
+                <div class="max-w-4xl mx-auto">
                     
                     <!-- Text Content -->
-                    <div class="fade-in-section mb-16">
-                        <h1 class="text-6xl md:text-8xl font-semibold text-primary mb-8 tracking-tight">Hello.</h1>
-                        <div class="text-xl md:text-2xl text-primary leading-relaxed font-light space-y-8 max-w-4xl">
-                            <p>I'm <strong>Evangeline</strong>, a Service Designer & UX Researcher based in Toronto. I'm currently looking for Summer 2026 internships where I can apply systems thinking to messy, real-world problems.</p>
-                            <p>I’m a Service Design and UX student passionate about making complex services easier to navigate and easier to deliver. I work at the intersection of people, policies, and platforms—using research, journey mapping, and service blueprinting to clarify pain points and translate them into practical design and delivery plans.</p>
+                    <div class="fade-in-section mb-16 pt-10">
+                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">Introduction</span>
+                        <h1 class="text-6xl md:text-8xl font-serif text-primary mb-12 tracking-tight">Hello.</h1>
+                        <div class="text-xl text-secondary leading-relaxed font-light space-y-8">
+                            <p class="first-letter:text-5xl first-letter:font-serif first-letter:text-primary first-letter:float-left first-letter:mr-3">
+                                I'm <strong class="text-primary font-medium">Evangeline</strong>, a Service Designer & UX Researcher based in Toronto. I'm currently looking for Summer 2026 internships where I can apply systems thinking to messy, real-world problems.
+                            </p>
+                            <p>
+                                I’m a Service Design and UX student passionate about making complex services easier to navigate and easier to deliver. I work at the intersection of people, policies, and platforms—using research, journey mapping, and service blueprinting to clarify pain points and translate them into practical design and delivery plans.
+                            </p>
                         </div>
                     </div>
 
                     <!-- Headshot -->
-                    <div class="fade-in-section mb-16">
-                         <img src="https://github.com/evangelinezhao28/evangeline_Zhao/blob/48d75d629aec2502d8a8067ebefad01a2a3253ea/images/headshot.jpg?raw=true" alt="Evangeline Zhao Headshot" class="w-full max-w-3xl h-auto rounded-2xl border border-border shadow-sm">
+                    <div class="fade-in-section mb-16 relative">
+                         <div class="w-full aspect-video overflow-hidden rounded-2xl border border-border shadow-md">
+                            <!-- Original User Image -->
+                            <img src="https://github.com/evangelinezhao28/evangeline_Zhao/blob/48d75d629aec2502d8a8067ebefad01a2a3253ea/images/headshot.jpg?raw=true" alt="Evangeline Zhao Headshot" class="w-full h-full object-cover">
+                         </div>
                     </div>
 
-                    <div class="fade-in-section bg-surface p-10 rounded-2xl mb-16 border border-border shadow-sm">
-                        <h3 class="text-lg font-bold text-primary mb-6">What motivates me</h3>
-                        <ul class="space-y-4">
+                    <div class="fade-in-section bg-white p-10 rounded-2xl mb-16 border border-border shadow-sm">
+                        <h3 class="text-lg font-bold text-primary mb-6 flex items-center">
+                            <i data-lucide="sparkles" class="w-5 h-5 mr-2 text-accent"></i> What motivates me
+                        </h3>
+                        <ul class="space-y-6">
                             <li class="flex items-start">
-                                <span class="w-2 h-2 bg-primary rounded-full mt-2 mr-4 shrink-0"></span>
                                 <span class="text-secondary"><strong>Public Services:</strong> Designing for people—where access, clarity, and trust matter as much as usability.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="w-2 h-2 bg-primary rounded-full mt-2 mr-4 shrink-0"></span>
                                 <span class="text-secondary"><strong>Safer Communities:</strong> Supporting vulnerable populations through inclusive, trauma-informed experiences and community-based solutions.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="w-2 h-2 bg-primary rounded-full mt-2 mr-4 shrink-0"></span>
                                 <span class="text-secondary"><strong>Systems-Level Impact:</strong> Improving services beyond screens—aligning people, processes, and platforms to create change that can actually ship.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="w-2 h-2 bg-primary rounded-full mt-2 mr-4 shrink-0"></span>
                                 <span class="text-secondary"><strong>Accessibility & Equity:</strong> Designing for diverse needs—especially for those often excluded by default systems.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="w-2 h-2 bg-primary rounded-full mt-2 mr-4 shrink-0"></span>
                                 <span class="text-secondary"><strong>Collaboration:</strong> Facilitating workshops and stakeholder alignment to move from insights to decisions, and from ideas to delivery.</span>
                             </li>
                         </ul>
@@ -339,23 +588,22 @@
 
 
         <!-- ================= LUMI CASE STUDY ================= -->
-        <div id="lumi" class="page-section bg-surface">
+        <div id="lumi" class="page-section bg-white">
             <!-- 1) Case Study Hero -->
-            <div class="bg-background pt-16 pb-16 px-6 md:px-12 border-b border-border">
-                <div class="max-w-4xl mx-auto text-center">
-                    <div class="fade-in-section flex items-center justify-center gap-2 mb-8">
-                        <span class="px-4 py-1 bg-surface border border-border rounded text-xs font-bold uppercase tracking-wider text-secondary">Service Design</span>
-                        <span class="px-4 py-1 bg-surface border border-border rounded text-xs font-bold uppercase tracking-wider text-secondary">UX Research</span>
+            <div class="bg-gray-50 pt-24 pb-16 px-6 md:px-12 border-b border-border">
+                <div class="max-w-4xl mx-auto text-center stagger-parent fade-in-section">
+                    <div class="stagger-child flex items-center justify-center gap-2 mb-8">
+                        <span class="px-4 py-1 bg-white border border-border rounded-full text-[10px] font-bold uppercase tracking-wider text-secondary">Service Design</span>
+                        <span class="px-4 py-1 bg-white border border-border rounded-full text-[10px] font-bold uppercase tracking-wider text-secondary">UX Research</span>
                     </div>
-                    <h1 class="fade-in-section text-5xl md:text-7xl font-semibold text-primary mb-8 tracking-tight">Lumi</h1>
-                    <p class="fade-in-section text-xl md:text-2xl text-secondary max-w-2xl mx-auto mb-12 leading-relaxed font-light">
+                    <h1 class="stagger-child text-6xl md:text-8xl font-serif text-primary mb-8 tracking-tight">Lumi</h1>
+                    <p class="stagger-child text-xl md:text-2xl text-secondary max-w-2xl mx-auto mb-12 leading-relaxed font-light">
                         A reporting + alert service concept to reduce anxiety for late-night shift workers by filtering safe zones and enabling fast reporting.
                     </p>
                     
-                    <div class="fade-in-section flex flex-col sm:flex-row gap-4 justify-center">
-                        <button onclick="document.getElementById('problem-context').scrollIntoView({behavior: 'smooth'})" class="px-8 py-3 text-sm font-medium text-white bg-accent hover:bg-accentHover rounded-lg transition-all">Jump to Problem</button>
-                        <button onclick="document.getElementById('research').scrollIntoView({behavior: 'smooth'})" class="px-8 py-3 text-sm font-medium text-primary bg-surface border border-border hover:bg-background rounded-lg transition-all">Jump to Research</button>
-                        <button onclick="window.open('https://www.figma.com/proto/9DyZa3mRXjMhikY5jPxF7y/INF1611-PRA5102---A8---Evangeline?node-id=2051-29645&p=f&t=DlzVfzPyMjlIaRYy-1&scaling=min-zoom&content-scaling=fixed&page-id=2051%3A29627&starting-point-node-id=2051%3A29645&show-proto-sidebar=1', '_blank')" class="px-8 py-3 text-sm font-medium text-primary bg-surface border border-border hover:bg-background rounded-lg transition-all flex items-center justify-center">
+                    <div class="stagger-child flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#problem-context" class="px-6 py-3 text-sm font-medium text-white bg-primary hover:bg-secondary rounded-full transition-all">Start Reading</a>
+                        <button onclick="window.open('https://www.figma.com/proto/9DyZa3mRXjMhikY5jPxF7y/INF1611-PRA5102---A8---Evangeline', '_blank')" class="px-6 py-3 text-sm font-medium text-primary bg-white border border-border hover:bg-gray-100 rounded-full transition-all flex items-center justify-center">
                             View Prototype <i data-lucide="external-link" class="ml-2 w-4 h-4"></i>
                         </button>
                     </div>
@@ -365,20 +613,20 @@
             <div class="max-w-6xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <!-- Sticky TOC -->
                 <div class="hidden lg:block lg:col-span-3">
-                    <div class="sticky top-24 space-y-4">
-                        <div class="space-y-1">
-                            <button onclick="document.getElementById('overview').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Overview</button>
-                            <button onclick="document.getElementById('problem-context').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Problem & Challenge</button>
-                            <button onclick="document.getElementById('process').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Process</button>
-                            <button onclick="document.getElementById('research').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Empathize & Insights</button>
-                            <button onclick="document.getElementById('competitors').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Competitor Analysis</button>
-                            <button onclick="document.getElementById('define').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Define</button>
-                            <button onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Features</button>
-                            <button onclick="document.getElementById('prototype-test').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Prototype & Test</button>
-                            <button onclick="document.getElementById('iterations').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Iterations</button>
-                            <button onclick="document.getElementById('visual').scrollIntoView({behavior: 'smooth'})" class="block text-left w-full pl-4 py-3 text-sm font-medium text-secondary hover:text-accent hover:bg-[#F5F5F5] rounded-lg transition-all">Visual Design</button>
-                        </div>
-                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center text-xs font-bold uppercase tracking-wider text-[#A3A3A3] pl-4 mt-8 hover:text-primary">
+                    <div class="sticky top-32 space-y-1" id="toc-lumi">
+                        <a href="#overview" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Overview</a>
+                        <a href="#problem-context" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Problem & Challenge</a>
+                        <a href="#process" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Process</a>
+                        <a href="#research" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Empathize & Insights</a>
+                        <a href="#competitors" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Competitor Analysis</a>
+                        <a href="#define" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Define</a>
+                        <a href="#features" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Features</a>
+                        <a href="#prototype-test" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Prototype & Test</a>
+                        <a href="#iterations" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Iterations</a>
+                        <a href="#visual" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Visual Design</a>
+                        <a href="#lumi-reflection" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-primary rounded-r-lg">Reflection</a>
+                        
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center text-[10px] font-bold uppercase tracking-wider text-gray-400 pl-4 mt-8 hover:text-accent transition-colors">
                             Back to Top <i data-lucide="arrow-up" class="w-3 h-3 ml-2"></i>
                         </button>
                     </div>
@@ -388,25 +636,25 @@
                 <div class="lg:col-span-9 space-y-24">
                     
                     <!-- 1b) Project Snapshot -->
-                    <section id="overview" class="fade-in-section">
-                        <div class="bg-background p-8 rounded-2xl border border-border shadow-sm">
-                            <h3 class="text-xs font-bold uppercase tracking-widest text-[#A3A3A3] mb-6">Project Snapshot</h3>
+                    <section id="overview" class="fade-in-section scroll-mt-32">
+                        <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100">
+                            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Project Snapshot</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                                <div><div class="flex items-center text-accent mb-2"><i data-lucide="pen-tool" class="w-4 h-4 mr-2"></i> <span class="text-xs font-bold uppercase">Type</span></div><p class="text-sm font-medium text-primary">Student Project at iSchool</p></div>
-                                <div><div class="flex items-center text-accent mb-2"><i data-lucide="clock" class="w-4 h-4 mr-2"></i> <span class="text-xs font-bold uppercase">Timeline</span></div><p class="text-sm font-medium text-primary">4 Months (Fall 2025)</p></div>
-                                <div><div class="flex items-center text-accent mb-2"><i data-lucide="layout" class="w-4 h-4 mr-2"></i> <span class="text-xs font-bold uppercase">Tools</span></div><p class="text-sm font-medium text-primary">Figma, Canva, Microsoft Word, Story Tribe</p></div>
-                                <div><div class="flex items-center text-accent mb-2"><i data-lucide="users" class="w-4 h-4 mr-2"></i> <span class="text-xs font-bold uppercase">Team</span></div><p class="text-sm font-medium text-primary">Evangeline Zhao, Asia Apostol, Hannah Saeedi, Sihui Wang</p></div>
+                                <div><div class="flex items-center text-accent mb-2"><i data-lucide="pen-tool" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Type</span></div><p class="text-sm font-medium text-primary">Student Project at iSchool</p></div>
+                                <div><div class="flex items-center text-accent mb-2"><i data-lucide="clock" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Timeline</span></div><p class="text-sm font-medium text-primary">4 Months (Fall 2025)</p></div>
+                                <div><div class="flex items-center text-accent mb-2"><i data-lucide="layout" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Tools</span></div><p class="text-sm font-medium text-primary">Figma, Canva, Microsoft Word, Story Tribe</p></div>
+                                <div><div class="flex items-center text-accent mb-2"><i data-lucide="users" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Team</span></div><p class="text-sm font-medium text-primary">Evangeline Zhao, Asia Apostol, Hannah Saeedi, Sihui Wang</p></div>
                             </div>
                         </div>
                     </section>
 
                     <!-- 2, 3, 4) Problem, Challenge, Business -->
-                    <section id="problem-context" class="fade-in-section">
+                    <section id="problem-context" class="fade-in-section scroll-mt-32">
                         <div class="space-y-12">
                             <div>
                                 <h2 class="text-3xl font-semibold text-primary mb-6">Problem Statement</h2>
                                 <div class="pl-6 border-l-4 border-accent">
-                                    <p class="text-xl md:text-2xl text-secondary leading-relaxed">"Late-night shift workers often feel unsafe commuting home alone. Existing tools are too slow, too complex, or not designed for proactive support — leaving users without real-time reassurance and structured reporting when it matters."</p>
+                                    <p class="text-xl md:text-2xl text-secondary leading-relaxed font-serif italic">"Late-night shift workers often feel unsafe commuting home alone. Existing tools are too slow, too complex, or not designed for proactive support — leaving users without real-time reassurance and structured reporting when it matters."</p>
                                 </div>
                             </div>
                             <div class="grid md:grid-cols-2 gap-12">
@@ -414,11 +662,11 @@
                                     <h3 class="text-xl font-medium text-primary mb-4">The Challenge</h3>
                                     <p class="text-secondary leading-relaxed">Design a service that provides safety and reassurance during high-stress moments while minimizing cognitive load. The solution needed to balance privacy, credibility, and real-world feasibility for integration with city transit systems.</p>
                                 </div>
-                                <div class="bg-surface border border-border p-8 rounded-xl shadow-sm">
+                                <div class="bg-gray-50 border border-gray-100 p-8 rounded-xl">
                                     <div class="flex items-center mb-6"><i data-lucide="bar-chart" class="w-5 h-5 text-primary mr-3"></i><h3 class="text-lg font-bold text-primary">Business Challenges</h3></div>
                                     <div class="space-y-6">
                                         <div><h4 class="text-sm font-bold text-primary mb-1">Service Implementation</h4><p class="text-sm text-secondary">Bridging the gap between user reporting and official city data without overwhelming infrastructure maintenance teams.</p></div>
-                                        <div class="w-full h-px bg-background"></div>
+                                        <div class="w-full h-px bg-gray-200"></div>
                                         <div><h4 class="text-sm font-bold text-primary mb-1">Trust vs. Speed</h4><p class="text-sm text-secondary">Building a system that verifies reports instantly without human moderation to ensure scalability.</p></div>
                                     </div>
                                 </div>
@@ -427,24 +675,24 @@
                     </section>
 
                     <!-- 5) Process -->
-                    <section id="process" class="fade-in-section">
+                    <section id="process" class="fade-in-section scroll-mt-32">
                         <div class="mb-16">
-                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">02</span><span class="h-px w-12 bg-border"></span></div>
+                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">02</span><span class="h-px w-12 bg-gray-200"></span></div>
                             <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Our Process</h2>
                         </div>
                         <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                            <div class="flex flex-col items-center text-center p-4 bg-background rounded-xl border border-border"><div class="mb-3 text-accent"><i data-lucide="users" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Empathize</h4><p class="text-xs text-secondary">Interviews & Research</p></div>
-                            <div class="flex flex-col items-center text-center p-4 bg-background rounded-xl border border-border"><div class="mb-3 text-accent"><i data-lucide="target" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Define</h4><p class="text-xs text-secondary">Personas & Strategy</p></div>
-                            <div class="flex flex-col items-center text-center p-4 bg-background rounded-xl border border-border"><div class="mb-3 text-accent"><i data-lucide="lightbulb" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Ideate</h4><p class="text-xs text-secondary">Sketching & Flows</p></div>
-                            <div class="flex flex-col items-center text-center p-4 bg-background rounded-xl border border-border"><div class="mb-3 text-accent"><i data-lucide="layout" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Prototype</h4><p class="text-xs text-secondary">Wireframes & Mockups</p></div>
-                            <div class="flex flex-col items-center text-center p-4 bg-background rounded-xl border border-border"><div class="mb-3 text-accent"><i data-lucide="check-circle" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Test</h4><p class="text-xs text-secondary">Usability Testing</p></div>
+                            <div class="flex flex-col items-center text-center p-4 bg-gray-50 rounded-xl border border-gray-100"><div class="mb-3 text-accent"><i data-lucide="users" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Empathize</h4><p class="text-[10px] text-secondary">Interviews & Research</p></div>
+                            <div class="flex flex-col items-center text-center p-4 bg-gray-50 rounded-xl border border-gray-100"><div class="mb-3 text-accent"><i data-lucide="target" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Define</h4><p class="text-[10px] text-secondary">Personas & Strategy</p></div>
+                            <div class="flex flex-col items-center text-center p-4 bg-gray-50 rounded-xl border border-gray-100"><div class="mb-3 text-accent"><i data-lucide="lightbulb" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Ideate</h4><p class="text-[10px] text-secondary">Sketching & Flows</p></div>
+                            <div class="flex flex-col items-center text-center p-4 bg-gray-50 rounded-xl border border-gray-100"><div class="mb-3 text-accent"><i data-lucide="layout" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Prototype</h4><p class="text-[10px] text-secondary">Wireframes & Mockups</p></div>
+                            <div class="flex flex-col items-center text-center p-4 bg-gray-50 rounded-xl border border-gray-100"><div class="mb-3 text-accent"><i data-lucide="check-circle" class="w-6 h-6"></i></div><h4 class="font-bold text-primary text-sm mb-1">Test</h4><p class="text-[10px] text-secondary">Usability Testing</p></div>
                         </div>
                     </section>
 
                     <!-- 6) Empathize & 7) Insights -->
-                    <section id="research" class="fade-in-section">
+                    <section id="research" class="fade-in-section scroll-mt-32">
                         <div class="mb-16">
-                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">03</span><span class="h-px w-12 bg-border"></span></div>
+                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">03</span><span class="h-px w-12 bg-gray-200"></span></div>
                             <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Empathize</h2>
                         </div>
                         <div class="grid md:grid-cols-2 gap-12 mb-12">
@@ -455,32 +703,32 @@
                                     <li class="flex items-center text-sm text-secondary"><div class="w-2 h-2 bg-accent rounded-full mr-3"></div><strong>Primary:</strong> 5 In-depth Interviews with shift workers.</li>
                                     <li class="flex items-center text-sm text-secondary"><div class="w-2 h-2 bg-accent rounded-full mr-3"></div><strong>Secondary:</strong> Urban planning safety reports & crime statistics.</li>
                                 </ul>
-                                <div class="bg-background p-6 rounded-xl border border-border">
+                                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
                                     <h4 class="font-bold text-primary mb-4">Research Questions</h4>
                                     <ul class="space-y-3">
-                                        <li class="text-sm text-secondary italic">• "How do shift workers currently decide which route to take home?"</li>
-                                        <li class="text-sm text-secondary italic">• "What psychological factors prevent users from reporting safety incidents?"</li>
-                                        <li class="text-sm text-secondary italic">• "Does seeing crime data make users feel safer or more anxious?"</li>
+                                        <li class="text-sm text-secondary italic">"How do shift workers currently decide which route to take home?"</li>
+                                        <li class="text-sm text-secondary italic">"What psychological factors prevent users from reporting safety incidents?"</li>
+                                        <li class="text-sm text-secondary italic">"Does seeing crime data make users feel safer or more anxious?"</li>
                                     </ul>
                                 </div>
                             </div>
                             <div>
                                 <h3 class="text-xl font-medium text-primary mb-4">Research Insights</h3>
                                 <div class="grid gap-4">
-                                    <div class="bg-surface border border-border p-6 rounded-xl shadow-sm relative overflow-hidden">
-                                        <span class="absolute top-4 right-4 text-4xl font-bold text-[#F5F5F5] -z-10">01</span>
+                                    <div class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm relative overflow-hidden">
+                                        <span class="absolute top-4 right-4 text-4xl font-bold text-gray-50 -z-10">01</span>
                                         <h4 class="font-bold text-primary mb-2">Predictability creates safety</h4>
                                         <p class="text-sm text-secondary mb-3">Users feel safest when information is predictable, structured, and easy to understand.</p>
                                         <ul class="list-disc list-inside text-xs text-secondary opacity-80"><li>Uncertainty increases anxiety.</li><li>Route familiarity reduces stress.</li></ul>
                                     </div>
-                                    <div class="bg-surface border border-border p-6 rounded-xl shadow-sm relative overflow-hidden">
-                                        <span class="absolute top-4 right-4 text-4xl font-bold text-[#F5F5F5] -z-10">02</span>
+                                    <div class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm relative overflow-hidden">
+                                        <span class="absolute top-4 right-4 text-4xl font-bold text-gray-50 -z-10">02</span>
                                         <h4 class="font-bold text-primary mb-2">Emotional impact matters</h4>
                                         <p class="text-sm text-secondary mb-3">Alert systems must inform without overwhelming users.</p>
                                         <ul class="list-disc list-inside text-xs text-secondary opacity-80"><li>Avoid 'fear scrolling'.</li><li>Focus on actionable info.</li></ul>
                                     </div>
-                                    <div class="bg-surface border border-border p-6 rounded-xl shadow-sm relative overflow-hidden">
-                                        <span class="absolute top-4 right-4 text-4xl font-bold text-[#F5F5F5] -z-10">03</span>
+                                    <div class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm relative overflow-hidden">
+                                        <span class="absolute top-4 right-4 text-4xl font-bold text-gray-50 -z-10">03</span>
                                         <h4 class="font-bold text-primary mb-2">Trust through transparency</h4>
                                         <p class="text-sm text-secondary mb-3">Trust is built when information is transparent, timely, and comes from credible sources.</p>
                                         <ul class="list-disc list-inside text-xs text-secondary opacity-80"><li>Source verification is key.</li><li>Timestamps build confidence.</li></ul>
@@ -491,72 +739,65 @@
                     </section>
 
                     <!-- 8) Competitor Analysis -->
-                    <section id="competitors" class="fade-in-section">
+                    <section id="competitors" class="fade-in-section scroll-mt-32">
                         <h3 class="text-xl font-medium text-primary mb-6">Competitor Analysis</h3>
                         <div class="grid md:grid-cols-2 gap-8">
-                            <div class="p-6 border border-border rounded-xl bg-surface flex flex-col h-full">
+                            <div class="p-6 border border-gray-200 rounded-xl bg-white flex flex-col h-full">
                                 <div class="flex items-center mb-4">
-                                    <!-- GITHUB NOTE: Replace src with "photos/citizen-logo.png" -->
+                                    <!-- Original User Image -->
                                     <img src="https://images.prismic.io/citizen-site/ea51fded-bedd-482d-85b6-0ae1b743d636_Thumbnail+-+Invite.png?format" alt="Citizen Logo" class="w-12 h-12 mr-4 object-contain">
                                     <h4 class="font-bold text-primary text-lg">Citizen</h4>
                                 </div>
                                 <p class="text-sm text-secondary mb-4 flex-grow">Real-time incident alerts with user-generated footage. Citizen delivers immediate notifications about nearby incidents but often uses sensational language and unverified reports. This can heighten anxiety and contribute to alert fatigue, making information feel overwhelming rather than helpful. </p>
-                                <div class="bg-[#F5F5F5] p-3 rounded text-xs text-secondary"><span class="font-bold block mb-1">Gap:</span> Induces anxiety ("fear scrolling") and lacks resolution for minor issues.</div>
+                                <div class="bg-gray-50 p-3 rounded text-xs text-secondary"><span class="font-bold block mb-1">Gap:</span> Induces anxiety ("fear scrolling") and lacks resolution for minor issues.</div>
                             </div>
-                            <div class="p-6 border border-border rounded-xl bg-surface flex flex-col h-full">
+                            <div class="p-6 border border-gray-200 rounded-xl bg-white flex flex-col h-full">
                                 <div class="flex items-center mb-4">
-                                    <!-- GITHUB NOTE: Replace src with "photos/neighbors-logo.png" -->
-                                    <img src="https://m.media-amazon.com/images/I/41WajAyt+rL.png" alt="Neighbors Logo" class="w-12 h-12 mr-4 object-contain">
+                                     <!-- Original User Image -->
+                                     <img src="https://m.media-amazon.com/images/I/41WajAyt+rL.png" alt="Neighbors Logo" class="w-12 h-12 mr-4 object-contain">
                                     <h4 class="font-bold text-primary text-lg">Neighbors by Ring</h4>
                                 </div>
                                 <p class="text-sm text-secondary mb-4 flex-grow">Safety updates sourced from local residents + device network footage. Neighbors emphasizes community-driven reporting, but information can feel inconsistent and lacks context about verification. The platform relies heavily on user participation, which can introduce bias and uneven coverage across different areas.</p>
-                                <div class="bg-[#F5F5F5] p-3 rounded text-xs text-secondary"><span class="font-bold block mb-1">Gap:</span> Focused on private property, less useful for public transit commuters.</div>
+                                <div class="bg-gray-50 p-3 rounded text-xs text-secondary"><span class="font-bold block mb-1">Gap:</span> Focused on private property, less useful for public transit commuters.</div>
                             </div>
                         </div>
                     </section>
 
                     <!-- 9, 10, 11) Define, Users, Personas -->
-                    <section id="define" class="fade-in-section mt-16">
+                    <section id="define" class="fade-in-section mt-16 scroll-mt-32">
                         <div class="mb-16">
-                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">04</span><span class="h-px w-12 bg-border"></span></div>
+                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">04</span><span class="h-px w-12 bg-gray-200"></span></div>
                             <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Define</h2>
                         </div>
-                        <div class="bg-background p-8 rounded-2xl border border-border text-center mb-12">
-                            <h3 class="text-sm font-bold uppercase tracking-widest text-[#A3A3A3] mb-4">Design Goal</h3>
+                        <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 text-center mb-12">
+                            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Design Goal</h3>
                             <p class="text-2xl text-primary font-medium max-w-3xl mx-auto">Design a trusted safety experience by simplifying access to verified information, delivering calm and controlled alerts, and improving decision confidence during nightly commutes.</p>
-                        </div>
-                        <h3 class="text-xl font-medium text-primary mb-6">Product Users</h3>
-                        <div class="flex flex-wrap gap-4 mb-12">
-                            <span class="px-6 py-3 bg-surface border border-border rounded-full text-secondary font-medium shadow-sm">University Students</span>
-                            <span class="px-6 py-3 bg-surface border border-border rounded-full text-secondary font-medium shadow-sm">Healthcare Workers</span>
-                            <span class="px-6 py-3 bg-surface border border-border rounded-full text-secondary font-medium shadow-sm">Service Industry Workers</span>
-                            <span class="px-6 py-3 bg-surface border border-border rounded-full text-secondary font-medium shadow-sm">etc.</span>
                         </div>
                         <h3 class="text-xl font-medium text-primary mb-6">User Personas</h3>
                         <div class="grid md:grid-cols-2 gap-8">
-                            <div class="bg-surface p-8 rounded-2xl border border-border shadow-sm">
-                                <div class="mb-6 w-full rounded-lg border border-border overflow-hidden">
-                                    <!-- GITHUB NOTE: Replace src with "photos/persona1.png" -->
+                            <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+                                <div class="mb-6 w-full rounded-lg border border-gray-100 overflow-hidden bg-gray-100">
+                                    <!-- Original User Image -->
                                     <img src="images/Celine_Persona.png" alt="THE MIDNIGHT MOVER" class="w-full h-auto">
                                 </div>
                                 <div class="flex items-center mb-4"><div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white mr-4 shrink-0"><i data-lucide="coffee" class="w-5 h-5"></i></div><h4 class="font-bold text-primary">The Vigilant Commuter</h4></div>
                                 <p class="text-sm text-secondary italic">Wants information that can proactively notify her about safety issues and plan her route</p>
                             </div>
-                            <div class="bg-surface p-8 rounded-2xl border border-border shadow-sm">
-                                <div class="mb-6 w-full rounded-lg border border-border overflow-hidden">
-                                    <!-- GITHUB NOTE: Replace src with "photos/persona2.png" -->
+                            <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+                                <div class="mb-6 w-full rounded-lg border border-gray-100 overflow-hidden bg-gray-100">
+                                     <!-- Original User Image -->
                                     <img src="images/Maya_Persona.png" alt="THE NEIGHBOURHOOD GUARDIAN" class="w-full h-auto">
                                 </div>
-                                <div class="flex items-center mb-4"><div class="w-10 h-10 bg-[#F5F5F5] rounded-full flex items-center justify-center text-primary mr-4 shrink-0"><i data-lucide="user" class="w-5 h-5"></i></div><h4 class="font-bold text-primary">The Community Steward</h4></div>
+                                <div class="flex items-center mb-4"><div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-primary mr-4 shrink-0"><i data-lucide="user" class="w-5 h-5"></i></div><h4 class="font-bold text-primary">The Community Steward</h4></div>
                                 <p class="text-sm text-secondary italic">Wants information that can keep her informed about the safety of her local area and her family.</p>
                             </div>
                         </div>
                     </section>
 
                     <!-- 12, 13) Features -->
-                    <section id="features" class="fade-in-section">
+                    <section id="features" class="fade-in-section scroll-mt-32">
                         <div class="mb-16">
-                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">05</span><span class="h-px w-12 bg-border"></span></div>
+                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">05</span><span class="h-px w-12 bg-gray-200"></span></div>
                             <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Lumi's Main Features</h2>
                         </div>
                         <div class="grid md:grid-cols-4 gap-4 mb-16">
@@ -565,114 +806,689 @@
                             <div class="p-6 rounded-xl border bg-purple-50 border-purple-100 flex flex-col justify-center text-center h-40"><h4 class="font-bold text-primary text-sm leading-tight">Structured Incident Reporting</h4></div>
                             <div class="p-6 rounded-xl border bg-orange-50 border-orange-100 flex flex-col justify-center text-center h-40"><h4 class="font-bold text-primary text-sm leading-tight">Location-Aware Safety View</h4></div>
                         </div>
-                        <div class="mb-6"><h3 class="text-xl font-medium text-primary">Features & Functionalities</h3><p class="text-secondary text-sm mb-8">To resolve user needs</p></div>
-                        <div class="bg-background p-8 rounded-2xl border border-border grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-12">
-                            <div class="flex flex-col items-center"><div class="bg-surface p-6 rounded-full shadow-sm text-primary mb-4 border border-border"><i data-lucide="shield" class="w-8 h-8 text-accent"></i></div><span class="font-bold text-primary">Verified Safety Alerts</span></div>
-                            <div class="flex flex-col items-center"><div class="bg-surface p-6 rounded-full shadow-sm text-primary mb-4 border border-border"><i data-lucide="bell" class="w-8 h-8 text-accent"></i></div><span class="font-bold text-primary">Customizable Notification Controls</span></div>
-                            <div class="flex flex-col items-center"><div class="bg-surface p-6 rounded-full shadow-sm text-primary mb-4 border border-border"><i data-lucide="list" class="w-8 h-8 text-accent"></i></div><span class="font-bold text-primary">Structured Incident Reporting</span></div>
-                        </div>
-                        <h4 class="text-sm font-bold uppercase tracking-widest text-[#A3A3A3] mb-6">User Task Flow</h4>
+                        
+                        <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">User Task Flow</h4>
                         <div class="grid md:grid-cols-3 gap-4 mb-16">
-                            <div class="bg-surface p-4 rounded-xl border border-border shadow-sm flex items-center justify-center">
-                                <!-- GITHUB NOTE: Replace src with "photos/flow1.png" -->
+                            <!-- Original User Images -->
+                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-center">
                                 <img src="images/Flow1.png" alt="Task Flow 1" class="w-full h-auto rounded">
                             </div>
-                            <div class="bg-surface p-4 rounded-xl border border-border shadow-sm flex items-center justify-center">
-                                <!-- GITHUB NOTE: Replace src with "photos/flow2.png" -->
+                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-center">
                                 <img src="images/Flow2.png" alt="Task Flow 2" class="w-full h-auto rounded">
                             </div>
-                            <div class="bg-surface p-4 rounded-xl border border-border shadow-sm flex items-center justify-center">
-                                <!-- GITHUB NOTE: Replace src with "photos/flow3.png" -->
+                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-center">
                                 <img src="images/Flow3.png" alt="Task Flow 3" class="w-full h-auto rounded">
                             </div>
                         </div>
                     </section>
 
                     <!-- 14) Prototype & Test -->
-                    <section id="prototype-test" class="fade-in-section">
+                    <section id="prototype-test" class="fade-in-section scroll-mt-32">
                         <div class="mb-16">
-                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">06</span><span class="h-px w-12 bg-border"></span></div>
+                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">06</span><span class="h-px w-12 bg-gray-200"></span></div>
                             <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Prototype & Test</h2>
                         </div>
                         <div class="mb-12">
                             <h3 class="text-xl font-medium text-primary mb-4">Subsection: User Test</h3>
                             <p class="text-secondary max-w-3xl mb-8">Usability testing was conducted using an early mid-fidelity prototype with five participants to validate the core flow and safety perception.</p>
                             <div class="grid md:grid-cols-3 gap-6 mb-12">
-                                <div class="bg-surface p-6 border border-border rounded-xl"><span class="block text-xs font-bold text-accent mb-2 uppercase">Question 1</span><p class="font-medium text-primary">Notification management efficacy</p></div>
-                                <div class="bg-surface p-6 border border-border rounded-xl"><span class="block text-xs font-bold text-accent mb-2 uppercase">Question 2</span><p class="font-medium text-primary">Perceptions of safety while using the app</p></div>
-                                <div class="bg-surface p-6 border border-border rounded-xl"><span class="block text-xs font-bold text-accent mb-2 uppercase">Question 3</span><p class="font-medium text-primary">Overall user experience</p></div>
+                                <div class="bg-white p-6 border border-gray-200 rounded-xl"><span class="block text-xs font-bold text-accent mb-2 uppercase">Question 1</span><p class="font-medium text-primary">Notification management efficacy</p></div>
+                                <div class="bg-white p-6 border border-gray-200 rounded-xl"><span class="block text-xs font-bold text-accent mb-2 uppercase">Question 2</span><p class="font-medium text-primary">Perceptions of safety while using the app</p></div>
+                                <div class="bg-white p-6 border border-gray-200 rounded-xl"><span class="block text-xs font-bold text-accent mb-2 uppercase">Question 3</span><p class="font-medium text-primary">Overall user experience</p></div>
                             </div>
                         </div>
-                        <h4 class="text-sm font-bold uppercase tracking-widest text-[#A3A3A3] mb-6">Sketches</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                            <div class="bg-surface p-4 rounded-xl border border-border shadow-sm">
-                                <!-- GITHUB NOTE: Replace src with "photos/sketch1.png" -->
+                        <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">Sketches</h4>
+                        <div class="grid grid-cols-2 gap-4 mb-16">
+                            <!-- Original User Images -->
+                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                                 <img src="images/sketch1.png" alt="Sketch 1" class="w-full h-auto rounded">
                             </div>
-                            <div class="bg-surface p-4 rounded-xl border border-border shadow-sm">
-                                <!-- GITHUB NOTE: Replace src with "photos/sketch2.png" -->
+                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                                 <img src="images/Sketch2.png" alt="Sketch 2" class="w-full h-auto rounded">
                             </div>
-                            <div class="bg-surface p-4 rounded-xl border border-border shadow-sm">
-                                <!-- GITHUB NOTE: Replace src with "photos/sketch3.png" -->
+                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                                 <img src="images/Sketch3.png" alt="Sketch 3" class="w-full h-auto rounded">
                             </div>
-                            <div class="bg-surface p-4 rounded-xl border border-border shadow-sm">
-                                <!-- GITHUB NOTE: Replace src with "photos/sketch4.png" -->
+                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                                 <img src="images/Sketch4.png" alt="Sketch 4" class="w-full h-auto rounded">
                             </div>
                         </div>
                     </section>
 
                     <!-- 15) Key Iterations -->
-                    <section id="iterations" class="fade-in-section">
+                    <section id="iterations" class="fade-in-section scroll-mt-32">
                         <div class="mb-16">
-                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">07</span><span class="h-px w-12 bg-border"></span></div>
+                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">07</span><span class="h-px w-12 bg-gray-200"></span></div>
                             <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Key Iterations</h2>
                         </div>
                         
                         <!-- Iteration 1 -->
                         <div class="mb-16">
-                            <div class="mb-6">
-                            </div>
-                            <div class="w-full bg-background border border-border rounded-xl overflow-hidden shadow-sm p-4">
-                                <!-- GITHUB NOTE: Replace src with "photos/iteration1.png" -->
+                            <div class="w-full bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm p-4">
+                                <!-- Original User Image -->
                                 <img src="images/iteration1.png" alt="Iteration: Home Screen" class="w-full h-auto block mx-auto rounded-lg">
                             </div>
                         </div>
 
                         <!-- Iteration 2 -->
-                        <div class="mb-12">
-                            <div class="mb-6">
-                            </div>
-                            <div class="w-full bg-background border border-border rounded-xl overflow-hidden shadow-sm p-4">
-                                <!-- GITHUB NOTE: Replace src with "photos/iteration2.png" -->
+                         <div class="mb-12">
+                            <div class="w-full bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm p-4">
                                 <img src="images/iteration2.png" alt="Iteration: Reporting" class="w-full h-auto block mx-auto rounded-lg">
                             </div>
                         </div>
                     </section>
 
                     <!-- 16) Visual Design -->
-                    <section id="visual" class="fade-in-section pb-12">
+                    <section id="visual" class="fade-in-section pb-12 scroll-mt-32">
                         <div class="mb-16">
-                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-border bg-surface text-[10px] font-bold text-secondary shadow-sm">08</span><span class="h-px w-12 bg-border"></span></div>
+                            <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">08</span><span class="h-px w-12 bg-gray-200"></span></div>
                             <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Visual Design & Synthesis</h2>
                         </div>
-                        <div class="bg-background border border-border p-8 rounded-2xl">
+                        <div class="bg-gray-50 border border-gray-200 p-8 rounded-2xl">
                             <p class="text-secondary mb-6">Insights were synthesized from usability sessions, and issues were prioritized by severity and frequency to inform the final high-fidelity design.</p>
                             <h4 class="font-bold text-primary mb-4">Updates based on participant feedback:</h4>
                             <div class="space-y-3">
-                                <div class="bg-surface p-4 rounded border border-border flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-accent mr-3"></i><span class="text-sm text-secondary">Added confirmation step before sending report.</span></div>
-                                <div class="bg-surface p-4 rounded border border-border flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-accent mr-3"></i><span class="text-sm text-secondary">Increased contrast on safety map view.</span></div>
-                                <div class="bg-surface p-4 rounded border border-border flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-accent mr-3"></i><span class="text-sm text-secondary">Clarified "Safe Mode" toggle functionality.</span></div>
+                                <div class="bg-white p-4 rounded border border-gray-200 flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-accent mr-3"></i><span class="text-sm text-secondary">Added confirmation step before sending report.</span></div>
+                                <div class="bg-white p-4 rounded border border-gray-200 flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-accent mr-3"></i><span class="text-sm text-secondary">Increased contrast on safety map view.</span></div>
+                                <div class="bg-white p-4 rounded border border-gray-200 flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-accent mr-3"></i><span class="text-sm text-secondary">Clarified "Safe Mode" toggle functionality.</span></div>
                             </div>
                             
-                            <!-- New Visual Design Image -->
-                            <!-- GITHUB NOTE: Replace src with "photos/visual-design.png" -->
-                            <img src="images/visualDesign.png" alt="Visual Design System" class="w-full h-auto rounded-xl shadow-sm border border-border mt-8 block mx-auto">
+                            <!-- Original User Image -->
+                            <img src="images/visualDesign.png" alt="Visual Design System" class="w-full h-auto rounded-xl shadow-sm border border-gray-200 mt-8 block mx-auto">
                         </div>
                     </section>
 
+                    <!-- 17) Reflection -->
+                    <section id="lumi-reflection" class="fade-in-section pb-12 scroll-mt-32 pt-12 border-t border-gray-100">
+                        <div class="mb-12">
+                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">09</span><span class="h-px w-12 bg-gray-200"></span></div>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">Reflection</h2>
+                        </div>
+
+                        <div class="prose prose-lg text-secondary mb-12 max-w-none leading-relaxed">
+                            <p>When I started Lumi, I thought I was designing an incident-reporting app. But through research and iteration, I realized I was designing something deeper: <strong class="text-primary">trust in vulnerable moments</strong>. In safety contexts, users don’t only judge usability — they judge whether the experience feels safe, respectful, and credible. This project shifted my mindset from designing “features” to designing emotional confidence through privacy, tone, and clarity.</p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8 mb-12">
+                            <!-- What I learned -->
+                            <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100">
+                                <h3 class="text-lg font-bold text-primary mb-4 flex items-center"><i data-lucide="book-open" class="w-5 h-5 mr-2 text-accent"></i> What I learned</h3>
+                                <ul class="space-y-4">
+                                    <li class="flex items-start text-sm text-secondary">
+                                        <span class="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 mr-3 shrink-0"></span>
+                                        <span><strong>Trust is the real product.</strong> If users don’t trust the platform, they won’t engage — no matter how polished the UI is.</span>
+                                    </li>
+                                    <li class="flex items-start text-sm text-secondary">
+                                        <span class="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 mr-3 shrink-0"></span>
+                                        <span><strong>Safety UX is emotion-driven.</strong> In high-stress situations, people skim, hesitate, and avoid risk. Lumi taught me to design for limited attention, uncertainty, and fear, not ideal user behavior.</span>
+                                    </li>
+                                    <li class="flex items-start text-sm text-secondary">
+                                        <span class="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 mr-3 shrink-0"></span>
+                                        <span><strong>Microcopy drives action.</strong> Small wording decisions (prompts, privacy explanations, confirmation feedback) can determine whether users feel empowered to report or choose to stay silent.</span>
+                                    </li>
+                                    <li class="flex items-start text-sm text-secondary">
+                                        <span class="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 mr-3 shrink-0"></span>
+                                        <span><strong>Privacy is a core UX feature.</strong> Anonymity and user control aren’t “settings”. They’re essential design decisions that influence participation.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- What I'd improve -->
+                            <div class="bg-white border border-gray-200 p-8 rounded-2xl shadow-sm">
+                                <h3 class="text-lg font-bold text-primary mb-4 flex items-center"><i data-lucide="trending-up" class="w-5 h-5 mr-2 text-accent"></i> What I’d improve next</h3>
+                                <p class="text-sm text-secondary mb-6 italic">Because Lumi was a school project, I couldn’t validate decisions at scale. If this were a live product, I would:</p>
+                                <ul class="space-y-4">
+                                    <li class="flex items-start text-sm text-secondary">
+                                        <i data-lucide="check" class="w-4 h-4 mr-2 text-accent mt-0.5"></i>
+                                        Run A/B tests on reporting flow + microcopy to reduce drop-off and increase completion.
+                                    </li>
+                                    <li class="flex items-start text-sm text-secondary">
+                                        <i data-lucide="check" class="w-4 h-4 mr-2 text-accent mt-0.5"></i>
+                                        Track metrics like time-to-report, completion rate, repeat usage, and perceived trust.
+                                    </li>
+                                    <li class="flex items-start text-sm text-secondary">
+                                        <i data-lucide="check" class="w-4 h-4 mr-2 text-accent mt-0.5"></i>
+                                        Test credibility mechanisms (verification signals / moderation workflows) that protect community safety without discouraging participation.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Personal Growth -->
+                        <div class="bg-accent/5 border border-accent/10 p-8 rounded-2xl">
+                            <h3 class="text-lg font-bold text-primary mb-4">Personal Growth</h3>
+                            <p class="text-sm text-secondary leading-relaxed mb-4">
+                                Lumi helped me move beyond designing screens to designing responsible, real-world experiences. I became more confident working with sensitive contexts, edge cases, and trade-offs, and learned how to design interactions that feel calm, clear, and human even when the situation isn’t.
+                            </p>
+                            <p class="text-sm font-medium text-accent">
+                                This project reflects how I approach UX: balancing empathy, clarity, and real-world constraints, while designing for trust at the moments it matters most.
+                            </p>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= STAGING MASTERY CASE STUDY ================= -->
+        <div id="staging" class="page-section bg-white">
+             <!-- 1) Case Study Hero -->
+             <div class="bg-teal-50 pt-24 pb-16 px-6 md:px-12 border-b border-border">
+                <div class="max-w-4xl mx-auto text-center stagger-parent fade-in-section">
+                    <div class="stagger-child flex items-center justify-center gap-2 mb-8">
+                        <span class="px-4 py-1 bg-white border border-border rounded-full text-[10px] font-bold uppercase tracking-wider text-teal-800">Service Design</span>
+                        <span class="px-4 py-1 bg-white border border-border rounded-full text-[10px] font-bold uppercase tracking-wider text-teal-800">Learning Experience Design</span>
+                    </div>
+                    <h1 class="stagger-child text-5xl md:text-7xl font-serif text-teal-900 mb-8 tracking-tight leading-tight">Staging Mastery</h1>
+                    <p class="stagger-child text-xl md:text-2xl text-teal-700/80 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
+                        Designing an End-to-End Course Experience & Pre-Launch Funnel (Wix → Kajabi)
+                    </p>
+                    
+                    <div class="stagger-child flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#sm-overview" class="px-6 py-3 text-sm font-medium text-white bg-teal-700 hover:bg-teal-800 rounded-full transition-all shadow-sm">Start Reading</a>
+                        <a href="https://evangelinezhao28.wixsite.com/stagingmastery" target="_blank" class="px-6 py-3 text-sm font-medium text-teal-900 bg-white border border-teal-200 hover:bg-teal-50 rounded-full transition-all shadow-sm flex items-center justify-center">Visit Pre-Launch Site <i data-lucide="external-link" class="ml-2 w-4 h-4"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Sticky TOC -->
+                <div class="hidden lg:block lg:col-span-3">
+                    <div class="sticky top-32 space-y-1" id="toc-staging">
+                        <a href="#sm-overview" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Overview</a>
+                        <a href="#sm-challenge" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Challenge & Users</a>
+                        <a href="#sm-process" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Process</a>
+                        <a href="#sm-decisions" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Design Decisions</a>
+                        <a href="#sm-solution" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Solution</a>
+                        <a href="#sm-outcomes" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Outcomes & Reflection</a>
+                        
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center text-[10px] font-bold uppercase tracking-wider text-gray-400 pl-4 mt-8 hover:text-accent transition-colors">
+                            Back to Top <i data-lucide="arrow-up" class="w-3 h-3 ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Case Study Content -->
+                <div class="lg:col-span-9 space-y-24">
+
+                     <!-- Snapshot -->
+                     <section id="sm-overview" class="fade-in-section scroll-mt-32">
+                        <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 shadow-sm mb-12">
+                            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Project Snapshot</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div><div class="flex items-center text-teal-600 mb-2"><i data-lucide="briefcase" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Role</span></div><p class="text-sm font-medium text-primary">Field Placement (End-to-End Design)</p></div>
+                                <div><div class="flex items-center text-teal-600 mb-2"><i data-lucide="layout" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Tools</span></div><p class="text-sm font-medium text-primary">Wix, Kajabi, Canva, Google Workspace</p></div>
+                                <div class="md:col-span-2"><div class="flex items-center text-teal-600 mb-2"><i data-lucide="check-square" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Deliverables</span></div><p class="text-sm font-medium text-primary">Curriculum architecture (10 modules), workbook system, slide system, pre-launch funnel, email nurture plan</p></div>
+                                <div class="md:col-span-2"><div class="flex items-center text-teal-600 mb-2"><i data-lucide="activity" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Status</span></div><p class="text-sm font-medium text-primary">Pre-launch (Course production in progress)</p></div>
+                            </div>
+                        </div>
+
+                        <!-- Expanded "My Role" Section -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-medium text-primary mb-6">My Role & Responsibilities</h3>
+                            <p class="text-secondary mb-6">I owned the end-to-end experience design across content + service touchpoints:</p>
+                            <ul class="grid md:grid-cols-2 gap-4">
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Curriculum architecture and module progression (10 modules)</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Workbook system (checklists, exercises, applied frameworks)</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Slide system (instruction + reinforcement)</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Pre-launch waitlist funnel design (Wix now, Kajabi later)</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Email nurture + promotion countdown plan</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Supporting marketing materials for social and launch communications</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Challenge -->
+                    <section id="sm-challenge" class="fade-in-section scroll-mt-32">
+                        <div class="space-y-12">
+                            <div>
+                                <h2 class="text-3xl font-semibold text-primary mb-6">The Challenge</h2>
+                                <div class="pl-6 border-l-4 border-teal-500">
+                                    <p class="text-xl text-secondary leading-relaxed font-serif italic">"Most online staging courses emphasize business setup or general inspiration. The team needed a practical, step-by-step course that teaches staging execution—plus a launch-ready funnel to build an audience while the course was being recorded."</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 border border-gray-100 p-8 rounded-xl shadow-sm">
+                                <h3 class="text-lg font-bold text-primary mb-4 flex items-center"><i data-lucide="users" class="w-5 h-5 mr-3 text-teal-600"></i>Primary Users</h3>
+                                <ul class="space-y-4">
+                                    <li class="flex items-start">
+                                        <div class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></div>
+                                        <span class="text-secondary text-sm"><strong>Aspiring Home Stagers:</strong> Building a repeatable workflow.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></div>
+                                        <span class="text-secondary text-sm"><strong>Real Estate Agents:</strong> Wanting fluency to support sellers.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></div>
+                                        <span class="text-secondary text-sm"><strong>DIY Homeowners:</strong> Staging their own homes to sell.</span>
+                                    </li>
+                                </ul>
+                                <p class="text-sm text-secondary mt-6 italic bg-white p-3 rounded border border-gray-100"><strong>Shared Need:</strong> Confidence through a clear process and tools that reduce uncertainty.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Process -->
+                    <section id="sm-process" class="fade-in-section scroll-mt-32">
+                        <div class="mb-12">
+                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">01</span><span class="h-px w-12 bg-gray-200"></span></div>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">Process & Key Decisions</h2>
+                        </div>
+                        
+                        <!-- Discover -->
+                        <div class="mb-12">
+                             <h3 class="text-xl font-medium text-primary mb-4 flex items-center"><span class="w-8 h-8 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-sm font-bold mr-3">1</span> Discover</h3>
+                             <p class="text-secondary mb-6">With the course still in production, I focused discovery on making expert staging knowledge teachable and scalable:</p>
+                             <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6 shadow-sm">
+                                 <ul class="space-y-4">
+                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="search" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span><strong>Extracted the instructor’s real staging workflow</strong> and converted it into a structured learning path.</span></li>
+                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="search" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span><strong>Identified high-friction moments</strong> for beginners (e.g., consultation conversations, buyer profiling, layout decisions) and ensured each module included actionable tools.</span></li>
+                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="search" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span><strong>Planned the launch journey as a service experience</strong>—not just a website—so early interest could be captured and nurtured pre-launch.</span></li>
+                                 </ul>
+                             </div>
+                             <!-- Placeholder Image -->
+                             <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-200 max-w-2xl mx-auto">
+                                <img src="https://placehold.co/800x400/F3F4F6/333?text=StagedSetSold+Navigation+Discovery" alt="Navigation Discovery" class="w-full h-auto">
+                             </div>
+                        </div>
+
+                        <!-- Define -->
+                        <div>
+                             <h3 class="text-xl font-medium text-primary mb-4 flex items-center"><span class="w-8 h-8 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-sm font-bold mr-3">2</span> Define</h3>
+                             <p class="text-secondary mb-6">I established four core experience goals to guide the design:</p>
+                             <div class="grid sm:grid-cols-2 gap-4">
+                                 <div class="bg-white p-4 border border-gray-200 rounded-lg hover:border-teal-500 transition-colors">
+                                     <h4 class="font-bold text-primary text-sm mb-1">Make the learning path obvious</h4>
+                                     <p class="text-xs text-secondary">Progression that mirrors a real staging workflow.</p>
+                                 </div>
+                                 <div class="bg-white p-4 border border-gray-200 rounded-lg hover:border-teal-500 transition-colors">
+                                     <h4 class="font-bold text-primary text-sm mb-1">Make learning actionable</h4>
+                                     <p class="text-xs text-secondary">Checklists, prompts, and reusable frameworks.</p>
+                                 </div>
+                                 <div class="bg-white p-4 border border-gray-200 rounded-lg hover:border-teal-500 transition-colors">
+                                     <h4 class="font-bold text-primary text-sm mb-1">Reduce cognitive load</h4>
+                                     <p class="text-xs text-secondary">Consistent templates across modules.</p>
+                                 </div>
+                                 <div class="bg-white p-4 border border-gray-200 rounded-lg hover:border-teal-500 transition-colors">
+                                     <h4 class="font-bold text-primary text-sm mb-1">Enable launch readiness</h4>
+                                     <p class="text-xs text-secondary">Waitlist funnel now; automation later.</p>
+                                 </div>
+                             </div>
+                        </div>
+                    </section>
+
+                    <!-- Design Decisions -->
+                     <section id="sm-decisions" class="fade-in-section scroll-mt-32">
+                        <div class="mb-12">
+                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">03</span><span class="h-px w-12 bg-gray-200"></span></div>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">Design Decisions</h2>
+                        </div>
+
+                        <div class="space-y-16">
+                            <!-- Decision A -->
+                            <div>
+                                <h3 class="text-xl font-medium text-primary mb-4">Decision A — Sequence modules as a workflow, not a topic list</h3>
+                                <p class="text-secondary mb-6 max-w-2xl">Instead of organizing content as disconnected tips, I structured modules to mirror real staging engagements (consultation → buyer mindset → staging plan → execution details → final walkthrough), so learners always know what to do next.</p>
+                                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                                     <!-- Placeholder Image -->
+                                    <img src="https://placehold.co/1000x500/F3F4F6/333?text=Table+of+Contents+Workflow+Structure" alt="Curriculum Structure" class="w-full h-auto rounded-lg">
+                                </div>
+                            </div>
+
+                            <!-- Decision B -->
+                             <div>
+                                <h3 class="text-xl font-medium text-primary mb-4">Decision B — Build a reusable content system</h3>
+                                <p class="text-secondary mb-6 max-w-2xl">I designed repeatable layouts and patterns across modules (visual hierarchy, “pro tips,” checklists) so learners can focus on learning staging—not figuring out how to read the materials each time.</p>
+                                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                                     <!-- Placeholder Image -->
+                                    <img src="https://placehold.co/1000x500/F3F4F6/333?text=Workbook+System+Spread+Layout" alt="Workbook System" class="w-full h-auto rounded-lg">
+                                </div>
+                            </div>
+
+                            <!-- Decision C -->
+                             <div>
+                                <h3 class="text-xl font-medium text-primary mb-4">Decision C — Treat the funnel as part of the service experience</h3>
+                                <p class="text-secondary mb-6 max-w-2xl">Because the course wasn’t live yet, the funnel needed to do two jobs:</p>
+                                <ul class="list-disc list-inside text-secondary mb-6 space-y-2 ml-2">
+                                    <li>Capture interest now and reward it immediately (lead magnet)</li>
+                                    <li>Keep subscribers engaged until launch (updates + eventual promotion countdown)</li>
+                                </ul>
+                                <p class="text-secondary mb-6 max-w-2xl">This shaped the funnel into a pre-launch waitlist journey that can later scale on Kajabi via popups, dedicated opt-in pages, and automation.</p>
+                                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                                     <!-- Placeholder Image -->
+                                    <img src="https://placehold.co/1000x500/F3F4F6/333?text=Pre-Launch+Landing+Page+Hero" alt="Funnel Hero" class="w-full h-auto rounded-lg">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Solution -->
+                    <section id="sm-solution" class="fade-in-section scroll-mt-32">
+                        <div class="mb-12">
+                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">04</span><span class="h-px w-12 bg-gray-200"></span></div>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">The Solution (What I Built)</h2>
+                        </div>
+                        
+                        <!-- A) Curriculum -->
+                        <div class="mb-16">
+                            <h3 class="text-lg font-bold text-primary mb-4 uppercase tracking-wider text-teal-800">A) Curriculum Architecture (10 Modules)</h3>
+                            <p class="text-secondary mb-6">I created a 10-module path that builds from fundamentals to execution and client communication. The structure supports progressive skill-building and reduces overwhelm by guiding learners through a clear sequence.</p>
+                             <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                                <img src="https://placehold.co/1000x400/F3F4F6/333?text=Course+Modules+Overview" alt="Modules Overview" class="w-full h-auto rounded">
+                            </div>
+                        </div>
+
+                        <!-- B) Workbook -->
+                        <div class="mb-16">
+                            <h3 class="text-lg font-bold text-primary mb-6 uppercase tracking-wider text-teal-800">B) Workbook System (Hands-on Learning)</h3>
+                            <p class="text-secondary mb-6">The workbook converts passive learning into action through consultation checklists, prompts for buyer demographics, and practical rules learners can reuse.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                                    <img src="https://placehold.co/600x400/F3F4F6/333?text=Consultation+Checklist" alt="Checklist" class="w-full h-auto rounded">
+                                    <p class="text-xs text-secondary mt-3 text-center">Consultation Checklists</p>
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                                    <img src="https://placehold.co/600x400/F3F4F6/333?text=Workbook+Roadmap" alt="Roadmap" class="w-full h-auto rounded">
+                                     <p class="text-xs text-secondary mt-3 text-center">Visual Roadmaps</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- C) Slides -->
+                        <div class="mb-16">
+                            <h3 class="text-lg font-bold text-primary mb-6 uppercase tracking-wider text-teal-800">C) Slide System (Instruction + Reinforcement)</h3>
+                            <p class="text-secondary mb-6">Slides were designed to align with workbook structure using clear hierarchy, chunked bullets, and consistent patterns.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                                    <img src="https://placehold.co/600x400/F3F4F6/333?text=Instructional+Slide" alt="Slide Design" class="w-full h-auto rounded">
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                                    <img src="https://placehold.co/600x400/F3F4F6/333?text=Pro+Tip+Slide" alt="Pro Tip Slide" class="w-full h-auto rounded">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- D) Funnel -->
+                         <div>
+                            <h3 class="text-lg font-bold text-primary mb-6 uppercase tracking-wider text-teal-800">D) Pre-Launch Waitlist Funnel</h3>
+                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
+                                <div class="grid md:grid-cols-2 gap-8 items-center">
+                                    <img src="https://placehold.co/600x800/F3F4F6/333?text=VIP+Waitlist+Form" alt="Landing Page" class="w-full h-auto rounded shadow-sm border border-gray-200">
+                                    <div class="space-y-8">
+                                        <div>
+                                            <h4 class="font-bold text-primary text-sm mb-2 flex items-center"><span class="w-2 h-2 rounded-full bg-teal-500 mr-2"></span>Current State (Wix)</h4>
+                                            <p class="text-sm text-secondary">Visitors discover Staging Mastery via the StagedSetSold website and land on a pre-launch page designed around a single conversion goal: waitlist sign-up.</p>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-primary text-sm mb-2 flex items-center"><span class="w-2 h-2 rounded-full bg-gray-300 mr-2"></span>Future State (Kajabi)</h4>
+                                            <p class="text-sm text-secondary">The funnel scales with popup opt-ins, dedicated sign-up pages, embedded forms, and automated email sequences.</p>
+                                        </div>
+                                        <div class="bg-white p-4 rounded border border-gray-200">
+                                            <span class="text-xs font-bold text-teal-600 uppercase block mb-1">Lead Magnet Strategy</span>
+                                            <p class="text-sm text-primary mb-2">Newsletter sign-ups receive a free <strong>Rug Placement Guide PDF</strong> as immediate value.</p>
+                                            <p class="text-xs text-secondary">Followed by pre-launch updates and a promotion countdown sequence.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Outcomes -->
+                    <section id="sm-outcomes" class="fade-in-section scroll-mt-32 pb-12">
+                        <div class="mb-12">
+                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">05</span><span class="h-px w-12 bg-gray-200"></span></div>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">Outcomes & Reflection</h2>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-8 mb-12">
+                            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
+                                <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-teal-600"></i> Pre-Launch Deliverables</h3>
+                                <p class="text-sm text-secondary mb-4 italic">Because the course is still being recorded, outcomes are measured as launch readiness.</p>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Completed 10-module curriculum architecture.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Created cohesive workbook & slide systems.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Established pre-launch waitlist funnel & scaling plan.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
+                                <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="bar-chart-2" class="w-5 h-5 mr-2 text-teal-600"></i> Measurement Plan</h3>
+                                <p class="text-sm text-secondary mb-4 italic">Once live, I would evaluate the experience using:</p>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Landing page conversion (visit → subscribe).</li>
+                                    <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Lead magnet engagement (delivery and click-through).</li>
+                                    <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Enrollment conversion after promotion countdown.</li>
+                                    <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Course completion rates.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-teal-50 border border-teal-100 p-8 rounded-xl">
+                            <h3 class="font-bold text-teal-900 mb-4">Reflection & Next Steps</h3>
+                            <p class="text-teal-800 text-sm mb-4">If continuing post-launch, I would:</p>
+                            <div class="flex flex-wrap gap-4">
+                                <span class="bg-white px-4 py-2 rounded-lg text-xs font-bold text-teal-800 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">Run a small pilot cohort</span>
+                                <span class="bg-white px-4 py-2 rounded-lg text-xs font-bold text-teal-800 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">A/B test landing page messaging</span>
+                                <span class="bg-white px-4 py-2 rounded-lg text-xs font-bold text-teal-800 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">Build dashboards for engagement</span>
+                                <span class="bg-white px-4 py-2 rounded-lg text-xs font-bold text-teal-800 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">Expand acquisition via paid social</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ECHOES CASE STUDY ================= -->
+        <div id="echoes" class="page-section bg-white">
+             <!-- 1) Case Study Hero -->
+             <div class="bg-red-50 pt-24 pb-16 px-6 md:px-12 border-b border-border">
+                <div class="max-w-4xl mx-auto text-center stagger-parent fade-in-section">
+                    <div class="stagger-child flex items-center justify-center gap-2 mb-8">
+                        <span class="px-4 py-1 bg-white border border-border rounded-full text-[10px] font-bold uppercase tracking-wider text-red-800">Web Design</span>
+                        <span class="px-4 py-1 bg-white border border-border rounded-full text-[10px] font-bold uppercase tracking-wider text-red-800">0→1 Build</span>
+                    </div>
+                    <h1 class="stagger-child text-5xl md:text-7xl font-serif text-red-900 mb-8 tracking-tight leading-tight">Echoes from China</h1>
+                    <p class="stagger-child text-xl md:text-2xl text-red-900/70 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
+                        Designing a 0→1 community website for traditional Chinese culture with events, membership, and donation features.
+                    </p>
+                    
+                    <div class="stagger-child flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#echoes-overview" class="px-6 py-3 text-sm font-medium text-white bg-red-800 hover:bg-red-900 rounded-full transition-all shadow-sm">Start Reading</a>
+                        <a href="https://miazhu6.wixsite.com/echoes-from-china" target="_blank" class="px-6 py-3 text-sm font-medium text-red-900 bg-white border border-red-200 hover:bg-red-50 rounded-full transition-all shadow-sm flex items-center justify-center">Visit Live Site <i data-lucide="external-link" class="ml-2 w-4 h-4"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Sticky TOC -->
+                <div class="hidden lg:block lg:col-span-3">
+                    <div class="sticky top-32 space-y-1" id="toc-echoes">
+                        <a href="#echoes-overview" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">Overview</a>
+                        <a href="#echoes-challenge" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">Challenge & Goals</a>
+                        <a href="#echoes-research" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">Research & Benchmarking</a>
+                        <a href="#echoes-design" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">IA & Design</a>
+                        <a href="#echoes-outcome" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">Outcome & Reflection</a>
+                        
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center text-[10px] font-bold uppercase tracking-wider text-gray-400 pl-4 mt-8 hover:text-accent transition-colors">
+                            Back to Top <i data-lucide="arrow-up" class="w-3 h-3 ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Case Study Content -->
+                <div class="lg:col-span-9 space-y-24">
+
+                     <!-- Snapshot -->
+                     <section id="echoes-overview" class="fade-in-section scroll-mt-32">
+                        <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 shadow-sm mb-12">
+                            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Project Snapshot</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div><div class="flex items-center text-red-800 mb-2"><i data-lucide="briefcase" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Role</span></div><p class="text-sm font-medium text-primary">Web Designer (UX), IA, Content Writer</p></div>
+                                <div><div class="flex items-center text-red-800 mb-2"><i data-lucide="users" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Team</span></div><p class="text-sm font-medium text-primary">2-person team (Co-led design & build)</p></div>
+                                <div><div class="flex items-center text-red-800 mb-2"><i data-lucide="layout" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Tools</span></div><p class="text-sm font-medium text-primary">Wix, Canva, Instagram</p></div>
+                                <div><div class="flex items-center text-red-800 mb-2"><i data-lucide="layers" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Key Features</span></div><p class="text-sm font-medium text-primary">Event signup, Blog, Forum, Donation</p></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-12">
+                            <h3 class="text-xl font-medium text-primary mb-6">Project Summary</h3>
+                            <p class="text-secondary mb-8 leading-relaxed">Echoes from China is a traditional arts society dedicated to promoting Chinese culture and connecting people through cultural events and community learning. Since the organization had no official online presence, my teammate and I designed and built the website from scratch—creating a central platform to support event registration, membership growth, donations, and cultural storytelling.</p>
+                            <!-- Hero Image Placeholder -->
+                            <div class="bg-white border border-gray-200 rounded-xl p-2 shadow-sm">
+                                <img src="https://placehold.co/1200x600/F9F9F9/333?text=Echoes+Homepage+Design" alt="Echoes Homepage Hero" class="w-full h-auto rounded-lg">
+                                <p class="text-xs text-secondary mt-3 text-center italic">Final homepage design presenting a clear organizational identity and primary call-to-action.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Challenge & Goals -->
+                    <section id="echoes-challenge" class="fade-in-section scroll-mt-32">
+                        <div class="space-y-12">
+                            <div>
+                                <h2 class="text-3xl font-semibold text-primary mb-6">The Challenge</h2>
+                                <div class="pl-6 border-l-4 border-red-800">
+                                    <p class="text-xl text-secondary leading-relaxed font-serif italic">"Echoes from China did not have an official platform to introduce the organization, promote events, or support membership. Information existed across informal channels, making it difficult for potential members to understand what the society offers and how to join."</p>
+                                </div>
+                                <p class="text-lg font-medium text-primary mt-6">How might we design an official website that supports both event conversion and long-term community building?</p>
+                            </div>
+                            
+                            <div class="bg-white border border-gray-200 p-8 rounded-xl shadow-sm">
+                                <h3 class="text-lg font-bold text-primary mb-4 flex items-center"><i data-lucide="target" class="w-5 h-5 mr-3 text-red-800"></i>Project Goals</h3>
+                                <ul class="grid md:grid-cols-2 gap-4">
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Create an official website as a credible digital home.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Enable ticket sales and event registration.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Support the ability to accept donations.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Provide membership functionality to attract talent.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Build a culturally authentic website with strong aesthetics.</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-medium text-primary mb-4">My Role</h3>
+                                <p class="text-secondary mb-6">I led the end-to-end design and build of the website, including:</p>
+                                <ul class="list-disc list-inside text-secondary space-y-2 mb-8 ml-2">
+                                    <li>Website UX and visual design (Wix)</li>
+                                    <li>Information architecture + navigation structure</li>
+                                    <li>Content writing (About Us, offerings, events, blog structure)</li>
+                                    <li>Designing conversion flows for event signup + membership</li>
+                                    <li>Iterating based on stakeholder feedback under a tight timeline</li>
+                                </ul>
+                                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                                    <img src="https://placehold.co/1000x500/F3F4F6/333?text=Wix+Editor+Behind+The+Scenes" alt="Wix Editor Process" class="w-full h-auto rounded-lg">
+                                    <p class="text-xs text-secondary mt-3 text-center italic">Designing and building the website in Wix—from IA planning to final content and layout.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Research & Benchmarking -->
+                    <section id="echoes-research" class="fade-in-section scroll-mt-32">
+                        <div class="mb-12">
+                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">01</span><span class="h-px w-12 bg-gray-200"></span></div>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">Research & Inspiration</h2>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-12 mb-12">
+                            <div>
+                                <h3 class="text-xl font-medium text-primary mb-4">Research (3 Interviews)</h3>
+                                <p class="text-secondary mb-4">To ensure the website met real needs, we interviewed:</p>
+                                <ul class="space-y-2 mb-6">
+                                    <li class="text-sm text-secondary"><strong>Co-founder:</strong> Organizational goals & priorities.</li>
+                                    <li class="text-sm text-secondary"><strong>Club member:</strong> Motivations for participation.</li>
+                                    <li class="text-sm text-secondary"><strong>Culture enthusiast:</strong> Expectations & trust factors.</li>
+                                </ul>
+                                <div class="bg-red-50 p-6 rounded-xl border border-red-100">
+                                    <h4 class="font-bold text-red-900 mb-2">Key Insights</h4>
+                                    <ul class="space-y-3">
+                                        <li class="text-sm text-red-800"><strong>1) Events are the entry point.</strong> Most users engage through events first.</li>
+                                        <li class="text-sm text-red-800"><strong>2) Clarity is crucial.</strong> Visitors need to instantly understand what the org offers.</li>
+                                        <li class="text-sm text-red-800"><strong>3) Community requires continuity.</strong> Membership spaces support long-term engagement.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-medium text-primary mb-4">Benchmarking</h3>
+                                <p class="text-secondary mb-4">I studied relevant websites (Toronto Chinese Orchestra, SiRu Plum) to guide layout decisions and maintain cultural aesthetics without compromising usability.</p>
+                                <div class="bg-white border border-gray-200 rounded-xl p-2 shadow-sm">
+                                    <img src="https://placehold.co/600x400/F3F4F6/333?text=Benchmark+Websites+Analysis" alt="Benchmarking Slide" class="w-full h-auto rounded">
+                                    <p class="text-xs text-secondary mt-2 text-center italic">Benchmark websites informed the aesthetic direction.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- IA & Design -->
+                     <section id="echoes-design" class="fade-in-section scroll-mt-32">
+                        <div class="mb-12">
+                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">02</span><span class="h-px w-12 bg-border"></span></div>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">IA & Design Decisions</h2>
+                        </div>
+
+                        <div class="mb-16">
+                            <h3 class="text-xl font-medium text-primary mb-4">Information Architecture</h3>
+                            <p class="text-secondary mb-6">I designed the navigation around key user tasks to support both new visitors seeking clarity and returning members looking for continuity.</p>
+                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-6">
+                                <img src="https://placehold.co/1000x500/F3F4F6/333?text=Sitemap+Visualization" alt="Navigation Sitemap" class="w-full h-auto rounded-lg">
+                                <p class="text-xs text-secondary mt-3 text-center italic">IA structured around user goals: discover → participate → engage long-term.</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-16">
+                            <h3 class="text-xl font-medium text-primary mb-6">Key Features & Design</h3>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h4 class="font-bold text-primary mb-2">Event Signup</h4>
+                                    <p class="text-sm text-secondary mb-4">A conversion-centered event experience that supports ticketing and registration.</p>
+                                    <img src="https://placehold.co/600x400/F3F4F6/333?text=Event+Booking+Page" alt="Event Page" class="w-full h-auto rounded border border-gray-200 shadow-sm">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary mb-2">Membership / Forum</h4>
+                                    <p class="text-sm text-secondary mb-4">A community layer enabling long-term engagement and member interaction.</p>
+                                    <img src="https://placehold.co/600x400/F3F4F6/333?text=Membership+Forum+Page" alt="Membership Page" class="w-full h-auto rounded border border-gray-200 shadow-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-medium text-primary mb-4">SEO & Discoverability</h3>
+                            <p class="text-secondary mb-6">To support growth, I implemented SEO recommendations including custom URL structures, optimized page titles, and a keyword strategy focusing on "traditional Chinese culture" and "Toronto".</p>
+                            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm max-w-2xl">
+                                <img src="https://placehold.co/800x300/F3F4F6/333?text=SEO+Settings+Example" alt="SEO Settings" class="w-full h-auto rounded">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Outcome -->
+                    <section id="echoes-outcome" class="fade-in-section scroll-mt-32 pb-12">
+                        <div class="mb-12">
+                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">03</span><span class="h-px w-12 bg-gray-200"></span></div>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">Outcome & Reflection</h2>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-8 mb-12">
+                            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
+                                <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="rocket" class="w-5 h-5 mr-2 text-red-800"></i> Deliverables</h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Launched Echoes from China’s first official website (0→1).</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Established event registration/ticketing structure.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Built donation and membership functionality.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Implemented SEO growth foundations.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 p-8 rounded-xl border border-red-100">
+                                <h3 class="font-bold text-red-900 mb-4 flex items-center"><i data-lucide="book-open" class="w-5 h-5 mr-2 text-red-800"></i> Reflection</h3>
+                                <p class="text-sm text-red-900/80 mb-4">This project strengthened my ability to:</p>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start text-sm text-red-800"><span class="w-1.5 h-1.5 bg-red-800 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Build a website from scratch under real constraints.</li>
+                                    <li class="flex items-start text-sm text-red-800"><span class="w-1.5 h-1.5 bg-red-800 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Translate stakeholder goals into IA and user journeys.</li>
+                                    <li class="flex items-start text-sm text-red-800"><span class="w-1.5 h-1.5 bg-red-800 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Design for both conversion and community retention.</li>
+                                    <li class="flex items-start text-sm text-red-800"><span class="w-1.5 h-1.5 bg-red-800 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Balance cultural storytelling with modern usability.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
@@ -680,33 +1496,42 @@
     </main>
 
     <!-- Footer -->
-    <footer id="footer-contact" class="bg-primary text-white py-24 px-6 md:px-12">
+    <footer id="footer-contact" class="bg-white border-t border-gray-200 py-24 px-6 md:px-12">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
             <div>
-                <h2 class="text-5xl md:text-6xl font-medium mb-8 tracking-tight">Let's connect.</h2>
-                <p class="mb-12 max-w-sm text-lg opacity-60 font-light">Seeking Summer/Fall 2026 internships. I'm always up for a coffee chat about service design, transit systems, or nice tea.</p>
+                <h2 class="text-5xl md:text-6xl font-serif text-primary mb-8 tracking-tight">Let's connect.</h2>
+                <p class="mb-12 max-w-sm text-lg text-secondary font-light">Seeking Summer/Fall 2026 internships. I'm always up for a coffee chat about service design, transit systems, or nice tea.</p>
                 <div class="space-y-6 text-lg">
-                    <a href="mailto:evangeline.zhao@mail.utoronto.ca" class="flex items-center hover:text-white hover:opacity-100 transition-colors opacity-80"><i data-lucide="mail" class="w-5 h-5 mr-4"></i> evangeline.zhao@mail.utoronto.ca</a>
-                    <a href="https://www.linkedin.com/in/evangelinezhao28" target="_blank" class="flex items-center hover:text-white hover:opacity-100 transition-colors opacity-80"><i data-lucide="linkedin" class="w-5 h-5 mr-4"></i> LinkedIn</a>
-                    <div class="flex items-center opacity-60"><i data-lucide="map-pin" class="w-5 h-5 mr-4"></i> Toronto, Canada</div>
+                    <a href="mailto:evangeline.zhao@mail.utoronto.ca" class="flex items-center text-primary hover:text-accent transition-colors font-medium"><i data-lucide="mail" class="w-5 h-5 mr-4 text-accent"></i> evangeline.zhao@mail.utoronto.ca</a>
+                    <a href="https://www.linkedin.com/in/evangelinezhao28" target="_blank" class="flex items-center text-primary hover:text-accent transition-colors font-medium"><i data-lucide="linkedin" class="w-5 h-5 mr-4 text-accent"></i> LinkedIn</a>
+                    <div class="flex items-center text-secondary opacity-80"><i data-lucide="map-pin" class="w-5 h-5 mr-4"></i> Toronto, Canada</div>
                 </div>
             </div>
             
-            <div class="bg-[#262626] p-10 rounded-2xl border border-white/10">
-                <h3 class="text-white font-bold mb-6">Send a message</h3>
-                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Message sent!')">
+            <div class="bg-gray-50 p-10 rounded-3xl border border-gray-100 shadow-sm">
+                <h3 class="text-primary font-bold mb-6 text-xl">Send a message</h3>
+                <form class="space-y-4" onsubmit="handleContactSubmit(event)">
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-[10px] font-bold uppercase tracking-wider mb-2 opacity-40">Name</label><input type="text" class="w-full bg-primary border border-white/10 p-4 rounded-xl text-white focus:outline-none focus:border-white/50 transition-colors" placeholder="Name"></div>
-                        <div><label class="block text-[10px] font-bold uppercase tracking-wider mb-2 opacity-40">Email</label><input type="email" class="w-full bg-primary border border-white/10 p-4 rounded-xl text-white focus:outline-none focus:border-white/50 transition-colors" placeholder="Email"></div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider mb-2 text-gray-400">Name</label>
+                            <input id="contact-name" type="text" class="w-full bg-white border border-gray-200 p-4 rounded-xl text-primary focus:outline-none focus:border-accent transition-colors shadow-sm" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider mb-2 text-gray-400">Email</label>
+                            <input id="contact-email" type="email" class="w-full bg-white border border-gray-200 p-4 rounded-xl text-primary focus:outline-none focus:border-accent transition-colors shadow-sm" placeholder="Email" required>
+                        </div>
                     </div>
-                    <div><label class="block text-[10px] font-bold uppercase tracking-wider mb-2 opacity-40">Message</label><textarea class="w-full bg-primary border border-white/10 p-4 rounded-xl text-white h-32 focus:outline-none focus:border-white/50 transition-colors" placeholder="Hello..."></textarea></div>
-                    <button class="w-full bg-white text-primary hover:bg-[#E5E5E5] font-bold py-4 rounded-xl transition-colors">Send Message</button>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider mb-2 text-gray-400">Message</label>
+                        <textarea id="contact-message" class="w-full bg-white border border-gray-200 p-4 rounded-xl text-primary h-32 focus:outline-none focus:border-accent transition-colors shadow-sm" placeholder="Hello..." required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-primary text-white hover:bg-accent font-bold py-4 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Send Message</button>
                 </form>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto mt-24 pt-8 border-t border-white/10 text-sm opacity-40 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto mt-24 pt-8 border-t border-gray-100 text-sm text-gray-400 flex justify-between items-center">
             <p>© 2026 Evangeline Zhao</p>
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-white flex items-center transition-colors">Back to Top <i data-lucide="arrow-up" class="w-4 h-4 ml-2"></i></button>
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-primary flex items-center transition-colors">Back to Top <i data-lucide="arrow-up" class="w-4 h-4 ml-2"></i></button>
         </div>
     </footer>
 
@@ -714,6 +1539,19 @@
     <script>
         // Init Lucide Icons
         lucide.createIcons();
+
+        // Contact Form Logic (Mailto)
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+            
+            const subject = `Portfolio Inquiry: ${name}`;
+            const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+            
+            window.location.href = `mailto:evangeline.zhao@mail.utoronto.ca?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
 
         // Router Function
         function router(pageId) {
@@ -726,6 +1564,20 @@
             if (target) {
                 target.classList.add('active');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // If switching to Lumi or Staging or Echoes, re-init TOC observer
+                if(pageId === 'lumi' || pageId === 'staging' || pageId === 'echoes') {
+                    // Slight delay to ensure DOM is ready
+                    setTimeout(() => {
+                        // Determine which TOC to init based on pageId
+                        let tocId = '';
+                        if (pageId === 'lumi') tocId = 'toc-lumi';
+                        else if (pageId === 'staging') tocId = 'toc-staging';
+                        else if (pageId === 'echoes') tocId = 'toc-echoes';
+                        
+                        if(tocId) initTocObserver(tocId);
+                    }, 500);
+                }
             }
             
             // Update Active Nav State
@@ -744,10 +1596,10 @@
         // Mobile Menu Toggle
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
+            if (menu.classList.contains('open')) {
+                menu.classList.remove('open');
             } else {
-                menu.classList.add('hidden');
+                menu.classList.add('open');
             }
         }
 
@@ -762,16 +1614,56 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
+                    
+                    // Handle stagger parents
+                    if(entry.target.classList.contains('stagger-parent')){
+                       // The CSS handles the children delays
+                    }
+                    
                     observer.unobserve(entry.target); // Only animate once
                 }
             });
         }, observerOptions);
 
-        // Observe elements
         document.addEventListener('DOMContentLoaded', () => {
-            const elements = document.querySelectorAll('.fade-in-section');
+            // Observe fade-in elements
+            const elements = document.querySelectorAll('.fade-in-section, .stagger-parent');
             elements.forEach(el => observer.observe(el));
         });
+
+        // Table of Contents Active State Logic
+        function initTocObserver(tocContainerId) {
+            // Clear any previous active states just in case
+            document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+
+            // Get specific container's links
+            const container = document.getElementById(tocContainerId);
+            if(!container) return;
+
+            const tocLinks = container.querySelectorAll('.toc-link');
+            
+            const sections = Array.from(tocLinks).map(link => {
+                const id = link.getAttribute('href').replace('#', '');
+                return document.getElementById(id);
+            }).filter(Boolean);
+
+            const tocObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Remove active from links in this container
+                        tocLinks.forEach(link => link.classList.remove('active'));
+                        
+                        // Add active to matching link
+                        const activeLink = container.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                        if (activeLink) activeLink.classList.add('active');
+                    }
+                });
+            }, {
+                rootMargin: '-20% 0px -60% 0px' 
+            });
+
+            sections.forEach(section => tocObserver.observe(section));
+        }
     </script>
 </body>
 </html>
