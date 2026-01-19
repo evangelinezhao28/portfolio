@@ -21,10 +21,10 @@
                     colors: {
                         background: '#FAFAFA', // Warm gray/white
                         surface: '#FFFFFF',
-                        primary: '#111111',    // Almost black
+                        primary: '#1A1A1A',    // Softer black
                         secondary: '#555555',  // Medium gray
-                        accent: '#0F766E',     // Deep Teal
-                        accentLight: '#14B8A6',
+                        accent: '#0D9488',     // Teal
+                        accentLight: '#5EEAD4',
                         border: '#E5E5E5'
                     },
                     fontFamily: {
@@ -32,21 +32,24 @@
                         serif: ['Merriweather', 'serif'],
                     },
                     backgroundImage: {
-                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
+                        // Subtle noise texture
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.04%22/%3E%3C/svg%3E')",
                     },
                     animation: {
-                        'blob': 'blob 10s infinite',
-                        'reveal': 'reveal 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards',
+                        'blob': 'blob 12s infinite ease-in-out', // Slower, smoother blob
+                        'blob-delay': 'blob 12s infinite ease-in-out 4s',
+                        'blob-long-delay': 'blob 12s infinite ease-in-out 8s',
+                        'reveal': 'reveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards', // Custom easing
                     },
                     keyframes: {
                         blob: {
                             '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '33%': { transform: 'translate(40px, -60px) scale(1.1)' },
+                            '66%': { transform: 'translate(-30px, 30px) scale(0.9)' },
                             '100%': { transform: 'translate(0px, 0px) scale(1)' },
                         },
                         reveal: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
@@ -67,17 +70,17 @@
 
         body {
             background-color: #FAFAFA;
-            color: #111111;
-            /* Add texture to background */
+            color: #1A1A1A;
+            /* Constant gentle noise texture */
             background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.03%22/%3E%3C/svg%3E');
         }
         
         /* --- Animations --- */
-        /* Basic Fade In */
+        /* High-quality "spring" feel easing for entry animations */
         .fade-in-section {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(40px);
+            transition: opacity 1.0s cubic-bezier(0.22, 1, 0.36, 1), transform 1.0s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: opacity, transform;
         }
         
@@ -86,11 +89,11 @@
             transform: translateY(0);
         }
 
-        /* Staggered Child Animations (for grids) */
+        /* Staggered Child Animations */
         .stagger-parent .stagger-child {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
         
         .stagger-parent.is-visible .stagger-child {
@@ -111,7 +114,8 @@
             display: none;
             min-height: 100vh;
             padding-top: 100px; 
-            animation: fadeInPage 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Quick fade-in for page switches */
+            animation: fadeInPage 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .page-section.active {
@@ -119,7 +123,7 @@
         }
 
         @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -128,34 +132,37 @@
             position: relative;
         }
         
-        /* Underline effect on active */
+        /* Elegant underline effect */
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 1px;
+            height: 1.5px;
             bottom: 4px;
             left: 50%;
-            background-color: #111;
-            transition: all 0.3s ease;
+            background-color: #1A1A1A;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
             transform: translateX(-50%);
+            opacity: 0;
         }
         
+        .nav-link:hover::after,
         .nav-link.active::after {
-            width: 60%;
+            width: 50%;
+            opacity: 1;
         }
         
         .nav-link.active {
-            color: #111;
+            color: #000;
             font-weight: 500;
         }
 
         /* Mobile Menu */
         #mobile-menu {
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             opacity: 0;
             pointer-events: none;
-            transform: translateY(-10px);
+            transform: translateY(-15px);
         }
         #mobile-menu.open {
             opacity: 1;
@@ -165,14 +172,14 @@
 
         /* TOC Active State */
         .toc-link.active {
-            color: #0F766E; 
-            border-left: 2px solid #0F766E;
+            color: #0D9488; 
+            border-left: 2px solid #0D9488;
             padding-left: 16px;
             font-weight: 500;
         }
         .toc-link {
             border-left: 2px solid #E5E5E5;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
         
         /* Images */
@@ -181,13 +188,12 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-accent/20 selection:text-primary">
+<body class="font-sans antialiased selection:bg-teal-100 selection:text-teal-900">
 
     <!-- Navigation -->
-    <!-- Updated: Floating Pill Style for Desktop -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:py-6 pointer-events-none">
-        <!-- Inner container creates the floating effect -->
-        <div class="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border border-white/40 shadow-sm rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto transition-all duration-300">
+        <!-- Floating Pill Container -->
+        <div class="max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto transition-all duration-300">
             
             <button onclick="router('home')" class="text-lg font-bold tracking-tight text-primary hover:text-accent transition-colors font-serif italic">
                 EZ.
@@ -200,21 +206,21 @@
                 <button onclick="router('visuals')" id="nav-visuals" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Visual Design</button>
                 <button onclick="router('about')" id="nav-about" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">About</button>
                 
-                <span class="w-px h-4 bg-gray-300 mx-2"></span>
+                <span class="w-px h-4 bg-gray-200 mx-3"></span>
                 
-                <button onclick="scrollToContact()" class="px-5 py-2 text-xs font-bold text-white bg-primary hover:bg-accent rounded-full transition-all transform hover:scale-105">
+                <button onclick="scrollToContact()" class="px-5 py-2 text-xs font-bold text-white bg-primary hover:bg-accent rounded-full transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
                     Contact
                 </button>
             </div>
 
             <!-- Mobile Toggle -->
-            <button class="md:hidden text-primary p-1" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+            <button class="md:hidden text-primary p-1 transition-transform hover:scale-110" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
                 <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="absolute top-24 left-4 right-4 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-xl rounded-2xl flex flex-col items-center py-8 space-y-6 md:hidden pointer-events-auto">
+        <div id="mobile-menu" class="absolute top-24 left-4 right-4 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-[0_8px_40px_rgb(0,0,0,0.12)] rounded-2xl flex flex-col items-center py-8 space-y-6 md:hidden pointer-events-auto">
             <button onclick="router('home'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Home</button>
             <button onclick="router('work'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Case Studies</button>
             <button onclick="router('visuals'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Visual Design</button>
@@ -227,39 +233,40 @@
     <main>
 
         <!-- ================= HOME PAGE ================= -->
-        <div id="home" class="page-section active pt-0"> <!-- Removed padding-top here as flex centers it -->
+        <div id="home" class="page-section active pt-0"> 
             <section class="min-h-screen flex items-center px-6 md:px-12 relative overflow-hidden">
                 
-                <!-- Background Animated Blob -->
-                <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
-                <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
+                <!-- Refined Background Animated Blobs -->
+                <div class="absolute top-[0%] right-[0%] w-[600px] h-[600px] bg-teal-100/40 rounded-full mix-blend-multiply filter blur-3xl animate-blob -z-10"></div>
+                <div class="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-purple-100/40 rounded-full mix-blend-multiply filter blur-3xl animate-blob-delay -z-10"></div>
+                <div class="absolute bottom-[-10%] right-[20%] w-[400px] h-[400px] bg-rose-100/40 rounded-full mix-blend-multiply filter blur-3xl animate-blob-long-delay -z-10"></div>
 
-                <div class="max-w-5xl w-full mx-auto relative z-10">
+                <div class="max-w-5xl w-full mx-auto relative z-10 pt-12">
                     
                     <div class="fade-in-section mb-6">
-                        <div class="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase border border-gray-200 rounded-full text-secondary bg-white/50 backdrop-blur-sm">
-                            <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase border border-gray-200/60 rounded-full text-secondary bg-white/60 backdrop-blur-sm shadow-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
                             Open to Internships / Co-op
                         </div>
                     </div>
                     
                     <div class="fade-in-section">
-                        <p class="text-xl md:text-2xl text-accent font-medium mb-4">Hello, I'm Evangeline.</p>
+                        <p class="text-xl md:text-2xl text-accent font-medium mb-4 tracking-tight">Hello, I'm Evangeline.</p>
                         
                         <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-primary mb-8 leading-[1.05] tracking-tight">
                             Designing services <br class="hidden md:block"/> that work for <span class="font-serif italic font-light text-accent">people.</span>
                         </h1>
                     </div>
                     
-                    <p class="fade-in-section text-lg md:text-2xl text-secondary mb-12 max-w-2xl leading-relaxed font-light">
+                    <p class="fade-in-section text-lg md:text-2xl text-secondary mb-12 max-w-2xl leading-relaxed font-light opacity-90">
                         I support teams in turning complex processes into clear experiences—across people, policies, and platforms.
                     </p>
                     
                     <div class="fade-in-section flex flex-col sm:flex-row gap-4">
-                        <button onclick="router('work')" class="px-8 py-4 text-sm font-bold text-white bg-primary hover:bg-accent rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <button onclick="router('work')" class="px-8 py-4 text-sm font-bold text-white bg-primary hover:bg-accent rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2">
                             View Case Studies <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="router('about')" class="px-8 py-4 text-sm font-bold text-primary bg-white border border-border hover:border-gray-400 rounded-full transition-all">
+                        <button onclick="router('about')" class="px-8 py-4 text-sm font-bold text-primary bg-white border border-gray-200 hover:border-gray-400 hover:bg-gray-50 rounded-full transition-all duration-300">
                             More About Me
                         </button>
                     </div>
@@ -267,40 +274,40 @@
             </section>
 
             <!-- Featured Work Preview -->
-            <section class="py-24 px-6 md:px-12 border-t border-border">
+            <section class="py-24 px-6 md:px-12 border-t border-gray-200/60">
                 <div class="max-w-7xl mx-auto">
                     <div class="fade-in-section mb-16 flex items-end justify-between">
                         <div>
                             <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">01 — Selected Work</span>
-                            <h2 class="text-4xl font-serif font-light text-primary">Featured Projects</h2>
+                            <h2 class="text-4xl font-serif font-light text-primary tracking-tight">Featured Projects</h2>
                         </div>
                         <button onclick="router('work')" class="hidden md:flex items-center text-sm font-bold text-primary hover:text-accent transition-colors">See all <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i></button>
                     </div>
                     
                     <!-- Lumi Card -->
-                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-gray-100 hover:shadow-2xl hover:shadow-gray-200 transition-all duration-500 hover:-translate-y-1 mb-12">
+                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1 mb-12">
                         <div class="grid md:grid-cols-2 min-h-[550px]">
                             <div class="p-10 md:p-16 flex flex-col justify-center order-2 md:order-1 relative z-10">
                                 <div>
                                     <div class="flex flex-wrap gap-2 mb-6">
-                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded text-secondary">UX Design</span>
-                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded text-secondary">UX Research</span>
+                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded-md text-secondary">UX Design</span>
+                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded-md text-secondary">UX Research</span>
                                     </div>
-                                    <h3 class="text-4xl md:text-5xl font-serif text-primary mb-6 group-hover:text-accent transition-colors">Lumi</h3>
-                                    <p class="text-lg text-secondary mb-8 leading-relaxed max-w-md">
+                                    <h3 class="text-4xl md:text-5xl font-serif text-primary mb-6 group-hover:text-accent transition-colors duration-300">Lumi</h3>
+                                    <p class="text-lg text-secondary mb-8 leading-relaxed max-w-md font-light">
                                         Enabling structured reporting, safer navigation, and real-time reassurance for late night shift workers.
                                     </p>
                                 </div>
-                                <div class="flex items-center text-primary font-bold text-sm uppercase tracking-wider group-hover:text-accent transition-colors mt-auto">
-                                    Read Case Study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                                <div class="flex items-center text-primary font-bold text-sm uppercase tracking-wider group-hover:text-accent transition-colors duration-300 mt-auto">
+                                    Read Case Study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"></i>
                                 </div>
                             </div>
                             <!-- Visual Side -->
                             <div class="bg-gray-50 relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
                                 <div class="absolute inset-0 bg-gradient-to-tr from-gray-100 to-white opacity-50"></div>
-                                <div class="w-full max-w-sm aspect-[3/4] bg-white rounded-xl shadow-2xl relative transform group-hover:scale-105 transition-transform duration-700 p-3 border border-gray-100">
+                                <div class="w-full max-w-sm aspect-[3/4] bg-white rounded-2xl shadow-2xl relative transform group-hover:scale-105 transition-transform duration-700 p-2 border border-gray-100">
                                     <!-- Original User Image -->
-                                    <img src="images/TeamPhoto.png" alt="Lumi Preview" class="w-full h-full object-contain rounded-lg">
+                                    <img src="images/TeamPhoto.png" alt="Lumi Preview" class="w-full h-full object-contain rounded-xl">
                                 </div>
                             </div>
                         </div>
@@ -309,38 +316,38 @@
             </section>
 
             <!-- Expertise -->
-            <section class="py-24 px-6 md:px-12 bg-white border-t border-border">
+            <section class="py-24 px-6 md:px-12 bg-white border-t border-gray-100">
                 <div class="max-w-7xl mx-auto stagger-parent fade-in-section">
                     <div class="mb-16">
                         <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">02 — Skills</span>
-                        <h2 class="text-4xl font-serif font-light text-primary mb-6">Expertise</h2>
+                        <h2 class="text-4xl font-serif font-light text-primary mb-6 tracking-tight">Expertise</h2>
                         <p class="text-lg text-secondary max-w-2xl leading-relaxed font-light">My toolkit for making sense of complex systems.</p>
                     </div>
                     
                     <div class="grid md:grid-cols-3 gap-8">
                         <!-- Card 1 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
-                                <i data-lucide="search" class="w-5 h-5"></i>
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 hover:bg-white hover:shadow-xl transition-all duration-500 group">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="search" class="w-5 h-5 text-accent"></i>
                             </div>
                             <h3 class="text-xl font-bold text-primary mb-3">Research & Synthesis</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80">I don't just ask questions; I find the right questions to ask. From interviews to affinity mapping, I turn noise into signal.</p>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80 font-light">I don't just ask questions; I find the right questions to ask. From interviews to affinity mapping, I turn noise into signal.</p>
                         </div>
                         <!-- Card 2 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
-                                <i data-lucide="map" class="w-5 h-5"></i>
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 hover:bg-white hover:shadow-xl transition-all duration-500 group">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="map" class="w-5 h-5 text-accent"></i>
                             </div>
                             <h3 class="text-xl font-bold text-primary mb-3">Service Mapping</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80">I visualize the invisible. Journey maps and blueprints help stakeholders see the ecosystem, not just the interface.</p>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80 font-light">I visualize the invisible. Journey maps and blueprints help stakeholders see the ecosystem, not just the interface.</p>
                         </div>
                         <!-- Card 3 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
-                                <i data-lucide="layout" class="w-5 h-5"></i>
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 hover:bg-white hover:shadow-xl transition-all duration-500 group">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="layout" class="w-5 h-5 text-accent"></i>
                             </div>
                             <h3 class="text-xl font-bold text-primary mb-3">Prototyping</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80">I build to think. Whether it's paper sketches or clickable Figma flows, I use prototypes to test assumptions early.</p>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80 font-light">I build to think. Whether it's paper sketches or clickable Figma flows, I use prototypes to test assumptions early.</p>
                         </div>
                     </div>
                 </div>
@@ -358,12 +365,12 @@
                     </div>
 
                     <!-- Lumi Card -->
-                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-2xl">
+                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)]">
                         <div class="grid md:grid-cols-2 min-h-[450px]">
                             <div class="p-10 md:p-14 flex flex-col justify-center order-2 md:order-1">
                                 <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">Featured Project</span>
                                 <h2 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Lumi</h2>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed">Enabling structured reporting, safer navigation, and real-time reassurance for shift workers.</p>
+                                <p class="text-secondary mb-8 text-lg leading-relaxed font-light">Enabling structured reporting, safer navigation, and real-time reassurance for shift workers.</p>
                                 <div class="flex gap-2 flex-wrap mb-8">
                                     <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Service Design</span>
                                     <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">UX Research</span>
@@ -373,7 +380,7 @@
                                 </span>
                             </div>
                             <div class="bg-gray-50 relative overflow-hidden group flex items-center justify-center p-12">
-                                <div class="w-full max-w-md aspect-video bg-white rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-500 overflow-hidden border border-gray-100">
+                                <div class="w-full max-w-md aspect-video bg-white rounded-2xl shadow-lg transform group-hover:scale-105 transition-transform duration-700 overflow-hidden border border-gray-100">
                                     <img src="images/TeamPhoto.png" alt="Lumi Project" class="w-full h-full object-cover">
                                 </div>
                             </div>
@@ -381,10 +388,10 @@
                     </div>
 
                     <!-- Staging Mastery Card -->
-                    <div onclick="router('staging')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-2xl">
+                    <div onclick="router('staging')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)]">
                         <div class="grid md:grid-cols-2 min-h-[450px]">
                              <div class="bg-teal-50 relative overflow-hidden group flex items-center justify-center p-12">
-                                <div class="w-full max-w-md aspect-video bg-white rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-500 overflow-hidden border border-gray-100">
+                                <div class="w-full max-w-md aspect-video bg-white rounded-2xl shadow-lg transform group-hover:scale-105 transition-transform duration-700 overflow-hidden border border-gray-100">
                                      <!-- Staging Mastery Landing Page -->
                                      <img src="images/SMPage.png" alt="Staging Mastery Interface" class="w-full h-full object-cover">
                                 </div>
@@ -392,7 +399,7 @@
                             <div class="p-10 md:p-14 flex flex-col justify-center relative">
                                 <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">Field Placement</span>
                                 <h2 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Staging Mastery</h2>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed">Designing an End-to-End Course Experience & Pre-Launch Funnel (Wix → Kajabi).</p>
+                                <p class="text-secondary mb-8 text-lg leading-relaxed font-light">Designing an End-to-End Course Experience & Pre-Launch Funnel (Wix → Kajabi).</p>
                                 <div class="flex gap-2 flex-wrap mb-8">
                                     <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Service Design</span>
                                     <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">LXD</span>
@@ -405,12 +412,12 @@
                     </div>
 
                     <!-- Echoes from China Card -->
-                    <div onclick="router('echoes')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-16 shadow-sm hover:shadow-2xl">
+                    <div onclick="router('echoes')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-16 shadow-sm hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)]">
                         <div class="grid md:grid-cols-2 min-h-[450px]">
                             <div class="p-10 md:p-14 flex flex-col justify-center order-2 md:order-1 relative">
                                 <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">0→1 Build</span>
                                 <h3 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Echoes from China</h3>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed">
+                                <p class="text-secondary mb-8 text-lg leading-relaxed font-light">
                                     Designing a 0→1 community website for traditional Chinese culture with events, membership, and donation features.
                                 </p>
                                 <div class="flex gap-2 flex-wrap mb-8">
@@ -423,7 +430,7 @@
                             </div>
                             <!-- Visual Side -->
                             <div class="bg-red-50 relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
-                                <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl transform rotate-[-5deg] group-hover:rotate-0 transition-transform duration-500 border border-gray-100 p-2">
+                                <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl transform rotate-[-5deg] group-hover:rotate-0 transition-transform duration-700 border border-gray-100 p-2">
                                     <img src="images/echoesHomePage.png" alt="Echoes Mobile Preview" class="w-full h-full object-cover rounded-xl">
                                 </div>
                             </div>
@@ -475,58 +482,34 @@
                     <!-- Masonry Grid for Visuals -->
                     <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 stagger-parent fade-in-section">
                         
-                        <!-- Poster Item 1 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
-                            <img src="https://placehold.co/600x1000/F3F4F6/333?text=Tall+Poster+Design" alt="Event Flyer" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Print Design</span>
-                                <h4 class="text-white font-medium text-lg">Community Event Flyer</h4>
-                            </div>
+                        <!-- Item 1 -->
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
+                            <img src="images/VD2.png" alt="Visual Design 2" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
 
                         <!-- Item 2 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
-                            <img src="https://placehold.co/800x800/E5E5E5/333?text=Square+Social+Post" alt="Social Post" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Social Media</span>
-                                <h4 class="text-white font-medium text-lg">Instagram Carousel</h4>
-                            </div>
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
+                            <img src="images/VD3.png" alt="Visual Design 3" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
 
                         <!-- Item 3 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
-                            <img src="https://placehold.co/600x750/F0FDFA/0D9488?text=Promo+Graphic" alt="Marketing Poster" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Marketing</span>
-                                <h4 class="text-white font-medium text-lg">Workshop Promo</h4>
-                            </div>
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
+                            <img src="images/VD4.png" alt="Visual Design 4" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
 
                         <!-- Item 4 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
-                            <img src="https://placehold.co/900x500/FFF5F5/9B2C2C?text=Wide+Web+Banner" alt="Web Banner" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Digital Asset</span>
-                                <h4 class="text-white font-medium text-lg">Website Hero Banner</h4>
-                            </div>
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
+                            <img src="images/marketingMaterial.png" alt="Marketing Material" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
 
                         <!-- Item 5 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
-                            <img src="https://placehold.co/500x1100/FAFAFA/333?text=Long+IG+Story" alt="IG Story" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Social Media</span>
-                                <h4 class="text-white font-medium text-lg">Story Template</h4>
-                            </div>
-                        </div>
-
-                         <!-- Item 6 -->
-                         <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer mb-6">
-                            <img src="https://placehold.co/600x400/F3F4F6/333?text=Small+Asset" alt="Brand Asset" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Branding</span>
-                                <h4 class="text-white font-medium text-lg">Sticker Pack</h4>
-                            </div>
+                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
+                            <img src="images/StagingMastery.png" alt="Staging Mastery" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
 
                     </div>
@@ -555,31 +538,31 @@
 
                     <!-- Headshot -->
                     <div class="fade-in-section mb-16 relative">
-                         <div class="w-full aspect-video overflow-hidden rounded-2xl border border-border shadow-md">
-                            <!-- Original User Image -->
+                         <div class="w-full aspect-video overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
+                            <!-- Original User Image - Color -->
                             <img src="https://github.com/evangelinezhao28/evangeline_Zhao/blob/48d75d629aec2502d8a8067ebefad01a2a3253ea/images/headshot.jpg?raw=true" alt="Evangeline Zhao Headshot" class="w-full h-full object-cover">
                          </div>
                     </div>
 
-                    <div class="fade-in-section bg-white p-10 rounded-2xl mb-16 border border-border shadow-sm">
+                    <div class="fade-in-section bg-white p-10 rounded-2xl mb-16 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                         <h3 class="text-lg font-bold text-primary mb-6 flex items-center">
                             <i data-lucide="sparkles" class="w-5 h-5 mr-2 text-accent"></i> What motivates me
                         </h3>
                         <ul class="space-y-6">
                             <li class="flex items-start">
-                                <span class="text-secondary"><strong>Public Services:</strong> Designing for people—where access, clarity, and trust matter as much as usability.</span>
+                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Public Services:</strong> Designing for people—where access, clarity, and trust matter as much as usability.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-secondary"><strong>Safer Communities:</strong> Supporting vulnerable populations through inclusive, trauma-informed experiences and community-based solutions.</span>
+                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Safer Communities:</strong> Supporting vulnerable populations through inclusive, trauma-informed experiences and community-based solutions.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-secondary"><strong>Systems-Level Impact:</strong> Improving services beyond screens—aligning people, processes, and platforms to create change that can actually ship.</span>
+                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Systems-Level Impact:</strong> Improving services beyond screens—aligning people, processes, and platforms to create change that can actually ship.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-secondary"><strong>Accessibility & Equity:</strong> Designing for diverse needs—especially for those often excluded by default systems.</span>
+                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Accessibility & Equity:</strong> Designing for diverse needs—especially for those often excluded by default systems.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-secondary"><strong>Collaboration:</strong> Facilitating workshops and stakeholder alignment to move from insights to decisions, and from ideas to delivery.</span>
+                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Collaboration:</strong> Facilitating workshops and stakeholder alignment to move from insights to decisions, and from ideas to delivery.</span>
                             </li>
                         </ul>
                     </div>
@@ -610,7 +593,10 @@
                     </div>
                 </div>
             </div>
-
+            
+            <!-- Rest of Lumi case study content kept identical but benefits from global style updates -->
+            <!-- ... -->
+            
             <div class="max-w-6xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <!-- Sticky TOC -->
                 <div class="hidden lg:block lg:col-span-3">
@@ -992,6 +978,9 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Rest of Staging case study content kept identical -->
+            <!-- ... -->
 
             <div class="max-w-6xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <!-- Sticky TOC -->
