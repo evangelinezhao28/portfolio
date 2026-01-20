@@ -76,11 +76,11 @@
         }
         
         /* --- Animations --- */
-        /* High-quality "spring" feel easing for entry animations */
+        /* Basic Fade In */
         .fade-in-section {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.0s cubic-bezier(0.22, 1, 0.36, 1), transform 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
         }
         
@@ -89,11 +89,11 @@
             transform: translateY(0);
         }
 
-        /* Staggered Child Animations */
+        /* Staggered Child Animations (for grids) */
         .stagger-parent .stagger-child {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
         
         .stagger-parent.is-visible .stagger-child {
@@ -114,8 +114,7 @@
             display: none;
             min-height: 100vh;
             padding-top: 100px; 
-            /* Quick fade-in for page switches */
-            animation: fadeInPage 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            animation: fadeInPage 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .page-section.active {
@@ -123,7 +122,7 @@
         }
 
         @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -132,37 +131,34 @@
             position: relative;
         }
         
-        /* Elegant underline effect */
+        /* Underline effect on active */
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 1.5px;
+            height: 1px;
             bottom: 4px;
             left: 50%;
-            background-color: #1A1A1A;
-            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            background-color: #111;
+            transition: all 0.3s ease;
             transform: translateX(-50%);
-            opacity: 0;
         }
         
-        .nav-link:hover::after,
         .nav-link.active::after {
-            width: 50%;
-            opacity: 1;
+            width: 60%;
         }
         
         .nav-link.active {
-            color: #000;
+            color: #111;
             font-weight: 500;
         }
 
         /* Mobile Menu */
         #mobile-menu {
-            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 0.3s ease, transform 0.3s ease;
             opacity: 0;
             pointer-events: none;
-            transform: translateY(-15px);
+            transform: translateY(-10px);
         }
         #mobile-menu.open {
             opacity: 1;
@@ -172,14 +168,14 @@
 
         /* TOC Active State */
         .toc-link.active {
-            color: #0D9488; 
-            border-left: 2px solid #0D9488;
+            color: #0F766E; 
+            border-left: 2px solid #0F766E;
             padding-left: 16px;
             font-weight: 500;
         }
         .toc-link {
             border-left: 2px solid #E5E5E5;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         
         /* Images */
@@ -188,12 +184,13 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-teal-100 selection:text-teal-900">
+<body class="font-sans antialiased selection:bg-accent/20 selection:text-primary">
 
     <!-- Navigation -->
+    <!-- Updated: Floating Pill Style for Desktop -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:py-6 pointer-events-none">
-        <!-- Floating Pill Container -->
-        <div class="max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto transition-all duration-300">
+        <!-- Inner container creates the floating effect -->
+        <div class="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border border-white/40 shadow-sm rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto transition-all duration-300">
             
             <button onclick="router('home')" class="text-lg font-bold tracking-tight text-primary hover:text-accent transition-colors font-serif italic">
                 EZ.
@@ -206,21 +203,21 @@
                 <button onclick="router('visuals')" id="nav-visuals" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Visual Design</button>
                 <button onclick="router('about')" id="nav-about" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">About</button>
                 
-                <span class="w-px h-4 bg-gray-200 mx-3"></span>
+                <span class="w-px h-4 bg-gray-300 mx-2"></span>
                 
-                <button onclick="scrollToContact()" class="px-5 py-2 text-xs font-bold text-white bg-primary hover:bg-accent rounded-full transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+                <button onclick="scrollToContact()" class="px-5 py-2 text-xs font-bold text-white bg-primary hover:bg-accent rounded-full transition-all transform hover:scale-105">
                     Contact
                 </button>
             </div>
 
             <!-- Mobile Toggle -->
-            <button class="md:hidden text-primary p-1 transition-transform hover:scale-110" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+            <button class="md:hidden text-primary p-1" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
                 <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="absolute top-24 left-4 right-4 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-[0_8px_40px_rgb(0,0,0,0.12)] rounded-2xl flex flex-col items-center py-8 space-y-6 md:hidden pointer-events-auto">
+        <div id="mobile-menu" class="absolute top-24 left-4 right-4 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-xl rounded-2xl flex flex-col items-center py-8 space-y-6 md:hidden pointer-events-auto">
             <button onclick="router('home'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Home</button>
             <button onclick="router('work'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Case Studies</button>
             <button onclick="router('visuals'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Visual Design</button>
@@ -233,40 +230,39 @@
     <main>
 
         <!-- ================= HOME PAGE ================= -->
-        <div id="home" class="page-section active pt-0"> 
+        <div id="home" class="page-section active pt-0"> <!-- Removed padding-top here as flex centers it -->
             <section class="min-h-screen flex items-center px-6 md:px-12 relative overflow-hidden">
                 
-                <!-- Refined Background Animated Blobs -->
-                <div class="absolute top-[0%] right-[0%] w-[600px] h-[600px] bg-teal-100/40 rounded-full mix-blend-multiply filter blur-3xl animate-blob -z-10"></div>
-                <div class="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-purple-100/40 rounded-full mix-blend-multiply filter blur-3xl animate-blob-delay -z-10"></div>
-                <div class="absolute bottom-[-10%] right-[20%] w-[400px] h-[400px] bg-rose-100/40 rounded-full mix-blend-multiply filter blur-3xl animate-blob-long-delay -z-10"></div>
+                <!-- Background Animated Blob -->
+                <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
+                <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
 
-                <div class="max-w-5xl w-full mx-auto relative z-10 pt-12">
+                <div class="max-w-5xl w-full mx-auto relative z-10">
                     
                     <div class="fade-in-section mb-6">
-                        <div class="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase border border-gray-200/60 rounded-full text-secondary bg-white/60 backdrop-blur-sm shadow-sm">
-                            <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase border border-gray-200 rounded-full text-secondary bg-white/50 backdrop-blur-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
                             Open to Internships / Co-op
                         </div>
                     </div>
                     
                     <div class="fade-in-section">
-                        <p class="text-xl md:text-2xl text-accent font-medium mb-4 tracking-tight">Hello, I'm Evangeline.</p>
+                        <p class="text-xl md:text-2xl text-accent font-medium mb-4">Hello, I'm Evangeline.</p>
                         
                         <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-primary mb-8 leading-[1.05] tracking-tight">
                             Designing services <br class="hidden md:block"/> that work for <span class="font-serif italic font-light text-accent">people.</span>
                         </h1>
                     </div>
                     
-                    <p class="fade-in-section text-lg md:text-2xl text-secondary mb-12 max-w-2xl leading-relaxed font-light opacity-90">
+                    <p class="fade-in-section text-lg md:text-2xl text-secondary mb-12 max-w-2xl leading-relaxed font-light">
                         I support teams in turning complex processes into clear experiences—across people, policies, and platforms.
                     </p>
                     
                     <div class="fade-in-section flex flex-col sm:flex-row gap-4">
-                        <button onclick="router('work')" class="px-8 py-4 text-sm font-bold text-white bg-primary hover:bg-accent rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <button onclick="router('work')" class="px-8 py-4 text-sm font-bold text-white bg-primary hover:bg-accent rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
                             View Case Studies <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="router('about')" class="px-8 py-4 text-sm font-bold text-primary bg-white border border-gray-200 hover:border-gray-400 hover:bg-gray-50 rounded-full transition-all duration-300">
+                        <button onclick="router('about')" class="px-8 py-4 text-sm font-bold text-primary bg-white border border-border hover:border-gray-400 rounded-full transition-all">
                             More About Me
                         </button>
                     </div>
@@ -274,40 +270,40 @@
             </section>
 
             <!-- Featured Work Preview -->
-            <section class="py-24 px-6 md:px-12 border-t border-gray-200/60">
+            <section class="py-24 px-6 md:px-12 border-t border-border">
                 <div class="max-w-7xl mx-auto">
                     <div class="fade-in-section mb-16 flex items-end justify-between">
                         <div>
                             <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">01 — Selected Work</span>
-                            <h2 class="text-4xl font-serif font-light text-primary tracking-tight">Featured Projects</h2>
+                            <h2 class="text-4xl font-serif font-light text-primary">Featured Projects</h2>
                         </div>
                         <button onclick="router('work')" class="hidden md:flex items-center text-sm font-bold text-primary hover:text-accent transition-colors">See all <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i></button>
                     </div>
                     
                     <!-- Lumi Card -->
-                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1 mb-12">
+                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-gray-100 hover:shadow-2xl hover:shadow-gray-200 transition-all duration-500 hover:-translate-y-1 mb-12">
                         <div class="grid md:grid-cols-2 min-h-[550px]">
                             <div class="p-10 md:p-16 flex flex-col justify-center order-2 md:order-1 relative z-10">
                                 <div>
                                     <div class="flex flex-wrap gap-2 mb-6">
-                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded-md text-secondary">UX Design</span>
-                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded-md text-secondary">UX Research</span>
+                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded text-secondary">UX Design</span>
+                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded text-secondary">UX Research</span>
                                     </div>
-                                    <h3 class="text-4xl md:text-5xl font-serif text-primary mb-6 group-hover:text-accent transition-colors duration-300">Lumi</h3>
-                                    <p class="text-lg text-secondary mb-8 leading-relaxed max-w-md font-light">
+                                    <h3 class="text-4xl md:text-5xl font-serif text-primary mb-6 group-hover:text-accent transition-colors">Lumi</h3>
+                                    <p class="text-lg text-secondary mb-8 leading-relaxed max-w-md">
                                         Enabling structured reporting, safer navigation, and real-time reassurance for late night shift workers.
                                     </p>
                                 </div>
-                                <div class="flex items-center text-primary font-bold text-sm uppercase tracking-wider group-hover:text-accent transition-colors duration-300 mt-auto">
-                                    Read Case Study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"></i>
+                                <div class="flex items-center text-primary font-bold text-sm uppercase tracking-wider group-hover:text-accent transition-colors mt-auto">
+                                    Read Case Study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
                                 </div>
                             </div>
                             <!-- Visual Side -->
                             <div class="bg-gray-50 relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
                                 <div class="absolute inset-0 bg-gradient-to-tr from-gray-100 to-white opacity-50"></div>
-                                <div class="w-full max-w-sm aspect-[3/4] bg-white rounded-2xl shadow-2xl relative transform group-hover:scale-105 transition-transform duration-700 p-2 border border-gray-100">
+                                <div class="w-full max-w-sm aspect-[3/4] bg-white rounded-xl shadow-2xl relative transform group-hover:scale-105 transition-transform duration-700 p-3 border border-gray-100">
                                     <!-- Original User Image -->
-                                    <img src="images/TeamPhoto.png" alt="Lumi Preview" class="w-full h-full object-contain rounded-xl">
+                                    <img src="images/VD5.png" alt="Lumi Preview" class="w-full h-full object-contain rounded-lg">
                                 </div>
                             </div>
                         </div>
@@ -316,38 +312,38 @@
             </section>
 
             <!-- Expertise -->
-            <section class="py-24 px-6 md:px-12 bg-white border-t border-gray-100">
+            <section class="py-24 px-6 md:px-12 bg-white border-t border-border">
                 <div class="max-w-7xl mx-auto stagger-parent fade-in-section">
                     <div class="mb-16">
                         <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">02 — Skills</span>
-                        <h2 class="text-4xl font-serif font-light text-primary mb-6 tracking-tight">Expertise</h2>
+                        <h2 class="text-4xl font-serif font-light text-primary mb-6">Expertise</h2>
                         <p class="text-lg text-secondary max-w-2xl leading-relaxed font-light">My toolkit for making sense of complex systems.</p>
                     </div>
                     
                     <div class="grid md:grid-cols-3 gap-8">
                         <!-- Card 1 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 hover:bg-white hover:shadow-xl transition-all duration-500 group">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
-                                <i data-lucide="search" class="w-5 h-5 text-accent"></i>
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
+                                <i data-lucide="search" class="w-5 h-5"></i>
                             </div>
                             <h3 class="text-xl font-bold text-primary mb-3">Research & Synthesis</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80 font-light">I don't just ask questions; I find the right questions to ask. From interviews to affinity mapping, I turn noise into signal.</p>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80">I don't just ask questions; I find the right questions to ask. From interviews to affinity mapping, I turn noise into signal.</p>
                         </div>
                         <!-- Card 2 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 hover:bg-white hover:shadow-xl transition-all duration-500 group">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
-                                <i data-lucide="map" class="w-5 h-5 text-accent"></i>
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
+                                <i data-lucide="map" class="w-5 h-5"></i>
                             </div>
                             <h3 class="text-xl font-bold text-primary mb-3">Service Mapping</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80 font-light">I visualize the invisible. Journey maps and blueprints help stakeholders see the ecosystem, not just the interface.</p>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80">I visualize the invisible. Journey maps and blueprints help stakeholders see the ecosystem, not just the interface.</p>
                         </div>
                         <!-- Card 3 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 hover:bg-white hover:shadow-xl transition-all duration-500 group">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
-                                <i data-lucide="layout" class="w-5 h-5 text-accent"></i>
+                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
+                                <i data-lucide="layout" class="w-5 h-5"></i>
                             </div>
                             <h3 class="text-xl font-bold text-primary mb-3">Prototyping</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80 font-light">I build to think. Whether it's paper sketches or clickable Figma flows, I use prototypes to test assumptions early.</p>
+                            <p class="text-sm text-secondary leading-relaxed opacity-80">I build to think. Whether it's paper sketches or clickable Figma flows, I use prototypes to test assumptions early.</p>
                         </div>
                     </div>
                 </div>
@@ -365,12 +361,12 @@
                     </div>
 
                     <!-- Lumi Card -->
-                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)]">
+                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-2xl">
                         <div class="grid md:grid-cols-2 min-h-[450px]">
                             <div class="p-10 md:p-14 flex flex-col justify-center order-2 md:order-1">
                                 <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">Featured Project</span>
                                 <h2 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Lumi</h2>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed font-light">Enabling structured reporting, safer navigation, and real-time reassurance for shift workers.</p>
+                                <p class="text-secondary mb-8 text-lg leading-relaxed">Enabling structured reporting, safer navigation, and real-time reassurance for shift workers.</p>
                                 <div class="flex gap-2 flex-wrap mb-8">
                                     <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Service Design</span>
                                     <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">UX Research</span>
@@ -380,18 +376,18 @@
                                 </span>
                             </div>
                             <div class="bg-gray-50 relative overflow-hidden group flex items-center justify-center p-12">
-                                <div class="w-full max-w-md aspect-video bg-white rounded-2xl shadow-lg transform group-hover:scale-105 transition-transform duration-700 overflow-hidden border border-gray-100">
-                                    <img src="images/TeamPhoto.png" alt="Lumi Project" class="w-full h-full object-cover">
+                                <div class="w-full max-w-md aspect-video bg-white rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-500 overflow-hidden border border-gray-100">
+                                    <img src="images/VD5.png" alt="Lumi Project" class="w-full h-full object-cover">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Staging Mastery Card -->
-                    <div onclick="router('staging')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)]">
+                    <div onclick="router('staging')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-2xl">
                         <div class="grid md:grid-cols-2 min-h-[450px]">
                              <div class="bg-teal-50 relative overflow-hidden group flex items-center justify-center p-12">
-                                <div class="w-full max-w-md aspect-video bg-white rounded-2xl shadow-lg transform group-hover:scale-105 transition-transform duration-700 overflow-hidden border border-gray-100">
+                                <div class="w-full max-w-md aspect-video bg-white rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-500 overflow-hidden border border-gray-100">
                                      <!-- Staging Mastery Landing Page -->
                                      <img src="images/SMPage.png" alt="Staging Mastery Interface" class="w-full h-full object-cover">
                                 </div>
@@ -399,7 +395,7 @@
                             <div class="p-10 md:p-14 flex flex-col justify-center relative">
                                 <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">Field Placement</span>
                                 <h2 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Staging Mastery</h2>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed font-light">Designing an End-to-End Course Experience & Pre-Launch Funnel (Wix → Kajabi).</p>
+                                <p class="text-secondary mb-8 text-lg leading-relaxed">Designing an End-to-End Course Experience & Pre-Launch Funnel (Wix → Kajabi).</p>
                                 <div class="flex gap-2 flex-wrap mb-8">
                                     <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Service Design</span>
                                     <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">LXD</span>
@@ -412,12 +408,12 @@
                     </div>
 
                     <!-- Echoes from China Card -->
-                    <div onclick="router('echoes')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-16 shadow-sm hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)]">
+                    <div onclick="router('echoes')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-16 shadow-sm hover:shadow-2xl">
                         <div class="grid md:grid-cols-2 min-h-[450px]">
                             <div class="p-10 md:p-14 flex flex-col justify-center order-2 md:order-1 relative">
                                 <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">0→1 Build</span>
                                 <h3 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Echoes from China</h3>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed font-light">
+                                <p class="text-secondary mb-8 text-lg leading-relaxed">
                                     Designing a 0→1 community website for traditional Chinese culture with events, membership, and donation features.
                                 </p>
                                 <div class="flex gap-2 flex-wrap mb-8">
@@ -430,7 +426,7 @@
                             </div>
                             <!-- Visual Side -->
                             <div class="bg-red-50 relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
-                                <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl transform rotate-[-5deg] group-hover:rotate-0 transition-transform duration-700 border border-gray-100 p-2">
+                                <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl transform rotate-[-5deg] group-hover:rotate-0 transition-transform duration-500 border border-gray-100 p-2">
                                     <img src="images/echoesHomePage.png" alt="Echoes Mobile Preview" class="w-full h-full object-cover rounded-xl">
                                 </div>
                             </div>
@@ -474,99 +470,343 @@
                     <div class="fade-in-section mb-16 pt-10">
                         <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">Gallery</span>
                         <h2 class="text-5xl md:text-6xl font-serif text-primary mb-6 tracking-tight">Visual Design & Marketing</h2>
-                        <p class="text-lg text-secondary max-w-2xl leading-relaxed font-light">
-                            A curated collection of flyers, social media assets, and posters designed for various events and organizations.
-                        </p>
+                        <div class="text-lg text-secondary max-w-3xl leading-relaxed font-light space-y-6">
+                            <p>I create clean, high-impact visuals that communicate clearly and feel premium. My work focuses on composition, typography, and visual hierarchy—supporting both storytelling and conversion through intentional design decisions.</p>
+                            <p>I primarily shoot digital photography, and I’m also exploring film as part of my creative practice.</p>
+                        </div>
                     </div>
 
-                    <!-- Masonry Grid for Visuals -->
-                    <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 stagger-parent fade-in-section">
+                    <!-- Photography Section -->
+                    <div class="fade-in-section mb-24">
+                        <h3 class="text-2xl font-serif text-primary mb-2">Photography — Selected Works</h3>
+                        <p class="text-secondary text-sm mb-8">A curated selection exploring light, texture, structure, and mood.</p>
                         
-                        <!-- Item 1 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
-                            <img src="images/VD2.png" alt="Visual Design 2" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
-                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
+                        <!-- Photography Carousel (Updated to match Creative Gallery) -->
+                        <div class="relative w-full max-w-5xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-gray-900 rounded-2xl overflow-hidden group shadow-xl border border-gray-200">
+                            <!-- Main Image -->
+                            <img id="photo-image" src="images/p1.JPG" alt="Photography Gallery" class="w-full h-full object-contain transition-opacity duration-500 ease-in-out">
+                            
+                            <!-- Caption Overlay (Visible on Hover) -->
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-12 pointer-events-none">
+                                <div class="text-center px-8">
+                                    <span id="photo-title" class="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">01 — Landscape / Negative Space</span>
+                                    <p id="photo-caption" class="text-white text-xl font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 drop-shadow-md">
+                                        Scale and negative space.
+                                    </p>
+                                </div>
+                            </div>
 
-                        <!-- Item 2 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
-                            <img src="images/VD3.png" alt="Visual Design 3" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
-                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <!-- Controls -->
+                            <button onclick="prevPhoto()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 text-primary transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 z-10" aria-label="Previous image">
+                                <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                            </button>
+                            <button onclick="nextPhoto()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 text-primary transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 z-10" aria-label="Next image">
+                                <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                            </button>
+                            
+                            <!-- Indicators -->
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+                                <div id="photo-dot-0" class="w-2 h-2 rounded-full bg-white shadow-sm transition-all scale-125"></div>
+                                <div id="photo-dot-1" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToPhotoSlide(1)"></div>
+                                <div id="photo-dot-2" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToPhotoSlide(2)"></div>
+                                <div id="photo-dot-3" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToPhotoSlide(3)"></div>
+                                <div id="photo-dot-4" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToPhotoSlide(4)"></div>
+                            </div>
                         </div>
-
-                        <!-- Item 3 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
-                            <img src="images/VD4.png" alt="Visual Design 4" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
-                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-
-                        <!-- Item 4 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
-                            <img src="images/marketingMaterial.png" alt="Marketing Material" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
-                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-
-                        <!-- Item 5 -->
-                        <div class="stagger-child break-inside-avoid group relative rounded-xl overflow-hidden border border-border shadow-sm cursor-pointer hover:shadow-xl transition-shadow duration-500">
-                            <img src="images/StagingMastery.png" alt="Staging Mastery" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700 ease-out">
-                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-
                     </div>
+
+                    <!-- Marketing Materials Section -->
+                    <div class="fade-in-section">
+                        <div class="flex items-center gap-3 mb-8">
+                            <h3 class="text-2xl font-serif text-primary">Marketing Materials — Selected Work</h3>
+                            <div class="h-px flex-grow bg-gray-200"></div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-12">
+                            
+                            <!-- Marketing Item 01 -->
+                            <div class="space-y-4">
+                                <div class="relative rounded-xl overflow-hidden shadow-lg border border-gray-100 group">
+                                    <!-- Use StagingMastery.png or a specific promo image -->
+                                    <img src="images/VD4.png" alt="Online Course Promo" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="text-lg font-bold text-primary">01 — Online Course Promo</h4>
+                                        <span class="text-xs font-medium text-accent bg-teal-50 px-2 py-1 rounded">StagingMastery</span>
+                                    </div>
+                                    <p class="text-secondary text-sm mb-3">Premium course promo designed for clarity and credibility.</p>
+                                    <div class="flex gap-2">
+                                        <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Focus:</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Hierarchy</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Typography</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Brand Consistency</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Marketing Item 02 -->
+                            <div class="space-y-4">
+                                <div class="relative rounded-xl overflow-hidden shadow-lg border border-gray-100 group">
+                                    <!-- Use marketingMaterial.png or VD image -->
+                                    <img src="images/StagingMastery.png" alt="Weekly Newsletter Template" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="text-lg font-bold text-primary">02 — Weekly Newsletter Template</h4>
+                                        <span class="text-xs font-medium text-accent bg-teal-50 px-2 py-1 rounded">StagingMastery</span>
+                                    </div>
+                                    <p class="text-secondary text-sm mb-3">Editorial-style layout built for readability and structure.</p>
+                                    <div class="flex gap-2">
+                                        <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Focus:</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Grid System</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Information Hierarchy</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
 
         <!-- ================= ABOUT PAGE ================= -->
         <div id="about" class="page-section">
-            <div class="min-h-screen px-6 md:px-12 bg-background pb-24">
-                <div class="max-w-4xl mx-auto">
-                    
-                    <!-- Text Content -->
-                    <div class="fade-in-section mb-16 pt-10">
-                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">Introduction</span>
-                        <h1 class="text-6xl md:text-8xl font-serif text-primary mb-12 tracking-tight">Hello.</h1>
-                        <div class="text-xl text-secondary leading-relaxed font-light space-y-8">
-                            <p class="first-letter:text-5xl first-letter:font-serif first-letter:text-primary first-letter:float-left first-letter:mr-3">
-                                I'm <strong class="text-primary font-medium">Evangeline</strong>, a Service Designer & UX Researcher based in Toronto. I'm currently looking for Summer 2026 internships where I can apply systems thinking to messy, real-world problems.
-                            </p>
-                            <p>
-                                I’m a Service Design and UX student passionate about making complex services easier to navigate and easier to deliver. I work at the intersection of people, policies, and platforms—using research, journey mapping, and service blueprinting to clarify pain points and translate them into practical design and delivery plans.
-                            </p>
+            <div class="min-h-screen bg-background pb-0">
+                
+                <!-- 1. Hero / Intro Section -->
+                <div class="max-w-6xl mx-auto px-6 md:px-12 pt-16 mb-24">
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        <!-- Text Side -->
+                        <div class="fade-in-section order-2 md:order-1">
+                            <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-4">Introduction</span>
+                            <h1 class="text-6xl md:text-7xl font-serif text-primary mb-8 tracking-tight">Hello.</h1>
+                            <div class="space-y-6 text-lg text-secondary leading-relaxed font-light">
+                                <p class="first-letter:text-5xl first-letter:font-serif first-letter:text-accent first-letter:float-left first-letter:mr-3">
+                                    I'm <strong class="text-primary font-medium">Evangeline</strong>, a Service Designer & UX Researcher based in Toronto. I'm currently looking for Summer 2026 internships where I can apply systems thinking to real-world problems.
+                                </p>
+                                <p>
+                                    I’m a UX student passionate about designing products that feel thoughtful, usable, and grounded in real user needs. I enjoy translating research into practical solutions, from defining user flows and prototypes to crafting polished interfaces that build clarity and trust.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image Side -->
+                        <div class="fade-in-section order-1 md:order-2 flex justify-center md:justify-end">
+                            <!-- Refined: Static, clean shadow, no rotation -->
+                            <div class="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                                <!-- Original User Image - Color -->
+                                <img src="https://github.com/evangelinezhao28/evangeline_Zhao/blob/48d75d629aec2502d8a8067ebefad01a2a3253ea/images/headshot.jpg?raw=true" alt="Evangeline Zhao Headshot" class="w-full h-full object-cover">
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Headshot -->
-                    <div class="fade-in-section mb-16 relative">
-                         <div class="w-full aspect-video overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
-                            <!-- Original User Image - Color -->
-                            <img src="https://github.com/evangelinezhao28/evangeline_Zhao/blob/48d75d629aec2502d8a8067ebefad01a2a3253ea/images/headshot.jpg?raw=true" alt="Evangeline Zhao Headshot" class="w-full h-full object-cover">
-                         </div>
-                    </div>
+                <!-- 2. Background & Education (Full Width Accent) -->
+                <div class="bg-white border-y border-gray-100 py-24 px-6 md:px-12 mb-24 relative overflow-hidden">
+                    <!-- Background decoration -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-teal-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
 
-                    <div class="fade-in-section bg-white p-10 rounded-2xl mb-16 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                        <h3 class="text-lg font-bold text-primary mb-6 flex items-center">
-                            <i data-lucide="sparkles" class="w-5 h-5 mr-2 text-accent"></i> What motivates me
-                        </h3>
-                        <ul class="space-y-6">
-                            <li class="flex items-start">
-                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Public Services:</strong> Designing for people—where access, clarity, and trust matter as much as usability.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Safer Communities:</strong> Supporting vulnerable populations through inclusive, trauma-informed experiences and community-based solutions.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Systems-Level Impact:</strong> Improving services beyond screens—aligning people, processes, and platforms to create change that can actually ship.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Accessibility & Equity:</strong> Designing for diverse needs—especially for those often excluded by default systems.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-secondary font-light"><strong class="font-medium text-primary">Collaboration:</strong> Facilitating workshops and stakeholder alignment to move from insights to decisions, and from ideas to delivery.</span>
-                            </li>
-                        </ul>
+                    <div class="max-w-4xl mx-auto fade-in-section relative z-10">
+                        <div class="flex flex-col md:flex-row gap-8">
+                            <div class="hidden md:flex flex-shrink-0 w-16 h-16 bg-teal-50 text-accent rounded-2xl items-center justify-center">
+                                <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-serif text-primary mb-6">Background</h3>
+                                <div class="space-y-6 text-secondary text-lg font-light leading-relaxed">
+                                    <p>I’m currently a Master of Information (UX Design) student at the University of Toronto, building experience across service design, UX research, and interaction design.</p>
+                                    <p>Before transitioning into UX, I graduated with Honours from the Smith School of Business at Queen’s University, where I developed a strong foundation in user behavior, communication strategy, and business problem-solving. This background helps me approach design with both user empathy and practical constraints, connecting insights to outcomes and crafting experiences that are not only usable, but viable.</p>
+                                    <p>I’ve also lived and studied abroad independently since I was 16, which strengthened my adaptability and comfort navigating unfamiliar systems, something that continues to influence how I design for diverse communities today.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- 3. What I Bring (Grid) -->
+                <div class="max-w-6xl mx-auto px-6 md:px-12 mb-24 fade-in-section">
+                    <div class="text-center mb-12">
+                         <span class="text-accent text-xs font-bold uppercase tracking-widest">Value Proposition</span>
+                         <h3 class="text-3xl md:text-4xl font-serif text-primary mt-2">What I bring to the table</h3>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Card 1 -->
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/20 transition-all duration-300 group">
+                            <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="git-merge" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="font-bold text-primary mb-2 text-lg">Systems thinking with real-world constraints</h4>
+                            <p class="text-secondary leading-relaxed text-sm">Designing beyond screens, mapping the people, policies, and processes behind services to create solutions that can actually ship.</p>
+                        </div>
+                        
+                        <!-- Card 2 -->
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/20 transition-all duration-300 group">
+                             <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="search" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="font-bold text-primary mb-2 text-lg">Research → clarity</h4>
+                            <p class="text-secondary leading-relaxed text-sm">Turning qualitative insights into structured, actionable findings through synthesis, journey mapping, and service blueprints.</p>
+                        </div>
+                        
+                        <!-- Card 3 -->
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/20 transition-all duration-300 group">
+                             <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="compass" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="font-bold text-primary mb-2 text-lg">Strategy + craft</h4>
+                            <p class="text-secondary leading-relaxed text-sm">Balancing big-picture service storytelling with interaction design, information architecture, and clean UI that improves usability and trust.</p>
+                        </div>
+                        
+                        <!-- Card 4 -->
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/20 transition-all duration-300 group">
+                             <div class="w-10 h-10 bg-green-50 text-green-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="briefcase" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="font-bold text-primary mb-2 text-lg">Business + user perspective</h4>
+                            <p class="text-secondary leading-relaxed text-sm">With a marketing and commerce background, I naturally connect user needs to organizational goals, and supporting experiences that are not only usable, but viable.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Motivation & Skills (Split) -->
+                <div class="max-w-6xl mx-auto px-6 md:px-12 mb-24">
+                    <div class="grid lg:grid-cols-12 gap-12">
+                        
+                        <!-- Motivations (Left) -->
+                        <div class="lg:col-span-5 fade-in-section">
+                            <h3 class="text-2xl font-serif text-primary mb-8 flex items-center">
+                                <span class="bg-yellow-100 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">✨</span> What motivates me
+                            </h3>
+                            <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+                                <ul class="space-y-6">
+                                    <li class="flex items-start">
+                                        <span class="text-secondary text-sm leading-relaxed"><strong class="font-bold text-primary block mb-1">Public Services</strong> Designing for people, where access, clarity, and trust matter as much as usability.</span>
+                                    </li>
+                                    <li class="w-full h-px bg-gray-100"></li>
+                                    <li class="flex items-start">
+                                        <span class="text-secondary text-sm leading-relaxed"><strong class="font-bold text-primary block mb-1">Safer Communities</strong> Supporting vulnerable populations through inclusive, trauma-informed experiences.</span>
+                                    </li>
+                                    <li class="w-full h-px bg-gray-100"></li>
+                                    <li class="flex items-start">
+                                        <span class="text-secondary text-sm leading-relaxed"><strong class="font-bold text-primary block mb-1">Systems-Level Impact</strong> Improving services beyond screens, aligning people, processes, and platforms.</span>
+                                    </li>
+                                    <li class="w-full h-px bg-gray-100"></li>
+                                    <li class="flex items-start">
+                                        <span class="text-secondary text-sm leading-relaxed"><strong class="font-bold text-primary block mb-1">Accessibility & Equity</strong> Designing for diverse needs—especially for those often excluded.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Skills (Right) -->
+                        <div class="lg:col-span-7 fade-in-section">
+                            <h3 class="text-2xl font-serif text-primary mb-8 flex items-center">
+                                <span class="bg-blue-100 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">🧰</span> Skills & Toolkit
+                            </h3>
+                            
+                            <div class="space-y-8">
+                                <!-- Methods -->
+                                <div>
+                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Methods</h4>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Wireframing</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Prototyping</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">User Flows</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Information Architecture (IA)</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Semi-structured Interviews</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Affinity Mapping</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Journey Mapping</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Service Blueprinting</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Usability Testing</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Think-Aloud Study</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Competitive Analysis</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Storyboarding</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Tools -->
+                                <div>
+                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Tools</h4>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Figma</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Canva</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Notion</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Google Workspace</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Microsoft Office</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Adobe Creative Suite</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Technical -->
+                                <div>
+                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Technical</h4>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Python</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">pandas</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Data Visualization</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Exploratory Data Analysis (EDA)</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Survey Design</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">A/B Testing (Conceptual)</span>
+                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Excel Modeling</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Outside Design (Warm Background) -->
+                <div class="bg-[#FFFCF5] border-t border-[#F0EBE0] py-24 px-6 md:px-12">
+                    <div class="max-w-6xl mx-auto fade-in-section">
+                        <div class="mb-12">
+                             <h3 class="text-3xl font-serif text-primary mb-6 flex items-center">
+                                <span class="mr-3">🌿</span> A glimpse outside design
+                            </h3>
+                            <p class="text-secondary text-lg font-light mb-8 max-w-2xl">Outside of design, I recharge through music, photography, and creative self-expression. These interests shape my attention to detail, sense of rhythm, and love for craft.</p>
+                        </div>
+
+                        <!-- Creative Moments Carousel -->
+                        <div>
+                             <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-6">More creative moments</h4>
+                             
+                             <!-- Updated Container: Dark background, 16/9 aspect ratio for better photo fit -->
+                             <div class="relative w-full max-w-4xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-gray-900 rounded-2xl overflow-hidden group shadow-lg border border-[#F0EBE0]">
+                                <!-- Main Image: Changed to object-contain to show full image -->
+                                <img id="creative-image" src="images/guitar.jpg" alt="Creative Gallery" class="w-full h-full object-contain transition-opacity duration-300 ease-in-out">
+                                
+                                <!-- Caption Overlay (Visible on Hover) -->
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-12 pointer-events-none">
+                                    <p id="creative-caption" class="text-white text-lg font-medium px-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 drop-shadow-md">
+                                        Playing guitar and singing as a creative outlet.
+                                    </p>
+                                </div>
+
+                                <!-- Controls -->
+                                <button onclick="prevCreative()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 text-primary transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 z-10" aria-label="Previous image">
+                                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                                </button>
+                                <button onclick="nextCreative()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 text-primary transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 z-10" aria-label="Next image">
+                                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                                </button>
+                                
+                                <!-- Indicators -->
+                                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+                                    <div id="creative-dot-0" class="w-2 h-2 rounded-full bg-white shadow-sm transition-all scale-125"></div>
+                                    <div id="creative-dot-1" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToCreativeSlide(1)"></div>
+                                    <div id="creative-dot-2" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToCreativeSlide(2)"></div>
+                                    <div id="creative-dot-3" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToCreativeSlide(3)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -978,9 +1218,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Rest of Staging case study content kept identical -->
-            <!-- ... -->
 
             <div class="max-w-6xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <!-- Sticky TOC -->
@@ -1643,6 +1880,146 @@
 
             sections.forEach(section => tocObserver.observe(section));
         }
+
+        // --- Creative Moments Gallery Logic ---
+        const creativeData = [
+            {
+                src: "images/guitar.jpg",
+                caption: "Playing guitar and singing as a creative outlet."
+            },
+            {
+                src: "images/hanfu.jpg",
+                caption: "Cultural identity and storytelling through tradition."
+            },
+            {
+                src: "images/photography.JPG",
+                caption: "I love documenting everyday moments through photography."
+            },
+            {
+                src: "https://www.songlines.co.uk/media/2804/pipa-2.jpg?width=850&upscale=false",
+                caption: "Pipa player (10+ years · Level 10)."
+            }
+        ];
+
+        let currentCreativeIndex = 0;
+
+        window.updateCreativeImage = function() {
+            const img = document.getElementById('creative-image');
+            const caption = document.getElementById('creative-caption');
+            
+            // Fade out
+            img.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Change source
+                img.src = creativeData[currentCreativeIndex].src;
+                caption.textContent = creativeData[currentCreativeIndex].caption;
+                
+                // Update dots
+                for (let i = 0; i < creativeData.length; i++) {
+                    const dot = document.getElementById(`creative-dot-${i}`);
+                    if (i === currentCreativeIndex) {
+                        dot.className = "w-2 h-2 rounded-full bg-white shadow-sm transition-all scale-125";
+                    } else {
+                        dot.className = "w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer";
+                    }
+                }
+                
+                // Fade in
+                img.style.opacity = '1';
+            }, 300);
+        };
+
+        window.nextCreative = function() {
+            currentCreativeIndex = (currentCreativeIndex + 1) % creativeData.length;
+            updateCreativeImage();
+        };
+
+        window.prevCreative = function() {
+            currentCreativeIndex = (currentCreativeIndex - 1 + creativeData.length) % creativeData.length;
+            updateCreativeImage();
+        };
+        
+        window.goToCreativeSlide = function(index) {
+            currentCreativeIndex = index;
+            updateCreativeImage();
+        };
+
+        // --- Photography Gallery Logic ---
+        const photoData = [
+            {
+                src: "images/p1.JPG",
+                title: "01 — Landscape / Negative Space",
+                caption: "Scale and negative space."
+            },
+            {
+                src: "images/p2.jpg",
+                title: "02 — Texture / Light",
+                caption: "Texture and shadow."
+            },
+            {
+                src: "images/p3.jpg",
+                title: "03 — Atmosphere / Calm Mood",
+                caption: "Calm tones and space."
+            },
+            {
+                src: "images/p4.jpg",
+                title: "04 — Architecture / Geometry",
+                caption: "Lines and perspective."
+            },
+            {
+                src: "images/p5.JPG",
+                title: "05 — Structure / Motion",
+                caption: "Geometry and movement."
+            }
+        ];
+
+        let currentPhotoIndex = 0;
+
+        window.updatePhotoImage = function() {
+            const img = document.getElementById('photo-image');
+            const title = document.getElementById('photo-title');
+            const caption = document.getElementById('photo-caption');
+            
+            // Fade out
+            img.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Change content
+                img.src = photoData[currentPhotoIndex].src;
+                title.textContent = photoData[currentPhotoIndex].title;
+                caption.textContent = photoData[currentPhotoIndex].caption;
+                
+                // Update dots
+                for (let i = 0; i < photoData.length; i++) {
+                    const dot = document.getElementById(`photo-dot-${i}`);
+                    if (i === currentPhotoIndex) {
+                        dot.className = "w-2 h-2 rounded-full bg-white shadow-sm transition-all scale-125";
+                    } else {
+                        dot.className = "w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer";
+                    }
+                }
+                
+                // Fade in
+                img.style.opacity = '1';
+            }, 500); // 500ms match transition
+        };
+
+        window.nextPhoto = function() {
+            currentPhotoIndex = (currentPhotoIndex + 1) % photoData.length;
+            updatePhotoImage();
+        };
+
+        window.prevPhoto = function() {
+            currentPhotoIndex = (currentPhotoIndex - 1 + photoData.length) % photoData.length;
+            updatePhotoImage();
+        };
+        
+        window.goToPhotoSlide = function(index) {
+            currentPhotoIndex = index;
+            updatePhotoImage();
+        };
+
     </script>
 </body>
 </html>
