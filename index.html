@@ -32,20 +32,18 @@
                         serif: ['Merriweather', 'serif'],
                     },
                     backgroundImage: {
-                        // Subtle noise texture
                         'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.04%22/%3E%3C/svg%3E')",
                     },
                     animation: {
-                        'blob': 'blob 12s infinite ease-in-out', // Slower, smoother blob
-                        'blob-delay': 'blob 12s infinite ease-in-out 4s',
-                        'blob-long-delay': 'blob 12s infinite ease-in-out 8s',
-                        'reveal': 'reveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards', // Custom easing
+                        'blob': 'blob 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)',
+                        'blob-delay': 'blob 20s infinite alternate-reverse cubic-bezier(0.4, 0, 0.2, 1) 5s',
+                        'reveal': 'reveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
                     },
                     keyframes: {
                         blob: {
                             '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(40px, -60px) scale(1.1)' },
-                            '66%': { transform: 'translate(-30px, 30px) scale(0.9)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
                             '100%': { transform: 'translate(0px, 0px) scale(1)' },
                         },
                         reveal: {
@@ -65,22 +63,20 @@
         /* --- Base & Utilities --- */
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 120px; 
+            scroll-padding-top: 100px; 
         }
 
         body {
             background-color: #FAFAFA;
             color: #1A1A1A;
-            /* Constant gentle noise texture */
             background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.03%22/%3E%3C/svg%3E');
         }
         
         /* --- Animations --- */
-        /* Basic Fade In */
         .fade-in-section {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
         }
         
@@ -89,11 +85,10 @@
             transform: translateY(0);
         }
 
-        /* Staggered Child Animations (for grids) */
         .stagger-parent .stagger-child {
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
         
         .stagger-parent.is-visible .stagger-child {
@@ -101,20 +96,18 @@
             transform: translateY(0);
         }
         
-        /* Delays for children */
         .stagger-child:nth-child(1) { transition-delay: 0.1s; }
-        .stagger-child:nth-child(2) { transition-delay: 0.2s; }
-        .stagger-child:nth-child(3) { transition-delay: 0.3s; }
-        .stagger-child:nth-child(4) { transition-delay: 0.4s; }
-        .stagger-child:nth-child(5) { transition-delay: 0.5s; }
-        .stagger-child:nth-child(6) { transition-delay: 0.6s; }
+        .stagger-child:nth-child(2) { transition-delay: 0.15s; }
+        .stagger-child:nth-child(3) { transition-delay: 0.2s; }
+        .stagger-child:nth-child(4) { transition-delay: 0.25s; }
+        .stagger-child:nth-child(5) { transition-delay: 0.3s; }
+        .stagger-child:nth-child(6) { transition-delay: 0.35s; }
 
-        /* SPA Page Transitions */
         .page-section {
             display: none;
             min-height: 100vh;
-            padding-top: 100px; 
-            animation: fadeInPage 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            padding-top: 80px; 
+            animation: fadeInPage 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .page-section.active {
@@ -122,7 +115,7 @@
         }
 
         @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -131,39 +124,51 @@
             position: relative;
         }
         
-        /* Underline effect on active */
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 1px;
+            height: 1.5px;
             bottom: 4px;
             left: 50%;
-            background-color: #111;
-            transition: all 0.3s ease;
+            background-color: #1A1A1A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateX(-50%);
         }
         
+        .nav-link:hover::after {
+            width: 40%;
+        }
+
         .nav-link.active::after {
             width: 60%;
         }
         
         .nav-link.active {
             color: #111;
-            font-weight: 500;
+            font-weight: 600;
+        }
+
+        /* Navbar Scrolled State */
+        #navbar-inner.scrolled {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-color: rgba(229, 229, 229, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
         }
 
         /* Mobile Menu */
         #mobile-menu {
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
             pointer-events: none;
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(0.98);
         }
         #mobile-menu.open {
             opacity: 1;
             pointer-events: auto;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         /* TOC Active State */
@@ -171,58 +176,46 @@
             color: #0F766E; 
             border-left: 2px solid #0F766E;
             padding-left: 16px;
-            font-weight: 500;
+            font-weight: 600;
         }
         .toc-link {
             border-left: 2px solid #E5E5E5;
             transition: all 0.2s ease;
         }
         
-        /* Images */
         img {
             image-rendering: auto; 
         }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-accent/20 selection:text-primary">
+<body class="font-sans antialiased selection:bg-accent/20 selection:text-primary text-slate-800">
 
     <!-- Navigation -->
-    <!-- Updated: Floating Pill Style for Desktop -->
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:py-6 pointer-events-none">
-        <!-- Inner container creates the floating effect -->
-        <div class="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border border-white/40 shadow-sm rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto transition-all duration-300">
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:py-6 pointer-events-none transition-all duration-300">
+        <div id="navbar-inner" class="max-w-5xl mx-auto bg-white/80 backdrop-blur-lg border border-white/60 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)] rounded-full px-6 py-3 flex items-center justify-between pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
             
-            <button onclick="router('home')" class="text-lg font-bold tracking-tight text-primary hover:text-accent transition-colors font-serif italic">
+            <button onclick="router('home')" class="text-xl font-bold tracking-tight text-primary hover:text-accent transition-colors font-serif italic">
                 EZ.
             </button>
 
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center space-x-1">
                 <button onclick="router('home')" id="nav-home" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Home</button>
-                <button onclick="router('work')" id="nav-work" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Case Studies</button>
-                <button onclick="router('visuals')" id="nav-visuals" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Visual Design</button>
+                <button onclick="navigateToSection('work-section')" id="nav-work" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">Case Studies</button>
                 <button onclick="router('about')" id="nav-about" class="nav-link px-4 py-2 text-sm text-secondary hover:text-primary transition-all">About</button>
-                
-                <span class="w-px h-4 bg-gray-300 mx-2"></span>
-                
-                <button onclick="scrollToContact()" class="px-5 py-2 text-xs font-bold text-white bg-primary hover:bg-accent rounded-full transition-all transform hover:scale-105">
-                    Contact
-                </button>
             </div>
 
             <!-- Mobile Toggle -->
-            <button class="md:hidden text-primary p-1" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+            <button class="md:hidden text-primary p-2 hover:bg-gray-100 rounded-full transition-colors" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
                 <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="absolute top-24 left-4 right-4 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-xl rounded-2xl flex flex-col items-center py-8 space-y-6 md:hidden pointer-events-auto">
-            <button onclick="router('home'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Home</button>
-            <button onclick="router('work'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Case Studies</button>
-            <button onclick="router('visuals'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">Visual Design</button>
-            <button onclick="router('about'); toggleMobileMenu()" class="text-xl font-medium text-primary hover:text-accent">About</button>
-            <button onclick="scrollToContact(); toggleMobileMenu()" class="text-xl font-medium text-accent">Contact</button>
+        <div id="mobile-menu" class="absolute top-24 left-4 right-4 bg-white/95 backdrop-blur-2xl border border-gray-100 shadow-2xl rounded-3xl flex flex-col items-center py-10 space-y-8 md:hidden pointer-events-auto z-50">
+            <button onclick="router('home'); toggleMobileMenu()" class="text-2xl font-medium text-primary hover:text-accent tracking-tight">Home</button>
+            <button onclick="navigateToSection('work-section'); toggleMobileMenu()" class="text-2xl font-medium text-primary hover:text-accent tracking-tight">Case Studies</button>
+            <button onclick="router('about'); toggleMobileMenu()" class="text-2xl font-medium text-primary hover:text-accent tracking-tight">About</button>
         </div>
     </nav>
 
@@ -230,349 +223,195 @@
     <main>
 
         <!-- ================= HOME PAGE ================= -->
-        <div id="home" class="page-section active pt-0"> <!-- Removed padding-top here as flex centers it -->
+        <div id="home" class="page-section active pt-0">
             <section class="min-h-screen flex items-center px-6 md:px-12 relative overflow-hidden">
                 
                 <!-- Background Animated Blob -->
-                <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
-                <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
+                <div class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-teal-100/60 rounded-full mix-blend-multiply filter blur-[100px] animate-blob -z-10"></div>
+                <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-100/60 rounded-full mix-blend-multiply filter blur-[100px] animate-blob-delay -z-10"></div>
 
                 <div class="max-w-5xl w-full mx-auto relative z-10">
                     
-                    <div class="fade-in-section mb-6">
-                        <div class="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase border border-gray-200 rounded-full text-secondary bg-white/50 backdrop-blur-sm">
-                            <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+                    <div class="fade-in-section mb-8">
+                        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 text-[11px] font-bold tracking-widest uppercase border border-gray-200/80 rounded-full text-secondary bg-white/60 backdrop-blur-md shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
                             Open to Internships / Co-op
                         </div>
                     </div>
                     
                     <div class="fade-in-section">
-                        <p class="text-xl md:text-2xl text-accent font-medium mb-4">Hello, I'm Evangeline.</p>
+                        <p class="text-xl md:text-2xl text-accent font-medium mb-6 tracking-wide">Hello, I'm Evangeline.</p>
                         
-                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-primary mb-8 leading-[1.05] tracking-tight">
+                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-primary mb-10 leading-[1.05] tracking-tight">
                             Designing services <br class="hidden md:block"/> that work for <span class="font-serif italic font-light text-accent">people.</span>
                         </h1>
                     </div>
                     
-                    <p class="fade-in-section text-lg md:text-2xl text-secondary mb-12 max-w-2xl leading-relaxed font-light">
-                        I support teams in turning complex processes into clear experiences—across people, policies, and platforms.
-                    </p>
+                    <div class="fade-in-section text-lg md:text-2xl text-secondary mb-14 max-w-2xl leading-relaxed font-light space-y-4">
+                        <p>I’m a UX Designer with a business background (BCom), combining user research, strategic thinking, and interaction design to create clear, human-centered experiences.</p>
+                        <p class="text-base md:text-xl font-medium text-primary">Currently seeking a Summer 2026 UX Design co-op opportunity.</p>
+                    </div>
                     
-                    <div class="fade-in-section flex flex-col sm:flex-row gap-4">
-                        <button onclick="router('work')" class="px-8 py-4 text-sm font-bold text-white bg-primary hover:bg-accent rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <div class="fade-in-section flex flex-col sm:flex-row gap-5">
+                        <button onclick="navigateToSection('work-section')" class="px-8 py-4 text-sm font-bold text-white bg-primary hover:bg-accent rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
                             View Case Studies <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="router('about')" class="px-8 py-4 text-sm font-bold text-primary bg-white border border-border hover:border-gray-400 rounded-full transition-all">
+                        <button onclick="router('about')" class="px-8 py-4 text-sm font-bold text-primary bg-white border border-border hover:border-gray-400 hover:bg-gray-50 active:scale-95 rounded-full transition-all duration-300">
                             More About Me
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- Featured Work Preview -->
-            <section class="py-24 px-6 md:px-12 border-t border-border">
+            <!-- Case Studies Section -->
+            <section id="work-section" class="py-32 px-6 md:px-12 border-t border-border bg-background">
                 <div class="max-w-7xl mx-auto">
-                    <div class="fade-in-section mb-16 flex items-end justify-between">
-                        <div>
-                            <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">01 — Selected Work</span>
-                            <h2 class="text-4xl font-serif font-light text-primary">Featured Projects</h2>
-                        </div>
-                        <button onclick="router('work')" class="hidden md:flex items-center text-sm font-bold text-primary hover:text-accent transition-colors">See all <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i></button>
-                    </div>
-                    
-                    <!-- Lumi Card -->
-                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-gray-100 hover:shadow-2xl hover:shadow-gray-200 transition-all duration-500 hover:-translate-y-1 mb-12">
-                        <div class="grid md:grid-cols-2 min-h-[550px]">
-                            <div class="p-10 md:p-16 flex flex-col justify-center order-2 md:order-1 relative z-10">
-                                <div>
-                                    <div class="flex flex-wrap gap-2 mb-6">
-                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded text-secondary">UX Design</span>
-                                        <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gray-50 border border-gray-200 rounded text-secondary">UX Research</span>
-                                    </div>
-                                    <h3 class="text-4xl md:text-5xl font-serif text-primary mb-6 group-hover:text-accent transition-colors">Lumi</h3>
-                                    <p class="text-lg text-secondary mb-8 leading-relaxed max-w-md">
-                                        Enabling structured reporting, safer navigation, and real-time reassurance for late night shift workers.
-                                    </p>
-                                </div>
-                                <div class="flex items-center text-primary font-bold text-sm uppercase tracking-wider group-hover:text-accent transition-colors mt-auto">
-                                    Read Case Study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
-                                </div>
-                            </div>
-                            <!-- Visual Side -->
-                            <div class="bg-gray-50 relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
-                                <div class="absolute inset-0 bg-gradient-to-tr from-gray-100 to-white opacity-50"></div>
-                                <div class="w-full max-w-sm aspect-[3/4] bg-white rounded-xl shadow-2xl relative transform group-hover:scale-105 transition-transform duration-700 p-3 border border-gray-100">
-                                    <!-- Original User Image -->
-                                    <img src="images/VD5.png" alt="Lumi Preview" class="w-full h-full object-contain rounded-lg">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Expertise -->
-            <section class="py-24 px-6 md:px-12 bg-white border-t border-border">
-                <div class="max-w-7xl mx-auto stagger-parent fade-in-section">
-                    <div class="mb-16">
-                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">02 — Skills</span>
-                        <h2 class="text-4xl font-serif font-light text-primary mb-6">Expertise</h2>
-                        <p class="text-lg text-secondary max-w-2xl leading-relaxed font-light">My toolkit for making sense of complex systems.</p>
-                    </div>
-                    
-                    <div class="grid md:grid-cols-3 gap-8">
-                        <!-- Card 1 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
-                                <i data-lucide="search" class="w-5 h-5"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-primary mb-3">Research & Synthesis</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80">I don't just ask questions; I find the right questions to ask. From interviews to affinity mapping, I turn noise into signal.</p>
-                        </div>
-                        <!-- Card 2 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
-                                <i data-lucide="map" class="w-5 h-5"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-primary mb-3">Service Mapping</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80">I visualize the invisible. Journey maps and blueprints help stakeholders see the ecosystem, not just the interface.</p>
-                        </div>
-                        <!-- Card 3 -->
-                        <div class="stagger-child p-8 bg-background rounded-2xl border border-transparent hover:border-gray-200 transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm border border-gray-100">
-                                <i data-lucide="layout" class="w-5 h-5"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-primary mb-3">Prototyping</h3>
-                            <p class="text-sm text-secondary leading-relaxed opacity-80">I build to think. Whether it's paper sketches or clickable Figma flows, I use prototypes to test assumptions early.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-
-        <!-- ================= CASE STUDIES PAGE ================= -->
-        <div id="work" class="page-section">
-            <div class="min-h-screen px-6 md:px-12 bg-background pb-24">
-                <div class="max-w-7xl mx-auto">
-                    <div class="fade-in-section mb-16 pt-10">
-                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">Projects</span>
-                        <h2 class="text-5xl md:text-6xl font-serif text-primary tracking-tight">Case Studies</h2>
+                    <div class="fade-in-section mb-20">
+                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-3">01 — Selected Work</span>
+                        <h2 class="text-4xl md:text-5xl font-serif text-primary tracking-tight">Case Studies</h2>
                     </div>
 
-                    <!-- Lumi Card -->
-                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-2xl">
-                        <div class="grid md:grid-cols-2 min-h-[450px]">
-                            <div class="p-10 md:p-14 flex flex-col justify-center order-2 md:order-1">
-                                <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">Featured Project</span>
-                                <h2 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Lumi</h2>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed">Enabling structured reporting, safer navigation, and real-time reassurance for shift workers.</p>
-                                <div class="flex gap-2 flex-wrap mb-8">
-                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Service Design</span>
-                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">UX Research</span>
-                                </div>
-                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors">
-                                    View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                                </span>
-                            </div>
-                            <div class="bg-gray-50 relative overflow-hidden group flex items-center justify-center p-12">
-                                <div class="w-full max-w-md aspect-video bg-white rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-500 overflow-hidden border border-gray-100">
-                                    <img src="images/VD5.png" alt="Lumi Project" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Staging Mastery Card -->
-                    <div onclick="router('staging')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-12 shadow-sm hover:shadow-2xl">
-                        <div class="grid md:grid-cols-2 min-h-[450px]">
-                             <div class="bg-teal-50 relative overflow-hidden group flex items-center justify-center p-12">
-                                <div class="w-full max-w-md aspect-video bg-white rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-500 overflow-hidden border border-gray-100">
-                                     <!-- Staging Mastery Landing Page -->
+                    <!-- 1) Staging Mastery Card -->
+                    <div onclick="router('staging')" class="fade-in-section group cursor-pointer bg-white rounded-[2rem] overflow-hidden border border-gray-200/80 hover:border-accent/30 transition-all duration-500 mb-16 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] hover:-translate-y-1">
+                        <div class="grid md:grid-cols-3 min-h-[380px]">
+                             <!-- Image (Approx 33%) -->
+                             <div class="md:col-span-1 bg-teal-50 relative overflow-hidden group flex items-center justify-center p-8 order-1 md:border-r border-gray-100">
+                                <div class="w-full bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 aspect-video md:aspect-square lg:aspect-video flex items-center justify-center">
                                      <img src="images/SMPage.png" alt="Staging Mastery Interface" class="w-full h-full object-cover">
                                 </div>
                             </div>
-                            <div class="p-10 md:p-14 flex flex-col justify-center relative">
-                                <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">Field Placement</span>
-                                <h2 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Staging Mastery</h2>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed">Designing an End-to-End Course Experience & Pre-Launch Funnel (Wix → Kajabi).</p>
-                                <div class="flex gap-2 flex-wrap mb-8">
-                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Service Design</span>
-                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">LXD</span>
+                            <!-- Content (Approx 66%) -->
+                            <div class="md:col-span-2 p-8 md:p-12 flex flex-col justify-center order-2 relative">
+                                <span class="text-accent font-bold mb-4 text-[10px] md:text-xs uppercase tracking-widest bg-teal-50/50 w-fit px-2 py-1 rounded">[PAID — CLIENT WORK] · [CONTENT + LXD]</span>
+                                <h2 class="text-2xl md:text-3xl font-serif text-primary mb-4 group-hover:text-accent transition-colors duration-300">Client Work: Course Content & Learning Experience</h2>
+                                <p class="text-secondary mb-8 text-base md:text-lg leading-relaxed">Designed end-to-end learning materials and launch assets to create a clear, consistent course experience.</p>
+                                
+                                <div class="mb-8 pt-6 border-t border-gray-100">
+                                    <span class="text-xs font-bold text-primary uppercase tracking-wide block mb-3">Role & Scope</span>
+                                    <p class="text-sm text-secondary font-medium">Content + Learning Experience Design (UX Support) · Slides + workbook · Marketing assets</p>
                                 </div>
-                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors">
-                                    View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+
+                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors duration-300">
+                                    View case study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"></i>
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Echoes from China Card -->
-                    <div onclick="router('echoes')" class="fade-in-section group cursor-pointer bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-accent/30 transition-all duration-500 mb-16 shadow-sm hover:shadow-2xl">
-                        <div class="grid md:grid-cols-2 min-h-[450px]">
-                            <div class="p-10 md:p-14 flex flex-col justify-center order-2 md:order-1 relative">
-                                <span class="text-accent font-bold mb-3 text-xs uppercase tracking-widest">0→1 Build</span>
-                                <h3 class="text-3xl md:text-4xl font-serif text-primary mb-4 group-hover:text-accent transition-colors">Echoes from China</h3>
-                                <p class="text-secondary mb-8 text-lg leading-relaxed">
-                                    Designing a 0→1 community website for traditional Chinese culture with events, membership, and donation features.
-                                </p>
-                                <div class="flex gap-2 flex-wrap mb-8">
-                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Web Design</span>
-                                    <span class="px-3 py-1 bg-gray-50 text-[10px] uppercase font-bold text-secondary rounded border border-gray-100">Content Strategy</span>
+                    <!-- 2) Lumi Card -->
+                    <div onclick="router('lumi')" class="fade-in-section group cursor-pointer bg-white rounded-[2rem] overflow-hidden border border-gray-200/80 hover:border-accent/30 transition-all duration-500 mb-16 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] hover:-translate-y-1">
+                        <div class="grid md:grid-cols-3 min-h-[380px]">
+                            <!-- Content (Approx 66%) -->
+                            <div class="md:col-span-2 p-8 md:p-12 flex flex-col justify-center order-2 md:order-1 relative">
+                                <span class="text-accent font-bold mb-4 text-[10px] md:text-xs uppercase tracking-widest bg-gray-50 w-fit px-2 py-1 rounded">[SCHOOL — UX CASE STUDY]</span>
+                                <h2 class="text-2xl md:text-3xl font-serif text-primary mb-4 group-hover:text-accent transition-colors duration-300">Mobile UX: Community Safety for Late-Night Workers</h2>
+                                <p class="text-secondary mb-8 text-base md:text-lg leading-relaxed">Designed a safety reporting experience to help shift workers share incidents and stay informed.</p>
+                                
+                                <div class="mb-8 pt-6 border-t border-gray-100">
+                                    <span class="text-xs font-bold text-primary uppercase tracking-wide block mb-3">Role & Scope</span>
+                                    <p class="text-sm text-secondary font-medium">UX Design · Research synthesis · Hi-fi prototype + usability testing</p>
                                 </div>
-                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors">
-                                    View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+
+                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors duration-300">
+                                    View case study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"></i>
                                 </span>
                             </div>
-                            <!-- Visual Side -->
-                            <div class="bg-red-50 relative order-1 md:order-2 overflow-hidden flex items-center justify-center p-12">
-                                <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl transform rotate-[-5deg] group-hover:rotate-0 transition-transform duration-500 border border-gray-100 p-2">
+                            <!-- Image (Approx 33%) -->
+                            <div class="md:col-span-1 bg-gray-50 relative overflow-hidden group flex items-center justify-center p-8 order-1 md:order-2 md:border-l border-gray-100">
+                                <div class="w-full bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 aspect-video md:aspect-square lg:aspect-video flex items-center justify-center">
+                                    <img src="images/TeamPhoto.png" alt="Lumi Project" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3) Echoes from China Card -->
+                    <div onclick="router('echoes')" class="fade-in-section group cursor-pointer bg-white rounded-[2rem] overflow-hidden border border-gray-200/80 hover:border-accent/30 transition-all duration-500 mb-16 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] hover:-translate-y-1">
+                        <div class="grid md:grid-cols-3 min-h-[380px]">
+                            <!-- Image (Approx 33%) -->
+                            <div class="md:col-span-1 bg-teal-50 relative order-1 overflow-hidden flex items-center justify-center p-8 md:border-r border-gray-100">
+                                <div class="w-full bg-white rounded-2xl shadow-lg border border-gray-100 p-1 aspect-video md:aspect-square lg:aspect-video flex items-center justify-center overflow-hidden">
                                     <img src="images/echoesHomePage.png" alt="Echoes Mobile Preview" class="w-full h-full object-cover rounded-xl">
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                            <!-- Content (Approx 66%) -->
+                            <div class="md:col-span-2 p-8 md:p-12 flex flex-col justify-center order-2 relative">
+                                <span class="text-accent font-bold mb-4 text-[10px] md:text-xs uppercase tracking-widest bg-teal-50/50 w-fit px-2 py-1 rounded">[SCHOOL + REAL CLIENT — NONPROFIT]</span>
+                                <h3 class="text-2xl md:text-3xl font-serif text-primary mb-4 group-hover:text-accent transition-colors duration-300">Real Client: 0→1 Website for a Community Nonprofit</h3>
+                                <p class="text-secondary mb-8 text-base md:text-lg leading-relaxed">
+                                    Partnered with founders and members to build a website supporting events, membership, and engagement.
+                                </p>
+                                
+                                <div class="mb-8 pt-6 border-t border-gray-100">
+                                    <span class="text-xs font-bold text-primary uppercase tracking-wide block mb-3">Role & Scope</span>
+                                    <p class="text-sm text-secondary font-medium">UX Design · Stakeholder discovery · IA + website build</p>
+                                </div>
 
-                    <div class="grid md:grid-cols-3 gap-6 stagger-parent fade-in-section">
-                        <!-- Placeholder Card 1 -->
-                        <div class="stagger-child bg-white p-8 rounded-2xl border border-gray-200 border-dashed flex flex-col h-64 justify-center items-center text-center opacity-70 hover:opacity-100 transition-all duration-300">
-                            <div class="w-12 h-12 bg-gray-50 rounded-full mb-4 flex items-center justify-center text-secondary">
-                                <i data-lucide="git-branch" class="w-5 h-5"></i>
+                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center group-hover:text-accent transition-colors duration-300">
+                                    View case study <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"></i>
+                                </span>
                             </div>
-                            <h3 class="text-lg font-bold text-primary mb-2">Service Blueprinting</h3>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded">Coming Soon</span>
-                        </div>
-                        <!-- Placeholder Card 2 -->
-                        <div class="stagger-child bg-white p-8 rounded-2xl border border-gray-200 border-dashed flex flex-col h-64 justify-center items-center text-center opacity-70 hover:opacity-100 transition-all duration-300">
-                            <div class="w-12 h-12 bg-gray-50 rounded-full mb-4 flex items-center justify-center text-secondary">
-                                <i data-lucide="flask-conical" class="w-5 h-5"></i>
-                            </div>
-                            <h3 class="text-lg font-bold text-primary mb-2">UX Research Study</h3>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded">Coming Soon</span>
-                        </div>
-                        <!-- Placeholder Card 3 -->
-                        <div class="stagger-child bg-white p-8 rounded-2xl border border-gray-200 border-dashed flex flex-col h-64 justify-center items-center text-center opacity-70 hover:opacity-100 transition-all duration-300">
-                            <div class="w-12 h-12 bg-gray-50 rounded-full mb-4 flex items-center justify-center text-secondary">
-                                <i data-lucide="layers" class="w-5 h-5"></i>
-                            </div>
-                            <h3 class="text-lg font-bold text-primary mb-2">IA Redesign</h3>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded">Coming Soon</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- ================= VISUAL DESIGN PAGE ================= -->
-        <div id="visuals" class="page-section">
-            <div class="min-h-screen px-6 md:px-12 bg-background pb-24">
-                <div class="max-w-7xl mx-auto">
-                    <div class="fade-in-section mb-16 pt-10">
-                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-2">Gallery</span>
-                        <h2 class="text-5xl md:text-6xl font-serif text-primary mb-6 tracking-tight">Visual Design & Marketing</h2>
-                        <div class="text-lg text-secondary max-w-3xl leading-relaxed font-light space-y-6">
-                            <p>I create clean, high-impact visuals that communicate clearly and feel premium. My work focuses on composition, typography, and visual hierarchy—supporting both storytelling and conversion through intentional design decisions.</p>
-                            <p>I primarily shoot digital photography, and I’m also exploring film as part of my creative practice.</p>
+            <!-- Expertise Section -->
+            <section class="py-32 px-6 md:px-12 bg-white border-t border-border">
+                <div class="max-w-7xl mx-auto stagger-parent fade-in-section">
+                    <div class="mb-20">
+                        <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-3">02 — Skills</span>
+                        <h2 class="text-4xl font-serif font-light text-primary mb-6">Expertise</h2>
+                        <p class="text-lg text-secondary max-w-2xl leading-relaxed font-light">Toolkit I use to turn complex systems into clear, usable experiences.</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- Research -->
+                        <div class="stagger-child p-10 bg-background rounded-[2rem] border border-transparent hover:border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary mb-8 shadow-sm border border-gray-100">
+                                <i data-lucide="search" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-primary mb-4">Research & Synthesis</h3>
+                            <p class="text-sm font-medium text-primary mb-6 border-l-2 border-accent pl-3">I translate user needs into clear design direction.</p>
+                            <ul class="text-sm text-secondary space-y-3 list-disc list-inside opacity-90">
+                                <li>Semi-structured interviews + qualitative synthesis</li>
+                                <li>Personas, journey maps, and insight frameworks</li>
+                                <li>Problem framing and opportunity identification</li>
+                            </ul>
+                        </div>
+                        <!-- Service Mapping -->
+                        <div class="stagger-child p-10 bg-background rounded-[2rem] border border-transparent hover:border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary mb-8 shadow-sm border border-gray-100">
+                                <i data-lucide="map" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-primary mb-4">Service Mapping</h3>
+                            <p class="text-sm font-medium text-primary mb-6 border-l-2 border-accent pl-3">I make end-to-end experiences visible and actionable.</p>
+                            <ul class="text-sm text-secondary space-y-3 list-disc list-inside opacity-90">
+                                <li>Journey mapping and service blueprinting</li>
+                                <li>Touchpoint analysis across channels and stakeholders</li>
+                                <li>Identifying friction points and systemic gaps</li>
+                            </ul>
+                        </div>
+                        <!-- Prototyping -->
+                        <div class="stagger-child p-10 bg-background rounded-[2rem] border border-transparent hover:border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary mb-8 shadow-sm border border-gray-100">
+                                <i data-lucide="layout" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-primary mb-4">Prototyping</h3>
+                            <p class="text-sm font-medium text-primary mb-6 border-l-2 border-accent pl-3">I build fast to validate usability and reduce risk early.</p>
+                            <ul class="text-sm text-secondary space-y-3 list-disc list-inside opacity-90">
+                                <li>Low-fi wireframes to hi-fi prototypes (Figma)</li>
+                                <li>Interaction design and information hierarchy</li>
+                                <li>Usability testing and iteration cycles</li>
+                            </ul>
                         </div>
                     </div>
-
-                    <!-- Photography Section -->
-                    <div class="fade-in-section mb-24">
-                        <h3 class="text-2xl font-serif text-primary mb-2">Photography — Selected Works</h3>
-                        <p class="text-secondary text-sm mb-8">A curated selection exploring light, texture, structure, and mood.</p>
-                        
-                        <!-- Photography Carousel (Updated to match Creative Gallery) -->
-                        <div class="relative w-full max-w-5xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-gray-900 rounded-2xl overflow-hidden group shadow-xl border border-gray-200">
-                            <!-- Main Image -->
-                            <img id="photo-image" src="images/p1.JPG" alt="Photography Gallery" class="w-full h-full object-contain transition-opacity duration-500 ease-in-out">
-                            
-                            <!-- Caption Overlay (Visible on Hover) -->
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-12 pointer-events-none">
-                                <div class="text-center px-8">
-                                    <span id="photo-title" class="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">01 — Landscape / Negative Space</span>
-                                    <p id="photo-caption" class="text-white text-xl font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 drop-shadow-md">
-                                        Scale and negative space.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Controls -->
-                            <button onclick="prevPhoto()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 text-primary transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 z-10" aria-label="Previous image">
-                                <i data-lucide="chevron-left" class="w-6 h-6"></i>
-                            </button>
-                            <button onclick="nextPhoto()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 text-primary transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 z-10" aria-label="Next image">
-                                <i data-lucide="chevron-right" class="w-6 h-6"></i>
-                            </button>
-                            
-                            <!-- Indicators -->
-                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
-                                <div id="photo-dot-0" class="w-2 h-2 rounded-full bg-white shadow-sm transition-all scale-125"></div>
-                                <div id="photo-dot-1" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToPhotoSlide(1)"></div>
-                                <div id="photo-dot-2" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToPhotoSlide(2)"></div>
-                                <div id="photo-dot-3" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToPhotoSlide(3)"></div>
-                                <div id="photo-dot-4" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToPhotoSlide(4)"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Marketing Materials Section -->
-                    <div class="fade-in-section">
-                        <div class="flex items-center gap-3 mb-8">
-                            <h3 class="text-2xl font-serif text-primary">Marketing Materials — Selected Work</h3>
-                            <div class="h-px flex-grow bg-gray-200"></div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-12">
-                            
-                            <!-- Marketing Item 01 -->
-                            <div class="space-y-4">
-                                <div class="relative rounded-xl overflow-hidden shadow-lg border border-gray-100 group">
-                                    <!-- Use StagingMastery.png or a specific promo image -->
-                                    <img src="images/VD4.png" alt="Online Course Promo" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
-                                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <h4 class="text-lg font-bold text-primary">01 — Online Course Promo</h4>
-                                        <span class="text-xs font-medium text-accent bg-teal-50 px-2 py-1 rounded">StagingMastery</span>
-                                    </div>
-                                    <p class="text-secondary text-sm mb-3">Premium course promo designed for clarity and credibility.</p>
-                                    <div class="flex gap-2">
-                                        <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Focus:</span>
-                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Hierarchy</span>
-                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Typography</span>
-                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Brand Consistency</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Marketing Item 02 -->
-                            <div class="space-y-4">
-                                <div class="relative rounded-xl overflow-hidden shadow-lg border border-gray-100 group">
-                                    <!-- Use marketingMaterial.png or VD image -->
-                                    <img src="images/StagingMastery.png" alt="Weekly Newsletter Template" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
-                                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <h4 class="text-lg font-bold text-primary">02 — Weekly Newsletter Template</h4>
-                                        <span class="text-xs font-medium text-accent bg-teal-50 px-2 py-1 rounded">StagingMastery</span>
-                                    </div>
-                                    <p class="text-secondary text-sm mb-3">Editorial-style layout built for readability and structure.</p>
-                                    <div class="flex gap-2">
-                                        <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Focus:</span>
-                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Grid System</span>
-                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Information Hierarchy</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
-            </div>
+            </section>
         </div>
+
+
+        <!-- ================= VISUAL DESIGN PAGE REMOVED ================= -->
 
         <!-- ================= ABOUT PAGE ================= -->
         <div id="about" class="page-section">
@@ -580,13 +419,13 @@
                 
                 <!-- 1. Hero / Intro Section -->
                 <div class="max-w-6xl mx-auto px-6 md:px-12 pt-16 mb-24">
-                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="grid md:grid-cols-2 gap-16 items-center">
                         <!-- Text Side -->
                         <div class="fade-in-section order-2 md:order-1">
-                            <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-4">Introduction</span>
-                            <h1 class="text-6xl md:text-7xl font-serif text-primary mb-8 tracking-tight">Hello.</h1>
-                            <div class="space-y-6 text-lg text-secondary leading-relaxed font-light">
-                                <p class="first-letter:text-5xl first-letter:font-serif first-letter:text-accent first-letter:float-left first-letter:mr-3">
+                            <span class="block text-accent text-xs font-bold uppercase tracking-widest mb-6">Introduction</span>
+                            <h1 class="text-6xl md:text-7xl font-serif text-primary mb-10 tracking-tight">Hello.</h1>
+                            <div class="space-y-8 text-lg text-secondary leading-relaxed font-light">
+                                <p class="first-letter:text-5xl first-letter:font-serif first-letter:text-accent first-letter:float-left first-letter:mr-4 first-letter:mt-[-4px]">
                                     I'm <strong class="text-primary font-medium">Evangeline</strong>, a Service Designer & UX Researcher based in Toronto. I'm currently looking for Summer 2026 internships where I can apply systems thinking to real-world problems.
                                 </p>
                                 <p>
@@ -597,219 +436,203 @@
                         
                         <!-- Image Side -->
                         <div class="fade-in-section order-1 md:order-2 flex justify-center md:justify-end">
-                            <!-- Refined: Static, clean shadow, no rotation -->
-                            <div class="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                                <!-- Original User Image - Color -->
+                            <div class="relative w-full max-w-md aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border border-gray-100">
                                 <img src="https://github.com/evangelinezhao28/evangeline_Zhao/blob/48d75d629aec2502d8a8067ebefad01a2a3253ea/images/headshot.jpg?raw=true" alt="Evangeline Zhao Headshot" class="w-full h-full object-cover">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. Background & Education (Full Width Accent) -->
-                <div class="bg-white border-y border-gray-100 py-24 px-6 md:px-12 mb-24 relative overflow-hidden">
-                    <!-- Background decoration -->
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-teal-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
-
+                <!-- 2. Background & Education -->
+                <div class="bg-white border-y border-gray-100 py-32 px-6 md:px-12 mb-24 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-teal-50/50 rounded-full mix-blend-multiply filter blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
                     <div class="max-w-4xl mx-auto fade-in-section relative z-10">
-                        <div class="flex flex-col md:flex-row gap-8">
-                            <div class="hidden md:flex flex-shrink-0 w-16 h-16 bg-teal-50 text-accent rounded-2xl items-center justify-center">
-                                <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                        <div class="flex flex-col md:flex-row gap-10">
+                            <div class="hidden md:flex flex-shrink-0 w-20 h-20 bg-teal-50 text-accent rounded-3xl items-center justify-center">
+                                <i data-lucide="graduation-cap" class="w-10 h-10"></i>
                             </div>
                             <div>
-                                <h3 class="text-3xl font-serif text-primary mb-6">Background</h3>
-                                <div class="space-y-6 text-secondary text-lg font-light leading-relaxed">
+                                <h3 class="text-3xl font-serif text-primary mb-8">Background</h3>
+                                <div class="space-y-8 text-secondary text-lg font-light leading-relaxed">
                                     <p>I’m currently a Master of Information (UX Design) student at the University of Toronto, building experience across service design, UX research, and interaction design.</p>
                                     <p>Before transitioning into UX, I graduated with Honours from the Smith School of Business at Queen’s University, where I developed a strong foundation in user behavior, communication strategy, and business problem-solving. This background helps me approach design with both user empathy and practical constraints, connecting insights to outcomes and crafting experiences that are not only usable, but viable.</p>
-                                    <p>I’ve also lived and studied abroad independently since I was 16, which strengthened my adaptability and comfort navigating unfamiliar systems, something that continues to influence how I design for diverse communities today.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. What I Bring (Grid) -->
-                <div class="max-w-6xl mx-auto px-6 md:px-12 mb-24 fade-in-section">
-                    <div class="text-center mb-12">
-                         <span class="text-accent text-xs font-bold uppercase tracking-widest">Value Proposition</span>
-                         <h3 class="text-3xl md:text-4xl font-serif text-primary mt-2">What I bring to the table</h3>
-                    </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <!-- Card 1 -->
-                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/20 transition-all duration-300 group">
-                            <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                <i data-lucide="git-merge" class="w-5 h-5"></i>
-                            </div>
-                            <h4 class="font-bold text-primary mb-2 text-lg">Systems thinking with real-world constraints</h4>
-                            <p class="text-secondary leading-relaxed text-sm">Designing beyond screens, mapping the people, policies, and processes behind services to create solutions that can actually ship.</p>
-                        </div>
-                        
-                        <!-- Card 2 -->
-                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/20 transition-all duration-300 group">
-                             <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                <i data-lucide="search" class="w-5 h-5"></i>
-                            </div>
-                            <h4 class="font-bold text-primary mb-2 text-lg">Research → clarity</h4>
-                            <p class="text-secondary leading-relaxed text-sm">Turning qualitative insights into structured, actionable findings through synthesis, journey mapping, and service blueprints.</p>
-                        </div>
-                        
-                        <!-- Card 3 -->
-                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/20 transition-all duration-300 group">
-                             <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                <i data-lucide="compass" class="w-5 h-5"></i>
-                            </div>
-                            <h4 class="font-bold text-primary mb-2 text-lg">Strategy + craft</h4>
-                            <p class="text-secondary leading-relaxed text-sm">Balancing big-picture service storytelling with interaction design, information architecture, and clean UI that improves usability and trust.</p>
-                        </div>
-                        
-                        <!-- Card 4 -->
-                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/20 transition-all duration-300 group">
-                             <div class="w-10 h-10 bg-green-50 text-green-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                <i data-lucide="briefcase" class="w-5 h-5"></i>
-                            </div>
-                            <h4 class="font-bold text-primary mb-2 text-lg">Business + user perspective</h4>
-                            <p class="text-secondary leading-relaxed text-sm">With a marketing and commerce background, I naturally connect user needs to organizational goals, and supporting experiences that are not only usable, but viable.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. Motivation & Skills (Split) -->
-                <div class="max-w-6xl mx-auto px-6 md:px-12 mb-24">
-                    <div class="grid lg:grid-cols-12 gap-12">
+                <!-- 3. Motivation & Skills (Moved from below) -->
+                <div class="max-w-6xl mx-auto px-6 md:px-12 mb-32">
+                    <div class="grid md:grid-cols-2 gap-16">
                         
                         <!-- Motivations (Left) -->
-                        <div class="lg:col-span-5 fade-in-section">
-                            <h3 class="text-2xl font-serif text-primary mb-8 flex items-center">
-                                <span class="bg-yellow-100 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">✨</span> What motivates me
+                        <div class="fade-in-section">
+                            <h3 class="text-2xl font-serif text-primary mb-10 flex items-center">
+                                <span class="bg-yellow-100 w-8 h-8 rounded-full flex items-center justify-center mr-4 text-sm shadow-sm">✨</span> What motivates me
                             </h3>
-                            <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-                                <ul class="space-y-6">
-                                    <li class="flex items-start">
-                                        <span class="text-secondary text-sm leading-relaxed"><strong class="font-bold text-primary block mb-1">Public Services</strong> Designing for people, where access, clarity, and trust matter as much as usability.</span>
+                            <div class="bg-white p-10 rounded-[2rem] border border-gray-100 shadow-lg h-full hover:shadow-xl transition-shadow duration-300">
+                                <ul class="space-y-10">
+                                    <li>
+                                        <strong class="font-bold text-primary block mb-3 text-lg">Public Services</strong>
+                                        <p class="text-sm text-secondary italic mb-3 opacity-80">“As Don Norman writes in The Design of Everyday Things, ‘Design is actually an act of communication.’”</p>
+                                        <p class="text-secondary leading-relaxed">In public services, that communication impacts real people. I care about designing systems that feel understandable, trustworthy, and accessible.</p>
                                     </li>
                                     <li class="w-full h-px bg-gray-100"></li>
-                                    <li class="flex items-start">
-                                        <span class="text-secondary text-sm leading-relaxed"><strong class="font-bold text-primary block mb-1">Safer Communities</strong> Supporting vulnerable populations through inclusive, trauma-informed experiences.</span>
+                                    <li>
+                                        <strong class="font-bold text-primary block mb-3 text-lg">Safer Communities</strong>
+                                        <p class="text-secondary leading-relaxed">I have lived independently since my teens, so I understand how safety shapes daily decisions and mobility. I am motivated to design experiences that help people feel informed, supported, and in control.</p>
                                     </li>
                                     <li class="w-full h-px bg-gray-100"></li>
-                                    <li class="flex items-start">
-                                        <span class="text-secondary text-sm leading-relaxed"><strong class="font-bold text-primary block mb-1">Systems-Level Impact</strong> Improving services beyond screens, aligning people, processes, and platforms.</span>
+                                    <li>
+                                        <strong class="font-bold text-primary block mb-3 text-lg">Systems-Level Impact</strong>
+                                        <p class="text-secondary leading-relaxed">With a business background, I naturally think beyond screens and consider how experiences work across people, processes, and constraints. I am drawn to service design because it turns complexity into systems that work in real life.</p>
                                     </li>
                                     <li class="w-full h-px bg-gray-100"></li>
-                                    <li class="flex items-start">
-                                        <span class="text-secondary text-sm leading-relaxed"><strong class="font-bold text-primary block mb-1">Accessibility & Equity</strong> Designing for diverse needs—especially for those often excluded.</span>
+                                    <li>
+                                        <strong class="font-bold text-primary block mb-3 text-lg">Accessibility & Equity</strong>
+                                        <p class="text-secondary leading-relaxed">I care about designing for diverse needs, not just typical users. Accessibility matters to me because the people most impacted by poor design are often those who rely on services the most.</p>
                                     </li>
                                 </ul>
                             </div>
                         </div>
 
                         <!-- Skills (Right) -->
-                        <div class="lg:col-span-7 fade-in-section">
-                            <h3 class="text-2xl font-serif text-primary mb-8 flex items-center">
-                                <span class="bg-blue-100 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">🧰</span> Skills & Toolkit
+                        <div class="fade-in-section">
+                            <h3 class="text-2xl font-serif text-primary mb-10 flex items-center">
+                                <span class="bg-blue-100 w-8 h-8 rounded-full flex items-center justify-center mr-4 text-sm shadow-sm">🧰</span> Skills & Toolkit
                             </h3>
                             
-                            <div class="space-y-8">
+                            <div class="space-y-10">
                                 <!-- Methods -->
                                 <div>
-                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Methods</h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Wireframing</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Prototyping</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">User Flows</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Information Architecture (IA)</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Semi-structured Interviews</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Affinity Mapping</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Journey Mapping</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Service Blueprinting</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Usability Testing</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Think-Aloud Study</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Competitive Analysis</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Storyboarding</span>
+                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Methods</h4>
+                                    <div class="flex flex-wrap gap-2.5">
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Wireframing</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Prototyping</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">User Flows</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Information Architecture (IA)</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Semi-structured Interviews</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Affinity Mapping</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Journey Mapping</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Service Blueprinting</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Usability Testing</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Think-Aloud Study</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Competitive Analysis</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Storyboarding</span>
                                     </div>
                                 </div>
                                 
                                 <!-- Tools -->
                                 <div>
-                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Tools</h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Figma</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Canva</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Notion</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Google Workspace</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Microsoft Office</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Adobe Creative Suite</span>
+                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Tools</h4>
+                                    <div class="flex flex-wrap gap-2.5">
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Figma</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Canva</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Notion</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Google Workspace</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Microsoft Office</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Adobe Creative Suite</span>
                                     </div>
                                 </div>
                                 
-                                <!-- Technical -->
+                                <!-- Data Analysis -->
                                 <div>
-                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Technical</h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Python</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">pandas</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Data Visualization</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Exploratory Data Analysis (EDA)</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Survey Design</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">A/B Testing (Conceptual)</span>
-                                        <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Excel Modeling</span>
+                                    <h4 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Data Analysis</h4>
+                                    <div class="flex flex-wrap gap-2.5">
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Python</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">pandas</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Data Visualization</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Exploratory Data Analysis (EDA)</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Survey Design</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">A/B Testing (Conceptual)</span>
+                                        <span class="px-3.5 py-2 bg-white border border-gray-200 rounded-lg text-sm text-secondary shadow-sm hover:border-accent/50 hover:text-primary transition-colors cursor-default">Excel Modeling</span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. What I Bring (Grid) -->
+                <div class="max-w-6xl mx-auto px-6 md:px-12 mb-32 fade-in-section">
+                    <div class="text-center mb-16">
+                         <span class="text-accent text-xs font-bold uppercase tracking-widest">Value Proposition</span>
+                         <h3 class="text-3xl md:text-4xl font-serif text-primary mt-3">What I bring to the table</h3>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Card 1 -->
+                        <div class="bg-white p-10 rounded-[2rem] border border-gray-100 shadow-sm hover:border-accent/20 hover:shadow-lg transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><i data-lucide="git-merge" class="w-6 h-6"></i></div>
+                            <h4 class="font-bold text-primary mb-3 text-xl">Systems thinking with real-world constraints</h4>
+                            <p class="text-secondary leading-relaxed">Designing beyond screens, mapping the people, policies, and processes behind services.</p>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="bg-white p-10 rounded-[2rem] border border-gray-100 shadow-sm hover:border-accent/20 hover:shadow-lg transition-all duration-300 group">
+                             <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><i data-lucide="search" class="w-6 h-6"></i></div>
+                            <h4 class="font-bold text-primary mb-3 text-xl">Research → clarity</h4>
+                            <p class="text-secondary leading-relaxed">Turning qualitative insights into structured, actionable findings through synthesis.</p>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="bg-white p-10 rounded-[2rem] border border-gray-100 shadow-sm hover:border-accent/20 hover:shadow-lg transition-all duration-300 group">
+                             <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><i data-lucide="compass" class="w-6 h-6"></i></div>
+                            <h4 class="font-bold text-primary mb-3 text-xl">Strategy + craft</h4>
+                            <p class="text-secondary leading-relaxed">Balancing big-picture service storytelling with interaction design and clean UI.</p>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="bg-white p-10 rounded-[2rem] border border-gray-100 shadow-sm hover:border-accent/20 hover:shadow-lg transition-all duration-300 group">
+                             <div class="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><i data-lucide="briefcase" class="w-6 h-6"></i></div>
+                            <h4 class="font-bold text-primary mb-3 text-xl">Business + user perspective</h4>
+                            <p class="text-secondary leading-relaxed">Connecting user needs to organizational goals to creating viable solutions.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- 5. Outside Design (Warm Background) -->
-                <div class="bg-[#FFFCF5] border-t border-[#F0EBE0] py-24 px-6 md:px-12">
+                <div class="bg-[#FFFCF5] border-t border-[#F0EBE0] py-32 px-6 md:px-12">
                     <div class="max-w-6xl mx-auto fade-in-section">
-                        <div class="mb-12">
+                        <div class="mb-16">
                              <h3 class="text-3xl font-serif text-primary mb-6 flex items-center">
-                                <span class="mr-3">🌿</span> A glimpse outside design
+                                <span class="mr-4">🌿</span> A glimpse outside design
                             </h3>
-                            <p class="text-secondary text-lg font-light mb-8 max-w-2xl">Outside of design, I recharge through music, photography, and creative self-expression. These interests shape my attention to detail, sense of rhythm, and love for craft.</p>
+                            <p class="text-secondary text-lg font-light mb-8 max-w-2xl">Outside of design, I recharge through music, photography, and creative self-expression.</p>
                         </div>
 
                         <!-- Creative Moments Carousel -->
-                        <div>
-                             <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-6">More creative moments</h4>
-                             
-                             <!-- Updated Container: Dark background, 16/9 aspect ratio for better photo fit -->
-                             <div class="relative w-full max-w-4xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-gray-900 rounded-2xl overflow-hidden group shadow-lg border border-[#F0EBE0]">
-                                <!-- Main Image: Changed to object-contain to show full image -->
-                                <img id="creative-image" src="images/guitar.jpg" alt="Creative Gallery" class="w-full h-full object-contain transition-opacity duration-300 ease-in-out">
-                                
-                                <!-- Caption Overlay (Visible on Hover) -->
+                        <div class="mb-32">
+                             <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-8">More creative moments</h4>
+                             <div class="relative w-full max-w-5xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-gray-900 rounded-[2rem] overflow-hidden group shadow-2xl border border-[#F0EBE0]">
+                                <img id="creative-image" src="images/guitar.jpg" alt="Creative Gallery" class="w-full h-full object-contain transition-opacity duration-500 ease-in-out">
                                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-12 pointer-events-none">
-                                    <p id="creative-caption" class="text-white text-lg font-medium px-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 drop-shadow-md">
-                                        Playing guitar and singing as a creative outlet.
-                                    </p>
+                                    <p id="creative-caption" class="text-white text-xl font-medium px-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Playing guitar and singing as a creative outlet.</p>
                                 </div>
+                                <button onclick="prevCreative()" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md hover:bg-white/40 p-4 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"><i data-lucide="chevron-left" class="w-8 h-8"></i></button>
+                                <button onclick="nextCreative()" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md hover:bg-white/40 p-4 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"><i data-lucide="chevron-right" class="w-8 h-8"></i></button>
+                            </div>
+                        </div>
 
-                                <!-- Controls -->
-                                <button onclick="prevCreative()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 text-primary transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 z-10" aria-label="Previous image">
-                                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
-                                </button>
-                                <button onclick="nextCreative()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 text-primary transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 z-10" aria-label="Next image">
-                                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
-                                </button>
-                                
-                                <!-- Indicators -->
-                                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
-                                    <div id="creative-dot-0" class="w-2 h-2 rounded-full bg-white shadow-sm transition-all scale-125"></div>
-                                    <div id="creative-dot-1" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToCreativeSlide(1)"></div>
-                                    <div id="creative-dot-2" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToCreativeSlide(2)"></div>
-                                    <div id="creative-dot-3" class="w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer" onclick="goToCreativeSlide(3)"></div>
+                        <!-- Photography Section -->
+                        <div>
+                            <div class="mb-8">
+                                <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-3">Photography</h4>
+                                <p class="text-secondary text-sm">A curated selection exploring light, texture, structure, and mood.</p>
+                            </div>
+                            <div class="relative w-full max-w-5xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-gray-900 rounded-[2rem] overflow-hidden group shadow-2xl border border-[#F0EBE0]">
+                                <img id="photo-image" src="images/p1.JPG" alt="Photography Gallery" class="w-full h-full object-contain transition-opacity duration-700 ease-in-out">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-16 pointer-events-none">
+                                    <div class="text-center px-8">
+                                        <span id="photo-title" class="block text-white/70 text-xs font-bold uppercase tracking-widest mb-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">01 — Landscape / Negative Space</span>
+                                        <p id="photo-caption" class="text-white text-2xl font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 drop-shadow-lg">Scale and negative space.</p>
+                                    </div>
                                 </div>
+                                <button onclick="prevPhoto()" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md hover:bg-white/40 p-4 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"><i data-lucide="chevron-left" class="w-8 h-8"></i></button>
+                                <button onclick="nextPhoto()" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md hover:bg-white/40 p-4 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"><i data-lucide="chevron-right" class="w-8 h-8"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
 
         <!-- ================= LUMI CASE STUDY ================= -->
         <div id="lumi" class="page-section bg-white">
@@ -833,9 +656,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Rest of Lumi case study content kept identical but benefits from global style updates -->
-            <!-- ... -->
             
             <div class="max-w-6xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <!-- Sticky TOC -->
@@ -864,7 +684,7 @@
                     
                     <!-- 1b) Project Snapshot -->
                     <section id="overview" class="fade-in-section scroll-mt-32">
-                        <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100">
+                        <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 mb-12">
                             <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Project Snapshot</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                                 <div><div class="flex items-center text-accent mb-2"><i data-lucide="pen-tool" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Type</span></div><p class="text-sm font-medium text-primary">Student Project at iSchool</p></div>
@@ -872,6 +692,33 @@
                                 <div><div class="flex items-center text-accent mb-2"><i data-lucide="layout" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Tools</span></div><p class="text-sm font-medium text-primary">Figma, Canva, Microsoft Word, Story Tribe</p></div>
                                 <div><div class="flex items-center text-accent mb-2"><i data-lucide="users" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Team</span></div><p class="text-sm font-medium text-primary">Evangeline Zhao, Asia Apostol, Hannah Saeedi, Sihui Wang</p></div>
                             </div>
+                        </div>
+
+                        <!-- What I Did Section -->
+                        <div>
+                            <h3 class="text-xl font-medium text-primary mb-6">What I did</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start text-sm text-secondary">
+                                    <span class="w-1.5 h-1.5 bg-accent rounded-full mt-2 mr-3 shrink-0"></span>
+                                    <span>Conducted <strong>secondary research + source analysis</strong> using credible academic/industry sources</span>
+                                </li>
+                                <li class="flex items-start text-sm text-secondary">
+                                    <span class="w-1.5 h-1.5 bg-accent rounded-full mt-2 mr-3 shrink-0"></span>
+                                    <span>Ran <strong>semi-structured interviews</strong> with late-night shift workers (team total 8) and supported qualitative analysis</span>
+                                </li>
+                                <li class="flex items-start text-sm text-secondary">
+                                    <span class="w-1.5 h-1.5 bg-accent rounded-full mt-2 mr-3 shrink-0"></span>
+                                    <span>Created key UX artifacts: <strong>persona, journey map, storyboard, user flows</strong>, and <strong>low-fi wireframes</strong></span>
+                                </li>
+                                <li class="flex items-start text-sm text-secondary">
+                                    <span class="w-1.5 h-1.5 bg-accent rounded-full mt-2 mr-3 shrink-0"></span>
+                                    <span>Built a <strong>hi-fi interactive prototype</strong> in Figma and contributed to the <strong>design system</strong> (components + UI patterns)</span>
+                                </li>
+                                <li class="flex items-start text-sm text-secondary">
+                                    <span class="w-1.5 h-1.5 bg-accent rounded-full mt-2 mr-3 shrink-0"></span>
+                                    <span>Completed 2 usability tests as <strong>facilitator</strong> and 2 usability tests as <strong>note-taker</strong>, then <strong>iterated</strong> the prototype based on findings</span>
+                                </li>
+                            </ul>
                         </div>
                     </section>
 
@@ -881,7 +728,7 @@
                             <div>
                                 <h2 class="text-3xl font-semibold text-primary mb-6">Problem Statement</h2>
                                 <div class="pl-6 border-l-4 border-accent">
-                                    <p class="text-xl md:text-2xl text-secondary leading-relaxed font-serif italic">"Late-night shift workers often feel unsafe commuting home alone. Existing tools are too slow, too complex, or not designed for proactive support — leaving users without real-time reassurance and structured reporting when it matters."</p>
+                                    <p class="text-xl md:text-2xl text-secondary leading-relaxed font-serif italic">"Late night shift workers need reliable updates so that they can feel alert and safe during their nightly commute."</p>
                                 </div>
                             </div>
                             <div class="grid md:grid-cols-2 gap-12">
@@ -1001,7 +848,8 @@
                             <p class="text-2xl text-primary font-medium max-w-3xl mx-auto">Design a trusted safety experience by simplifying access to verified information, delivering calm and controlled alerts, and improving decision confidence during nightly commutes.</p>
                         </div>
                         <h3 class="text-xl font-medium text-primary mb-6">User Personas</h3>
-                        <div class="grid md:grid-cols-2 gap-8">
+                        <div class="max-w-2xl">
+                            <!-- Retained only the Vigilant Commuter -->
                             <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
                                 <div class="mb-6 w-full rounded-lg border border-gray-100 overflow-hidden bg-gray-100">
                                     <!-- Original User Image -->
@@ -1009,14 +857,6 @@
                                 </div>
                                 <div class="flex items-center mb-4"><div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white mr-4 shrink-0"><i data-lucide="coffee" class="w-5 h-5"></i></div><h4 class="font-bold text-primary">The Vigilant Commuter</h4></div>
                                 <p class="text-sm text-secondary italic">Wants information that can proactively notify her about safety issues and plan her route</p>
-                            </div>
-                            <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
-                                <div class="mb-6 w-full rounded-lg border border-gray-100 overflow-hidden bg-gray-100">
-                                     <!-- Original User Image -->
-                                    <img src="images/Maya_Persona.png" alt="THE NEIGHBOURHOOD GUARDIAN" class="w-full h-auto">
-                                </div>
-                                <div class="flex items-center mb-4"><div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-primary mr-4 shrink-0"><i data-lucide="user" class="w-5 h-5"></i></div><h4 class="font-bold text-primary">The Community Steward</h4></div>
-                                <p class="text-sm text-secondary italic">Wants information that can keep her informed about the safety of her local area and her family.</p>
                             </div>
                         </div>
                     </section>
@@ -1034,19 +874,7 @@
                             <div class="p-6 rounded-xl border bg-orange-50 border-orange-100 flex flex-col justify-center text-center h-40"><h4 class="font-bold text-primary text-sm leading-tight">Location-Aware Safety View</h4></div>
                         </div>
                         
-                        <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">User Task Flow</h4>
-                        <div class="grid md:grid-cols-3 gap-4 mb-16">
-                            <!-- Original User Images -->
-                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-center">
-                                <img src="images/Flow1.png" alt="Task Flow 1" class="w-full h-auto rounded">
-                            </div>
-                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-center">
-                                <img src="images/Flow2.png" alt="Task Flow 2" class="w-full h-auto rounded">
-                            </div>
-                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-center">
-                                <img src="images/Flow3.png" alt="Task Flow 3" class="w-full h-auto rounded">
-                            </div>
-                        </div>
+                        <!-- Removed User Task Flow section here -->
                     </section>
 
                     <!-- 14) Prototype & Test -->
@@ -1065,16 +893,10 @@
                             </div>
                         </div>
                         <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">Sketches</h4>
-                        <div class="grid grid-cols-2 gap-4 mb-16">
-                            <!-- Original User Images -->
+                        <!-- Changed to single column stack, removed sketch 2 and 3 -->
+                        <div class="grid grid-cols-1 gap-8 mb-16 max-w-3xl mx-auto">
                             <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                                 <img src="images/sketch1.png" alt="Sketch 1" class="w-full h-auto rounded">
-                            </div>
-                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                                <img src="images/Sketch2.png" alt="Sketch 2" class="w-full h-auto rounded">
-                            </div>
-                            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                                <img src="images/Sketch3.png" alt="Sketch 3" class="w-full h-auto rounded">
                             </div>
                             <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                                 <img src="images/Sketch4.png" alt="Sketch 4" class="w-full h-auto rounded">
@@ -1084,11 +906,16 @@
 
                     <!-- 15) Key Iterations -->
                     <section id="iterations" class="fade-in-section scroll-mt-32">
-                        <div class="mb-16">
+                        <div class="mb-12">
                             <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">07</span><span class="h-px w-12 bg-gray-200"></span></div>
                             <h2 class="text-4xl md:text-5xl font-semibold text-primary mb-6 tracking-tight">Key Iterations</h2>
                         </div>
                         
+                        <!-- New Content Added -->
+                        <p class="text-secondary text-lg leading-relaxed mb-12 max-w-4xl">
+                            To validate the experience, I facilitated 2 usability tests and served as a note-taker for additional sessions. As a team, we conducted 8 usability tests in total, and I synthesized key patterns across all sessions to identify where users hesitated, misunderstood system feedback, or lacked control in high-stress moments. I then translated these insights into prioritized design improvements and iterated the high-fidelity prototype, refining interaction clarity, information hierarchy, and user autonomy in the alert setup flow.
+                        </p>
+
                         <!-- Iteration 1 -->
                         <div class="mb-16">
                             <div class="w-full bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm p-4">
@@ -1228,6 +1055,7 @@
                         <a href="#sm-process" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Process</a>
                         <a href="#sm-decisions" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Design Decisions</a>
                         <a href="#sm-solution" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Solution</a>
+                        <a href="#sm-marketing" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Marketing Materials</a>
                         <a href="#sm-outcomes" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Outcomes & Reflection</a>
                         
                         <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center text-[10px] font-bold uppercase tracking-wider text-gray-400 pl-4 mt-8 hover:text-accent transition-colors">
@@ -1241,27 +1069,41 @@
 
                      <!-- Snapshot -->
                      <section id="sm-overview" class="fade-in-section scroll-mt-32">
+                        <!-- NEW Overview Section -->
+                        <div class="mb-12">
+                            <h3 class="text-xl font-medium text-teal-900 mb-4">Overview</h3>
+                            <p class="text-secondary leading-relaxed text-lg">
+                                Staging Mastery is a client project supporting the launch of a hands-on home staging course. I designed the learning materials and pre-launch experience so the course can scale from expert workflow into structured, beginner-friendly instruction.
+                            </p>
+                        </div>
+
                         <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 shadow-sm mb-12">
                             <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Project Snapshot</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div><div class="flex items-center text-teal-600 mb-2"><i data-lucide="briefcase" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Role</span></div><p class="text-sm font-medium text-primary">Field Placement (End-to-End Design)</p></div>
                                 <div><div class="flex items-center text-teal-600 mb-2"><i data-lucide="layout" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Tools</span></div><p class="text-sm font-medium text-primary">Wix, Kajabi, Canva, Google Workspace</p></div>
-                                <div class="md:col-span-2"><div class="flex items-center text-teal-600 mb-2"><i data-lucide="check-square" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Deliverables</span></div><p class="text-sm font-medium text-primary">Curriculum architecture (10 modules), workbook system, slide system, pre-launch funnel, email nurture plan</p></div>
+                                <div class="md:col-span-2">
+                                    <div class="flex items-center text-teal-600 mb-2"><i data-lucide="check-square" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Deliverables</span></div>
+                                    <p class="text-sm font-medium text-primary">
+                                        10-module curriculum architecture<br>
+                                        Slide + workbook system (templates, refined course content, frameworks, checklists)<br>
+                                        Waitlist funnel plan (Wix now, Kajabi later) + email nurture plan
+                                    </p>
+                                </div>
                                 <div class="md:col-span-2"><div class="flex items-center text-teal-600 mb-2"><i data-lucide="activity" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Status</span></div><p class="text-sm font-medium text-primary">Pre-launch (Course production in progress)</p></div>
                             </div>
                         </div>
 
-                        <!-- Expanded "My Role" Section -->
+                        <!-- Renamed "My Ownership" Section -->
                         <div class="mb-8">
-                            <h3 class="text-xl font-medium text-primary mb-6">My Role & Responsibilities</h3>
-                            <p class="text-secondary mb-6">I owned the end-to-end experience design across content + service touchpoints:</p>
+                            <h3 class="text-xl font-medium text-primary mb-6">My Ownership</h3>
+                            <p class="text-secondary mb-6">I owned the end-to-end learning and pre-launch experience across content and service touchpoints:</p>
                             <ul class="grid md:grid-cols-2 gap-4">
                                 <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Curriculum architecture and module progression (10 modules)</li>
-                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Workbook system (checklists, exercises, applied frameworks)</li>
-                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Slide system (instruction + reinforcement)</li>
-                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Pre-launch waitlist funnel design (Wix now, Kajabi later)</li>
-                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Email nurture + promotion countdown plan</li>
-                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Supporting marketing materials for social and launch communications</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Slide + workbook system for instruction and reinforcement</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Pre-launch waitlist journey (Wix now, scalable to Kajabi later)</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Email nurture and launch countdown planning</li>
+                                <li class="bg-white p-4 border border-gray-200 rounded-lg text-sm text-secondary flex items-start"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-2 mr-3 shrink-0"></span>Supporting marketing assets for launch communications</li>
                             </ul>
                         </div>
                     </section>
@@ -1272,7 +1114,7 @@
                             <div>
                                 <h2 class="text-3xl font-semibold text-primary mb-6">The Challenge</h2>
                                 <div class="pl-6 border-l-4 border-teal-500">
-                                    <p class="text-xl text-secondary leading-relaxed font-serif italic">"Most online staging courses emphasize business setup or general inspiration. The team needed a practical, step-by-step course that teaches staging execution—plus a launch-ready funnel to build an audience while the course was being recorded."</p>
+                                    <p class="text-xl text-secondary leading-relaxed font-serif italic">"Most staging courses focus on business setup or inspiration. The client needed a practical, step-by-step course that teaches staging execution and builds learner confidence. Because the course was still being recorded, we also needed a pre-launch funnel to grow an audience and sustain interest until launch."</p>
                                 </div>
                             </div>
                             
@@ -1292,7 +1134,7 @@
                                         <span class="text-secondary text-sm"><strong>DIY Homeowners:</strong> Staging their own homes to sell.</span>
                                     </li>
                                 </ul>
-                                <p class="text-sm text-secondary mt-6 italic bg-white p-3 rounded border border-gray-100"><strong>Shared Need:</strong> Confidence through a clear process and tools that reduce uncertainty.</p>
+                                <p class="text-sm text-secondary mt-6 italic bg-white p-3 rounded border border-gray-100"><strong>Shared Need:</strong> A clear process and reusable tools that reduce uncertainty and decision fatigue.</p>
                             </div>
                         </div>
                     </section>
@@ -1301,48 +1143,26 @@
                     <section id="sm-process" class="fade-in-section scroll-mt-32">
                         <div class="mb-12">
                              <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">01</span><span class="h-px w-12 bg-gray-200"></span></div>
-                            <h2 class="text-3xl font-semibold text-primary mb-6">Process & Key Decisions</h2>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">Process</h2>
                         </div>
                         
-                        <!-- Discover -->
+                        <!-- Compressed Process Section -->
                         <div class="mb-12">
-                             <h3 class="text-xl font-medium text-primary mb-4 flex items-center"><span class="w-8 h-8 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-sm font-bold mr-3">1</span> Discover</h3>
-                             <p class="text-secondary mb-6">With the course still in production, I focused discovery on making expert staging knowledge teachable and scalable:</p>
-                             <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6 shadow-sm">
+                             <h3 class="text-xl font-medium text-primary mb-4">Process (How I worked)</h3>
+                             <p class="text-secondary mb-6">With the course still in production, I focused on making expert staging knowledge teachable and scalable:</p>
+                             
+                             <div class="bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
                                  <ul class="space-y-4">
-                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="search" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span><strong>Extracted the instructor’s real staging workflow</strong> and converted it into a structured learning path.</span></li>
-                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="search" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span><strong>Identified high-friction moments</strong> for beginners (e.g., consultation conversations, buyer profiling, layout decisions) and ensured each module included actionable tools.</span></li>
-                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="search" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span><strong>Planned the launch journey as a service experience</strong>—not just a website—so early interest could be captured and nurtured pre-launch.</span></li>
+                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="check" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span>Translated the instructor’s real-world staging workflow into a structured learning path</span></li>
+                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="check" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span>Identified high-friction moments for beginners and embedded actionable tools into each module</span></li>
+                                     <li class="text-sm text-secondary flex items-start"><i data-lucide="check" class="w-5 h-5 mr-3 text-teal-600 shrink-0"></i> <span>Designed the launch journey as a service experience, capturing early interest and nurturing it pre-launch</span></li>
                                  </ul>
                              </div>
-                             <!-- Updated Image and Caption -->
+
+                             <!-- Preserved Image -->
                              <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-200 max-w-2xl mx-auto">
                                 <img src="images/LearnButton.png" alt="StagedSetSold Navigation" class="w-full h-auto">
                                 <p class="p-4 text-sm text-secondary italic border-t border-gray-100 bg-white">This is how people discover the Staging Mastery method -- through the StagedSetSold website, where the 'Learn' button directs them to the pre-launch website.</p>
-                             </div>
-                        </div>
-
-                        <!-- Define -->
-                        <div>
-                             <h3 class="text-xl font-medium text-primary mb-4 flex items-center"><span class="w-8 h-8 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-sm font-bold mr-3">2</span> Define</h3>
-                             <p class="text-secondary mb-6">I established four core experience goals to guide the design:</p>
-                             <div class="grid sm:grid-cols-2 gap-4">
-                                 <div class="bg-white p-4 border border-gray-200 rounded-lg hover:border-teal-500 transition-colors">
-                                     <h4 class="font-bold text-primary text-sm mb-1">Make the learning path obvious</h4>
-                                     <p class="text-xs text-secondary">Progression that mirrors a real staging workflow.</p>
-                                 </div>
-                                 <div class="bg-white p-4 border border-gray-200 rounded-lg hover:border-teal-500 transition-colors">
-                                     <h4 class="font-bold text-primary text-sm mb-1">Make learning actionable</h4>
-                                     <p class="text-xs text-secondary">Checklists, prompts, and reusable frameworks.</p>
-                                 </div>
-                                 <div class="bg-white p-4 border border-gray-200 rounded-lg hover:border-teal-500 transition-colors">
-                                     <h4 class="font-bold text-primary text-sm mb-1">Reduce cognitive load</h4>
-                                     <p class="text-xs text-secondary">Consistent templates across modules.</p>
-                                 </div>
-                                 <div class="bg-white p-4 border border-gray-200 rounded-lg hover:border-teal-500 transition-colors">
-                                     <h4 class="font-bold text-primary text-sm mb-1">Enable launch readiness</h4>
-                                     <p class="text-xs text-secondary">Waitlist funnel now; automation later.</p>
-                                 </div>
                              </div>
                         </div>
                     </section>
@@ -1351,31 +1171,74 @@
                      <section id="sm-decisions" class="fade-in-section scroll-mt-32">
                         <div class="mb-12">
                              <div class="flex items-center gap-3 mb-4"><span class="flex items-center justify-center w-6 h-6 rounded border border-gray-200 bg-white text-[10px] font-bold text-secondary shadow-sm">03</span><span class="h-px w-12 bg-gray-200"></span></div>
-                            <h2 class="text-3xl font-semibold text-primary mb-6">Design Decisions</h2>
+                            <h2 class="text-3xl font-semibold text-primary mb-6">Key Decisions</h2>
                         </div>
 
-                        <div class="space-y-16">
-                            <!-- Decision A -->
-                            <div>
-                                <h3 class="text-xl font-medium text-primary mb-4">Decision A — Sequence modules as a workflow, not a topic list</h3>
-                                <p class="text-secondary mb-6 max-w-2xl">Instead of organizing content as disconnected tips, I structured modules to mirror real staging engagements (consultation → buyer mindset → staging plan → execution details → final walkthrough), so learners always know what to do next.</p>
+                        <p class="text-secondary text-lg mb-12 max-w-4xl">
+                            Because the course was still being recorded, my priority was to design a system that could scale: a learner experience that is structured, actionable, and consistent across materials, plus a pre-launch journey that keeps audiences engaged until launch.
+                        </p>
+
+                        <div class="space-y-8">
+                            <!-- Decision 01 -->
+                            <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+                                <h3 class="text-xl font-bold text-teal-900 mb-6">Decision 01: Structure the course as a repeatable workflow</h3>
+                                <div class="grid md:grid-cols-3 gap-8">
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">What I did</h4>
+                                        <p class="text-sm text-secondary">Sequenced modules to mirror how staging work happens in real life (consultation → buyer profile → staging plan → execution → final walkthrough).</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">Why it mattered</h4>
+                                        <p class="text-sm text-secondary">Beginners struggle most when they have to decide “what to do next.” A workflow-based sequence reduces uncertainty and gives learners a clear mental model of the staging process.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">Impact on design</h4>
+                                        <p class="text-sm text-secondary">Each module ends with actionable outputs (checklists, prompts, decision rules) so learners can apply the workflow immediately.</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Decision B -->
-                             <div>
-                                <h3 class="text-xl font-medium text-primary mb-4">Decision B — Build a reusable content system</h3>
-                                <p class="text-secondary mb-6 max-w-2xl">I designed repeatable layouts and patterns across modules (visual hierarchy, “pro tips,” checklists) so learners can focus on learning staging—not figuring out how to read the materials each time.</p>
+                            <!-- Decision 02 -->
+                            <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+                                <h3 class="text-xl font-bold text-teal-900 mb-6">Decision 02: Design one reusable learning system (not 10 separate modules)</h3>
+                                <div class="grid md:grid-cols-3 gap-8">
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">What I did</h4>
+                                        <p class="text-sm text-secondary">Created a consistent content system across modules: repeated slide patterns, workbook templates, “pro tip” blocks, checklists, and framework layouts.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">Why it mattered</h4>
+                                        <p class="text-sm text-secondary">Changing layouts every module increases cognitive load. A repeatable system lets learners focus on staging execution rather than interpreting how to use the materials.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">Impact on design</h4>
+                                        <p class="text-sm text-secondary">The slide deck and workbook share the same structure so learning feels cohesive and predictable.</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Decision C -->
-                             <div>
-                                <h3 class="text-xl font-medium text-primary mb-4">Decision C — Treat the funnel as part of the service experience</h3>
-                                <p class="text-secondary mb-6 max-w-2xl">Because the course wasn’t live yet, the funnel needed to do two jobs:</p>
-                                <ul class="list-disc list-inside text-secondary mb-6 space-y-2 ml-2">
-                                    <li>Capture interest now and reward it immediately (lead magnet)</li>
-                                    <li>Keep subscribers engaged until launch (updates + eventual promotion countdown)</li>
-                                </ul>
-                                <p class="text-secondary mb-6 max-w-2xl">This shaped the funnel into a pre-launch waitlist journey that can later scale on Kajabi via popups, dedicated opt-in pages, and automation.</p>
+                            <!-- Decision 03 -->
+                            <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+                                <h3 class="text-xl font-bold text-teal-900 mb-6">Decision 03: Treat the pre-launch funnel as part of the service experience</h3>
+                                <div class="grid md:grid-cols-3 gap-8">
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">What I did</h4>
+                                        <p class="text-sm text-secondary">Designed a pre-launch waitlist journey that captures interest, delivers immediate value, and builds trust over time through structured communication.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">Why it mattered</h4>
+                                        <p class="text-sm text-secondary">Because the course was not live yet, the funnel needed to do more than collect emails. It had to create momentum and reduce drop-off between sign-up and launch.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">Impact on design</h4>
+                                        <p class="text-sm text-secondary mb-2">This shaped the funnel into a service journey:</p>
+                                        <ul class="list-disc list-inside text-sm text-secondary space-y-1">
+                                            <li>Immediate reward (lead magnet)</li>
+                                            <li>Ongoing updates (nurture)</li>
+                                            <li>Launch countdown (conversion moment)</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -1390,7 +1253,21 @@
                         <!-- A) Curriculum -->
                         <div class="mb-16">
                             <h3 class="text-lg font-bold text-primary mb-4 uppercase tracking-wider text-teal-800">A) Curriculum Architecture (10 Modules)</h3>
-                            <p class="text-secondary mb-6">I created a 10-module path that builds from fundamentals to execution and client communication. The structure supports progressive skill-building and reduces overwhelm by guiding learners through a clear sequence.</p>
+                            
+                            <div class="mb-6">
+                                <span class="font-bold text-primary text-sm bg-teal-50 border border-teal-100 px-3 py-1 rounded-full inline-block mb-3">Goal: Make the learning path obvious and reduce overwhelm.</span>
+                                <p class="text-secondary leading-relaxed">I designed a 10-module structure that builds skills progressively and mirrors real staging engagements, helping learners understand what to do next at every step.</p>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-8">
+                                <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-4">What I produced</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> 10-module sequence aligned to real staging workflow</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Module progression from fundamentals → execution → client communication</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Defined learning outputs so every module ends with tangible action</li>
+                                </ul>
+                            </div>
+
                              <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                                 <img src="images/SlideTableOfContent.png" alt="Course Modules Overview" class="w-full h-auto rounded">
                             </div>
@@ -1399,7 +1276,21 @@
                         <!-- B) Workbook -->
                         <div class="mb-16">
                             <h3 class="text-lg font-bold text-primary mb-6 uppercase tracking-wider text-teal-800">B) Workbook System (Hands-on Learning)</h3>
-                            <p class="text-secondary mb-6">The workbook converts passive learning into action through consultation checklists, prompts for buyer demographics, and practical rules learners can reuse.</p>
+                            
+                            <div class="mb-6">
+                                <span class="font-bold text-primary text-sm bg-teal-50 border border-teal-100 px-3 py-1 rounded-full inline-block mb-3">Goal: Turn instruction into action through reusable tools.</span>
+                                <p class="text-secondary leading-relaxed">The workbook converts passive learning into guided practice using checklists, prompts, and frameworks that learners can apply to real staging work.</p>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-8">
+                                <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-4">What I produced</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Consultation checklists + staging decision prompts</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Framework-based exercises (repeatable templates)</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Visual roadmap for pacing and task completion</li>
+                                </ul>
+                            </div>
+
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                                     <img src="images/checklist.png" alt="Consultation Checklist" class="w-full h-auto rounded">
@@ -1415,7 +1306,21 @@
                         <!-- C) Slides -->
                         <div class="mb-16">
                             <h3 class="text-lg font-bold text-primary mb-6 uppercase tracking-wider text-teal-800">C) Slide System (Instruction + Reinforcement)</h3>
-                            <p class="text-secondary mb-6">Slides were designed to align with workbook structure using clear hierarchy, chunked bullets, and consistent patterns.</p>
+                            
+                            <div class="mb-6">
+                                <span class="font-bold text-primary text-sm bg-teal-50 border border-teal-100 px-3 py-1 rounded-full inline-block mb-3">Goal: Reduce cognitive load with consistent hierarchy and patterns.</span>
+                                <p class="text-secondary leading-relaxed">Slides were designed as a repeatable system to reinforce learning: chunked information, clear hierarchy, and consistent components across modules.</p>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-8">
+                                <h4 class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-4">What I produced</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Slide templates with consistent grid + hierarchy rules</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Repeated UI patterns (“Pro tips”, examples, key takeaways)</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Aligned slide structure to workbook structure for consistency</li>
+                                </ul>
+                            </div>
+
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                                     <img src="images/SMSlide1.png" alt="Instructional Slide" class="w-full h-auto rounded">
@@ -1452,6 +1357,55 @@
                         </div>
                     </section>
 
+                    <!-- Marketing Materials Section (Preserved from visual design) -->
+                    <section id="sm-marketing" class="fade-in-section scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-8">
+                            <h3 class="text-2xl font-serif text-teal-900">E) Marketing Materials</h3>
+                            <div class="h-px flex-grow bg-gray-200"></div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-12">
+                            <!-- Marketing Item 01 -->
+                            <div class="space-y-4">
+                                <div class="relative rounded-xl overflow-hidden shadow-lg border border-gray-100 group">
+                                    <img src="images/VD4.png" alt="Online Course Promo" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="text-lg font-bold text-teal-900">01 — Online Course Promo</h4>
+                                    </div>
+                                    <p class="text-secondary text-sm mb-3">Premium course promo designed for clarity and credibility.</p>
+                                    <div class="flex gap-2">
+                                        <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Focus:</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Hierarchy</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Typography</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Brand Consistency</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Marketing Item 02 -->
+                            <div class="space-y-4">
+                                <div class="relative rounded-xl overflow-hidden shadow-lg border border-gray-100 group">
+                                    <img src="images/StagingMastery.png" alt="Weekly Newsletter Template" class="w-full h-auto block group-hover:scale-105 transition-transform duration-700">
+                                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="text-lg font-bold text-teal-900">02 — Weekly Newsletter Template</h4>
+                                    </div>
+                                    <p class="text-secondary text-sm mb-3">Editorial-style layout built for readability and structure.</p>
+                                    <div class="flex gap-2">
+                                        <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Focus:</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Grid System</span>
+                                        <span class="text-[10px] uppercase tracking-wider text-secondary">Information Hierarchy</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
                     <!-- Outcomes -->
                     <section id="sm-outcomes" class="fade-in-section scroll-mt-32 pb-12">
                         <div class="mb-12">
@@ -1459,37 +1413,65 @@
                             <h2 class="text-3xl font-semibold text-primary mb-6">Outcomes & Reflection</h2>
                         </div>
                         
-                        <div class="grid md:grid-cols-2 gap-8 mb-12">
+                        <!-- Outcomes: What this enabled -->
+                        <div class="space-y-8 mb-12">
                             <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
-                                <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-teal-600"></i> Pre-Launch Deliverables</h3>
-                                <p class="text-sm text-secondary mb-4 italic">Because the course is still being recorded, outcomes are measured as launch readiness.</p>
+                                <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-teal-600"></i> Outcomes: What this enabled</h3>
+                                <p class="text-sm text-secondary mb-4 italic">With the course still in production, impact was measured through launch readiness and system scalability.</p>
                                 <ul class="space-y-3">
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Completed 10-module curriculum architecture.</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Created cohesive workbook & slide systems.</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Established pre-launch waitlist funnel & scaling plan.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> A structured learning journey that reduces uncertainty for beginners</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> A reusable slide + workbook system that scales across modules without increasing cognitive load</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> A pre-launch waitlist experience that captures demand and builds trust before launch</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Launch-ready content and consistent premium positioning across touchpoints</li>
                                 </ul>
                             </div>
-                            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
-                                <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="bar-chart-2" class="w-5 h-5 mr-2 text-teal-600"></i> Measurement Plan</h3>
-                                <p class="text-sm text-secondary mb-4 italic">Once live, I would evaluate the experience using:</p>
-                                <ul class="space-y-3">
-                                    <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Landing page conversion (visit → subscribe).</li>
-                                    <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Lead magnet engagement (delivery and click-through).</li>
-                                    <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Enrollment conversion after promotion countdown.</li>
-                                    <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Course completion rates.</li>
-                                </ul>
+
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <!-- How success would be measured -->
+                                <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
+                                    <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="bar-chart-2" class="w-5 h-5 mr-2 text-teal-600"></i> How success would be measured</h3>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Conversion (visit → waitlist) and lead magnet engagement</li>
+                                        <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Subscriber → enrollment conversion at launch</li>
+                                        <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Module drop-off, completion rate, and learner feedback</li>
+                                    </ul>
+                                </div>
+
+                                <!-- How I’d scale it -->
+                                <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
+                                    <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="trending-up" class="w-5 h-5 mr-2 text-teal-600"></i> How I’d scale it</h3>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Pilot cohort + targeted iteration on learning clarity</li>
+                                        <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> A/B test messaging and funnel touchpoints</li>
+                                        <li class="flex items-start text-sm text-secondary"><span class="w-1.5 h-1.5 bg-teal-500 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Engagement dashboards + paid social experiments for growth</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
+                        <!-- Updated Reflection Section -->
                         <div class="bg-teal-50 border border-teal-100 p-8 rounded-xl">
-                            <h3 class="font-bold text-teal-900 mb-4">Reflection & Next Steps</h3>
-                            <p class="text-teal-800 text-sm mb-4">If continuing post-launch, I would:</p>
-                            <div class="flex flex-wrap gap-4">
-                                <span class="bg-white px-4 py-2 rounded-lg text-xs font-bold text-teal-800 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">Run a small pilot cohort</span>
-                                <span class="bg-white px-4 py-2 rounded-lg text-xs font-bold text-teal-800 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">A/B test landing page messaging</span>
-                                <span class="bg-white px-4 py-2 rounded-lg text-xs font-bold text-teal-800 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">Build dashboards for engagement</span>
-                                <span class="bg-white px-4 py-2 rounded-lg text-xs font-bold text-teal-800 border border-teal-100 shadow-sm hover:shadow-md transition-shadow">Expand acquisition via paid social</span>
+                            <h3 class="font-bold text-teal-900 mb-6 flex items-center"><i data-lucide="book-open" class="w-5 h-5 mr-2 text-teal-800"></i> Reflection</h3>
+                            <div class="prose prose-sm text-teal-800/90 mb-10 leading-relaxed max-w-none">
+                                <p class="mb-4">This project reinforced that <strong>content design is experience design</strong>. Translating expert staging knowledge into a course required building a clear learning structure, repeatable templates, and consistent hierarchy so learners can focus on execution rather than figuring out what to do next.</p> 
+                                <p>It also strengthened my <strong>service design mindset</strong> by treating the waitlist funnel and email communications as part of the end-to-end product experience, not separate marketing tasks.</p>
                             </div>
+                            
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-teal-900 mb-6">Key Learnings</h4>
+                            <ul class="space-y-4">
+                                <li class="flex items-start text-sm text-teal-800">
+                                    <span class="w-1.5 h-1.5 bg-teal-600 rounded-full mt-1.5 mr-3 shrink-0"></span>
+                                    <span><strong>Design systems apply beyond UI:</strong> Consistent patterns across slides, workbook, and marketing touchpoints reduce cognitive load.</span>
+                                </li>
+                                <li class="flex items-start text-sm text-teal-800">
+                                    <span class="w-1.5 h-1.5 bg-teal-600 rounded-full mt-1.5 mr-3 shrink-0"></span>
+                                    <span><strong>Funnel design is service design:</strong> Every pre-launch touchpoint impacts trust, motivation, and conversion.</span>
+                                </li>
+                                <li class="flex items-start text-sm text-teal-800">
+                                    <span class="w-1.5 h-1.5 bg-teal-600 rounded-full mt-1.5 mr-3 shrink-0"></span>
+                                    <span><strong>Clarity is a business advantage:</strong> Strong hierarchy and messaging improve credibility and decision-making.</span>
+                                </li>
+                            </ul>
                         </div>
                     </section>
                 </div>
@@ -1499,20 +1481,20 @@
         <!-- ================= ECHOES CASE STUDY ================= -->
         <div id="echoes" class="page-section bg-white">
              <!-- 1) Case Study Hero -->
-             <div class="bg-red-50 pt-24 pb-16 px-6 md:px-12 border-b border-border">
+             <div class="bg-teal-50 pt-24 pb-16 px-6 md:px-12 border-b border-border">
                 <div class="max-w-4xl mx-auto text-center stagger-parent fade-in-section">
                     <div class="stagger-child flex items-center justify-center gap-2 mb-8">
-                        <span class="px-4 py-1 bg-white border border-border rounded-full text-[10px] font-bold uppercase tracking-wider text-red-800">Web Design</span>
-                        <span class="px-4 py-1 bg-white border border-border rounded-full text-[10px] font-bold uppercase tracking-wider text-red-800">0→1 Build</span>
+                        <span class="px-4 py-1 bg-white border border-teal-200 rounded-full text-[10px] font-bold uppercase tracking-wider text-teal-800">Web Design</span>
+                        <span class="px-4 py-1 bg-white border border-teal-200 rounded-full text-[10px] font-bold uppercase tracking-wider text-teal-800">0→1 Build</span>
                     </div>
-                    <h1 class="stagger-child text-5xl md:text-7xl font-serif text-red-900 mb-8 tracking-tight leading-tight">Echoes from China</h1>
-                    <p class="stagger-child text-xl md:text-2xl text-red-900/70 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
+                    <h1 class="stagger-child text-5xl md:text-7xl font-serif text-teal-900 mb-8 tracking-tight leading-tight">Echoes from China</h1>
+                    <p class="stagger-child text-xl md:text-2xl text-teal-900/70 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
                         Designing a 0→1 community website for traditional Chinese culture with events, membership, and donation features.
                     </p>
                     
                     <div class="stagger-child flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="#echoes-overview" class="px-6 py-3 text-sm font-medium text-white bg-red-800 hover:bg-red-900 rounded-full transition-all shadow-sm">Start Reading</a>
-                        <a href="https://miazhu6.wixsite.com/echoes-from-china" target="_blank" class="px-6 py-3 text-sm font-medium text-red-900 bg-white border border-red-200 hover:bg-red-50 rounded-full transition-all shadow-sm flex items-center justify-center">Visit Live Site <i data-lucide="external-link" class="ml-2 w-4 h-4"></i></a>
+                        <a href="#echoes-overview" class="px-6 py-3 text-sm font-medium text-white bg-teal-700 hover:bg-teal-800 rounded-full transition-all shadow-sm">Start Reading</a>
+                        <a href="https://miazhu6.wixsite.com/echoes-from-china" target="_blank" class="px-6 py-3 text-sm font-medium text-teal-900 bg-white border border-teal-200 hover:bg-teal-50 rounded-full transition-all shadow-sm flex items-center justify-center">Visit Live Site <i data-lucide="external-link" class="ml-2 w-4 h-4"></i></a>
                     </div>
                 </div>
             </div>
@@ -1521,11 +1503,11 @@
                 <!-- Sticky TOC -->
                 <div class="hidden lg:block lg:col-span-3">
                     <div class="sticky top-32 space-y-1" id="toc-echoes">
-                        <a href="#echoes-overview" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">Overview</a>
-                        <a href="#echoes-challenge" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">Challenge & Goals</a>
-                        <a href="#echoes-research" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">Research & Benchmarking</a>
-                        <a href="#echoes-design" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">IA & Design</a>
-                        <a href="#echoes-outcome" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-red-700 rounded-r-lg">Outcome & Reflection</a>
+                        <a href="#echoes-overview" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Overview</a>
+                        <a href="#echoes-challenge" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Challenge & Goals</a>
+                        <a href="#echoes-research" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Research & Benchmarking</a>
+                        <a href="#echoes-design" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">IA & Design</a>
+                        <a href="#echoes-outcome" class="toc-link block text-left w-full pl-4 py-2 text-sm font-medium text-secondary hover:text-teal-700 rounded-r-lg">Outcome & Reflection</a>
                         
                         <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center text-[10px] font-bold uppercase tracking-wider text-gray-400 pl-4 mt-8 hover:text-accent transition-colors">
                             Back to Top <i data-lucide="arrow-up" class="w-3 h-3 ml-2"></i>
@@ -1541,10 +1523,10 @@
                         <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 shadow-sm mb-12">
                             <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Project Snapshot</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div><div class="flex items-center text-red-800 mb-2"><i data-lucide="briefcase" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Role</span></div><p class="text-sm font-medium text-primary">Web Designer (UX), IA, Content Writer</p></div>
-                                <div><div class="flex items-center text-red-800 mb-2"><i data-lucide="users" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Team</span></div><p class="text-sm font-medium text-primary">2-person team (Co-led design & build)</p></div>
-                                <div><div class="flex items-center text-red-800 mb-2"><i data-lucide="layout" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Tools</span></div><p class="text-sm font-medium text-primary">Wix, Canva, Instagram</p></div>
-                                <div><div class="flex items-center text-red-800 mb-2"><i data-lucide="layers" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Key Features</span></div><p class="text-sm font-medium text-primary">Event signup, Blog, Forum, Donation</p></div>
+                                <div><div class="flex items-center text-teal-600 mb-2"><i data-lucide="briefcase" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Role</span></div><p class="text-sm font-medium text-primary">Web Designer (UX), IA, Content Writer</p></div>
+                                <div><div class="flex items-center text-teal-600 mb-2"><i data-lucide="users" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Team</span></div><p class="text-sm font-medium text-primary">2-person team (Co-led design & build)</p></div>
+                                <div><div class="flex items-center text-teal-600 mb-2"><i data-lucide="layout" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Tools</span></div><p class="text-sm font-medium text-primary">Wix, Canva, Instagram</p></div>
+                                <div><div class="flex items-center text-teal-600 mb-2"><i data-lucide="layers" class="w-4 h-4 mr-2"></i> <span class="text-[10px] font-bold uppercase">Key Features</span></div><p class="text-sm font-medium text-primary">Event signup, Blog, Forum, Donation</p></div>
                             </div>
                         </div>
 
@@ -1564,20 +1546,20 @@
                         <div class="space-y-12">
                             <div>
                                 <h2 class="text-3xl font-semibold text-primary mb-6">The Challenge</h2>
-                                <div class="pl-6 border-l-4 border-red-800">
+                                <div class="pl-6 border-l-4 border-teal-500">
                                     <p class="text-xl text-secondary leading-relaxed font-serif italic">"Echoes from China did not have an official platform to introduce the organization, promote events, or support membership. Information existed across informal channels, making it difficult for potential members to understand what the society offers and how to join."</p>
                                 </div>
                                 <p class="text-lg font-medium text-primary mt-6">How might we design an official website that supports both event conversion and long-term community building?</p>
                             </div>
                             
                             <div class="bg-white border border-gray-200 p-8 rounded-xl shadow-sm">
-                                <h3 class="text-lg font-bold text-primary mb-4 flex items-center"><i data-lucide="target" class="w-5 h-5 mr-3 text-red-800"></i>Project Goals</h3>
+                                <h3 class="text-lg font-bold text-primary mb-4 flex items-center"><i data-lucide="target" class="w-5 h-5 mr-3 text-teal-600"></i>Project Goals</h3>
                                 <ul class="grid md:grid-cols-2 gap-4">
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Create an official website as a credible digital home.</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Enable ticket sales and event registration.</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Support the ability to accept donations.</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Provide membership functionality to attract talent.</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Build a culturally authentic website with strong aesthetics.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Create an official website as a credible digital home.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Enable ticket sales and event registration.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Support the ability to accept donations.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Provide membership functionality to attract talent.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Build a culturally authentic website with strong aesthetics.</li>
                                 </ul>
                             </div>
 
@@ -1615,12 +1597,12 @@
                                     <li class="text-sm text-secondary"><strong>Club member:</strong> Motivations for participation.</li>
                                     <li class="text-sm text-secondary"><strong>Culture enthusiast:</strong> Expectations & trust factors.</li>
                                 </ul>
-                                <div class="bg-red-50 p-6 rounded-xl border border-red-100">
-                                    <h4 class="font-bold text-red-900 mb-2">Key Insights</h4>
+                                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                    <h4 class="font-bold text-primary mb-2">Key Insights</h4>
                                     <ul class="space-y-3">
-                                        <li class="text-sm text-red-800"><strong>1) Events are the entry point.</strong> Most users engage through events first.</li>
-                                        <li class="text-sm text-red-800"><strong>2) Clarity is crucial.</strong> Visitors need to instantly understand what the org offers.</li>
-                                        <li class="text-sm text-red-800"><strong>3) Community requires continuity.</strong> Membership spaces support long-term engagement.</li>
+                                        <li class="text-sm text-secondary"><strong>1) Events are the entry point.</strong> Most users engage through events first.</li>
+                                        <li class="text-sm text-secondary"><strong>2) Clarity is crucial.</strong> Visitors need to instantly understand what the org offers.</li>
+                                        <li class="text-sm text-secondary"><strong>3) Community requires continuity.</strong> Membership spaces support long-term engagement.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1685,22 +1667,22 @@
                         
                         <div class="grid md:grid-cols-2 gap-8 mb-12">
                             <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
-                                <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="rocket" class="w-5 h-5 mr-2 text-red-800"></i> Deliverables</h3>
+                                <h3 class="font-bold text-primary mb-4 flex items-center"><i data-lucide="rocket" class="w-5 h-5 mr-2 text-teal-600"></i> Deliverables</h3>
                                 <ul class="space-y-3">
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Launched Echoes from China’s first official website (0→1).</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Established event registration/ticketing structure.</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Built donation and membership functionality.</li>
-                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-red-800 mt-0.5"></i> Implemented SEO growth foundations.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Launched Echoes from China’s first official website (0→1).</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Established event registration/ticketing structure.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Built donation and membership functionality.</li>
+                                    <li class="flex items-start text-sm text-secondary"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-600 mt-0.5"></i> Implemented SEO growth foundations.</li>
                                 </ul>
                             </div>
-                            <div class="bg-red-50 p-8 rounded-xl border border-red-100">
-                                <h3 class="font-bold text-red-900 mb-4 flex items-center"><i data-lucide="book-open" class="w-5 h-5 mr-2 text-red-800"></i> Reflection</h3>
-                                <p class="text-sm text-red-900/80 mb-4">This project strengthened my ability to:</p>
+                            <div class="bg-teal-50 p-8 rounded-xl border border-teal-100">
+                                <h3 class="font-bold text-teal-900 mb-4 flex items-center"><i data-lucide="book-open" class="w-5 h-5 mr-2 text-teal-800"></i> Reflection</h3>
+                                <p class="text-sm text-teal-900/80 mb-4">This project strengthened my ability to:</p>
                                 <ul class="space-y-2">
-                                    <li class="flex items-start text-sm text-red-800"><span class="w-1.5 h-1.5 bg-red-800 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Build a website from scratch under real constraints.</li>
-                                    <li class="flex items-start text-sm text-red-800"><span class="w-1.5 h-1.5 bg-red-800 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Translate stakeholder goals into IA and user journeys.</li>
-                                    <li class="flex items-start text-sm text-red-800"><span class="w-1.5 h-1.5 bg-red-800 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Design for both conversion and community retention.</li>
-                                    <li class="flex items-start text-sm text-red-800"><span class="w-1.5 h-1.5 bg-red-800 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Balance cultural storytelling with modern usability.</li>
+                                    <li class="flex items-start text-sm text-teal-800"><span class="w-1.5 h-1.5 bg-teal-600 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Build a website from scratch under real constraints.</li>
+                                    <li class="flex items-start text-sm text-teal-800"><span class="w-1.5 h-1.5 bg-teal-600 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Translate stakeholder goals into IA and user journeys.</li>
+                                    <li class="flex items-start text-sm text-teal-800"><span class="w-1.5 h-1.5 bg-teal-600 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Design for both conversion and community retention.</li>
+                                    <li class="flex items-start text-sm text-teal-800"><span class="w-1.5 h-1.5 bg-teal-600 rounded-full mt-1.5 mr-2.5 shrink-0"></span> Balance cultural storytelling with modern usability.</li>
                                 </ul>
                             </div>
                         </div>
@@ -1712,42 +1694,29 @@
     </main>
 
     <!-- Footer -->
-    <footer id="footer-contact" class="bg-white border-t border-gray-200 py-24 px-6 md:px-12">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
-            <div>
-                <h2 class="text-5xl md:text-6xl font-serif text-primary mb-8 tracking-tight">Let's connect.</h2>
-                <p class="mb-12 max-w-sm text-lg text-secondary font-light">Seeking Summer/Fall 2026 internships. I'm always up for a coffee chat about service design, transit systems, or nice tea.</p>
-                <div class="space-y-6 text-lg">
-                    <a href="mailto:evangeline.zhao@mail.utoronto.ca" class="flex items-center text-primary hover:text-accent transition-colors font-medium"><i data-lucide="mail" class="w-5 h-5 mr-4 text-accent"></i> evangeline.zhao@mail.utoronto.ca</a>
-                    <a href="https://www.linkedin.com/in/evangelinezhao28" target="_blank" class="flex items-center text-primary hover:text-accent transition-colors font-medium"><i data-lucide="linkedin" class="w-5 h-5 mr-4 text-accent"></i> LinkedIn</a>
-                    <div class="flex items-center text-secondary opacity-80"><i data-lucide="map-pin" class="w-5 h-5 mr-4"></i> Toronto, Canada</div>
-                </div>
+    <footer id="footer-contact" class="bg-white border-t border-gray-200 py-16 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <h2 class="text-2xl font-serif text-primary mb-2">Evangeline Zhao</h2>
+                <p class="text-sm text-secondary font-light">Seeking Summer/Fall 2026 internships.</p>
             </div>
             
-            <div class="bg-gray-50 p-10 rounded-3xl border border-gray-100 shadow-sm">
-                <h3 class="text-primary font-bold mb-6 text-xl">Send a message</h3>
-                <form class="space-y-4" onsubmit="handleContactSubmit(event)">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider mb-2 text-gray-400">Name</label>
-                            <input id="contact-name" type="text" class="w-full bg-white border border-gray-200 p-4 rounded-xl text-primary focus:outline-none focus:border-accent transition-colors shadow-sm" placeholder="Name" required>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider mb-2 text-gray-400">Email</label>
-                            <input id="contact-email" type="email" class="w-full bg-white border border-gray-200 p-4 rounded-xl text-primary focus:outline-none focus:border-accent transition-colors shadow-sm" placeholder="Email" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider mb-2 text-gray-400">Message</label>
-                        <textarea id="contact-message" class="w-full bg-white border border-gray-200 p-4 rounded-xl text-primary h-32 focus:outline-none focus:border-accent transition-colors shadow-sm" placeholder="Hello..." required></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-primary text-white hover:bg-accent font-bold py-4 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Send Message</button>
-                </form>
+            <div class="flex flex-col items-center md:items-end gap-4">
+                <div class="flex gap-8">
+                    <a href="mailto:evangeline.zhao@mail.utoronto.ca" class="flex items-center text-sm font-medium text-secondary hover:text-accent transition-colors">
+                        <i data-lucide="mail" class="w-4 h-4 mr-2"></i> Email
+                    </a>
+                    <a href="https://www.linkedin.com/in/evangelinezhao28" target="_blank" class="flex items-center text-sm font-medium text-secondary hover:text-accent transition-colors">
+                        <i data-lucide="linkedin" class="w-4 h-4 mr-2"></i> LinkedIn
+                    </a>
+                </div>
+                <div class="flex items-center gap-6 text-xs text-gray-400">
+                    <p>© 2026 Evangeline Zhao</p>
+                    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-primary flex items-center transition-colors">
+                        Back to Top <i data-lucide="arrow-up" class="w-3 h-3 ml-1"></i>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="max-w-7xl mx-auto mt-24 pt-8 border-t border-gray-100 text-sm text-gray-400 flex justify-between items-center">
-            <p>© 2026 Evangeline Zhao</p>
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-primary flex items-center transition-colors">Back to Top <i data-lucide="arrow-up" class="w-4 h-4 ml-2"></i></button>
         </div>
     </footer>
 
@@ -1755,19 +1724,6 @@
     <script>
         // Init Lucide Icons
         lucide.createIcons();
-
-        // Contact Form Logic (Mailto)
-        function handleContactSubmit(event) {
-            event.preventDefault();
-            const name = document.getElementById('contact-name').value;
-            const email = document.getElementById('contact-email').value;
-            const message = document.getElementById('contact-message').value;
-            
-            const subject = `Portfolio Inquiry: ${name}`;
-            const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-            
-            window.location.href = `mailto:evangeline.zhao@mail.utoronto.ca?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        }
 
         // Router Function
         window.router = function(pageId) {
@@ -1783,9 +1739,7 @@
                 
                 // If switching to Lumi or Staging or Echoes, re-init TOC observer
                 if(pageId === 'lumi' || pageId === 'staging' || pageId === 'echoes') {
-                    // Slight delay to ensure DOM is ready
                     setTimeout(() => {
-                        // Determine which TOC to init based on pageId
                         let tocId = '';
                         if (pageId === 'lumi') tocId = 'toc-lumi';
                         else if (pageId === 'staging') tocId = 'toc-staging';
@@ -1802,6 +1756,20 @@
             });
             const activeLink = document.getElementById('nav-' + pageId);
             if(activeLink) activeLink.classList.add('active');
+        }
+
+        // --- NEW: Function to navigate to specific section on Home ---
+        window.navigateToSection = function(sectionId) {
+            // 1. Switch to home page
+            router('home');
+            
+            // 2. Scroll to section
+            setTimeout(() => {
+                const section = document.getElementById(sectionId);
+                if(section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100); // Slight delay to ensure DOM update
         }
 
         // Scroll to Contact
@@ -1830,13 +1798,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    
-                    // Handle stagger parents
-                    if(entry.target.classList.contains('stagger-parent')){
-                       // The CSS handles the children delays
-                    }
-                    
-                    observer.unobserve(entry.target); // Only animate once
+                    observer.unobserve(entry.target); 
                 }
             });
         }, observerOptions);
@@ -1849,10 +1811,8 @@
 
         // Table of Contents Active State Logic
         function initTocObserver(tocContainerId) {
-            // Clear any previous active states just in case
             document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
 
-            // Get specific container's links
             const container = document.getElementById(tocContainerId);
             if(!container) return;
 
@@ -1866,10 +1826,7 @@
             const tocObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Remove active from links in this container
                         tocLinks.forEach(link => link.classList.remove('active'));
-                        
-                        // Add active to matching link
                         const activeLink = container.querySelector(`.toc-link[href="#${entry.target.id}"]`);
                         if (activeLink) activeLink.classList.add('active');
                     }
@@ -1888,7 +1845,7 @@
                 caption: "Playing guitar and singing as a creative outlet."
             },
             {
-                src: "images/hanfu.JPG",
+                src: "images/hanfu.jpg",
                 caption: "Cultural identity and storytelling through tradition."
             },
             {
@@ -1907,25 +1864,12 @@
             const img = document.getElementById('creative-image');
             const caption = document.getElementById('creative-caption');
             
-            // Fade out
             img.style.opacity = '0';
             
             setTimeout(() => {
-                // Change source
                 img.src = creativeData[currentCreativeIndex].src;
                 caption.textContent = creativeData[currentCreativeIndex].caption;
                 
-                // Update dots
-                for (let i = 0; i < creativeData.length; i++) {
-                    const dot = document.getElementById(`creative-dot-${i}`);
-                    if (i === currentCreativeIndex) {
-                        dot.className = "w-2 h-2 rounded-full bg-white shadow-sm transition-all scale-125";
-                    } else {
-                        dot.className = "w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer";
-                    }
-                }
-                
-                // Fade in
                 img.style.opacity = '1';
             }, 300);
         };
@@ -1937,11 +1881,6 @@
 
         window.prevCreative = function() {
             currentCreativeIndex = (currentCreativeIndex - 1 + creativeData.length) % creativeData.length;
-            updateCreativeImage();
-        };
-        
-        window.goToCreativeSlide = function(index) {
-            currentCreativeIndex = index;
             updateCreativeImage();
         };
 
@@ -1981,28 +1920,15 @@
             const title = document.getElementById('photo-title');
             const caption = document.getElementById('photo-caption');
             
-            // Fade out
             img.style.opacity = '0';
             
             setTimeout(() => {
-                // Change content
                 img.src = photoData[currentPhotoIndex].src;
                 title.textContent = photoData[currentPhotoIndex].title;
                 caption.textContent = photoData[currentPhotoIndex].caption;
                 
-                // Update dots
-                for (let i = 0; i < photoData.length; i++) {
-                    const dot = document.getElementById(`photo-dot-${i}`);
-                    if (i === currentPhotoIndex) {
-                        dot.className = "w-2 h-2 rounded-full bg-white shadow-sm transition-all scale-125";
-                    } else {
-                        dot.className = "w-2 h-2 rounded-full bg-white/50 shadow-sm transition-all hover:bg-white/80 cursor-pointer";
-                    }
-                }
-                
-                // Fade in
                 img.style.opacity = '1';
-            }, 500); // 500ms match transition
+            }, 500);
         };
 
         window.nextPhoto = function() {
@@ -2012,11 +1938,6 @@
 
         window.prevPhoto = function() {
             currentPhotoIndex = (currentPhotoIndex - 1 + photoData.length) % photoData.length;
-            updatePhotoImage();
-        };
-        
-        window.goToPhotoSlide = function(index) {
-            currentPhotoIndex = index;
             updatePhotoImage();
         };
 
